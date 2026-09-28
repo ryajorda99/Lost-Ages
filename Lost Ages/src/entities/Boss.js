@@ -43,6 +43,11 @@ class Boss extends Enemy {
 
     this.minions = [];
     this.events = [];               // announcements for the UI / chat log
+
+    // Hard enrage: after def.enrageTimer seconds the boss hits 5x harder (a DPS check)
+    this.fightTime = 0;
+    this.fallen = new Set();        // players whose deaths the boss has already reacted to
+    this.enraged = false;
   }
 
   // ---------------- Messages ----------------
@@ -51,10 +56,39 @@ class Boss extends Enemy {
     this.onAnnounce?.(msg);
   }
 
+  // Instantly kill a player who failed a mechanic. Ignores armor, shields and defensives.
+  lethal(target, cause) {
+    if (target.isDead) return;
+    target._deathCause = cause;
+    target.absorb = 0;
+    target.hp = 0;
+    target.die(this);
+  }
+
   // ---------------- Main tick ----------------
   update(dt, ctx = {}) {
     if (this.isDead) return;
     const players = (ctx.enemies || []).filter(p => !p.isDead);
+
+    // Player deaths: some bosses grow stronger when players die (def.onPlayerDeath)
+    if (this.def.onPlayerDeath) {
+      for (const p of ctx.enemies || []) {
+        if (p.isDead && !this.fallen.has(p)) {
+          this.fallen.add(p);
+          if (!this.enraged) this.def.onPlayerDeath(this, p, ctx);
+        }
+      }
+    }
+
+    // Enrage timer
+    this.fightTime += dt;
+    if (this.def.enrageTimer && !this.enraged && this.fightTime >= this.def.enrageTimer) {
+      this.enraged = true;
+      this.addBuff({ id: "berserk", duration: Infinity, mods: { damageDealt: 5 } });
+      this.haste += 50;
+      this.announce(`${this.name} goes BERSERK! (enrage timer reached)`);
+      this.def.onEnrage?.(this, ctx);   // some bosses do something deadly on enrage
+    }
 
     // Phase check: phases are ordered by hpBelow (1.0, 0.75, 0.5, 0.25)
     const pct = this.hp / this.maxHp;

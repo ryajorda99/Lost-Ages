@@ -1,0 +1,4983 @@
+[
+  {
+    "name": "Kael",
+    "className": "Knight",
+    "skill": "pro",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Knight",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrai_0",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 135,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "blockChance": 0.01
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrai_1",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 92,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "crit": 16
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrai_2",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 134,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "crit": 12
+          },
+          "armorType": "plate",
+          "name": "Radiant Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrai_3",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 92,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "crit": 16
+          },
+          "armorType": "plate",
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrai_4",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "blockChance": 0.02,
+            "crit": 16
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrai_5",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 92,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "blockChance": 0.01,
+            "crit": 13
+          },
+          "armorType": "plate",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrai_6",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "blockChance": 0.01,
+            "crit": 9,
+            "armor": 8
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrai_7",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "crit": 13,
+            "armor": 7
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrai_8",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "armor": 7,
+            "crit": 7,
+            "blockChance": 0.01
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrai_9",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 18,
+            "sta": 18,
+            "faith": 18,
+            "armor": 16,
+            "blockChance": 0.01
+          },
+          "name": "Sanctified Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrai_a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 31,
+            "sta": 31,
+            "faith": 31,
+            "armor": 41
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Radiant Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofrai_b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 210,
+            "blockChance": 0.07,
+            "str": 21,
+            "sta": 21,
+            "faith": 21
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Sanctified Bulwark"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Garrick",
+    "className": "Knight",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Knight",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrai_c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "crit": 11,
+            "blockChance": 0.02
+          },
+          "armorType": "plate",
+          "name": "Sanctified Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrai_d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "crit": 8,
+            "blockChance": 0.02
+          },
+          "armorType": "plate",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrai_e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "blockChance": 0.02,
+            "crit": 16
+          },
+          "armorType": "plate",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrai_f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "blockChance": 0.02,
+            "crit": 18
+          },
+          "armorType": "plate",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrai_g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 123,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "crit": 23
+          },
+          "armorType": "plate",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrai_h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 92,
+            "str": 20,
+            "sta": 20,
+            "faith": 20,
+            "crit": 8,
+            "blockChance": 0.01
+          },
+          "armorType": "plate",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrai_i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "blockChance": 0.01,
+            "crit": 9,
+            "armor": 8
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrai_j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "blockChance": 0.02,
+            "crit": 14
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrai_k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "armor": 20
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrai_l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 18,
+            "sta": 18,
+            "faith": 18,
+            "crit": 8,
+            "armor": 16
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrai_m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 31,
+            "sta": 31,
+            "faith": 31,
+            "armor": 28,
+            "crit": 13
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Sanctified Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofrai_n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 234,
+            "blockChance": 0.05,
+            "str": 21,
+            "sta": 21,
+            "faith": 21
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Dreadforged Bulwark"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Doran",
+    "className": "Healer",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofraj_o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "int": 22,
+            "crit": 12
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofraj_p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "crit": 17,
+            "int": 9
+          },
+          "armorType": "cloth",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofraj_q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 12,
+            "int": 11
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofraj_r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "haste": 9,
+            "int": 9,
+            "crit": 8
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofraj_s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "haste": 22,
+            "int": 12
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofraj_t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "haste": 17,
+            "crit": 9
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Boots"
+        },
+        "neck": {
+          "id": "itm_mulofraj_u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "int": 6,
+            "haste": 6,
+            "crit": 6
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofraj_v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 6,
+            "int": 12
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofraj_w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "int": 6,
+            "crit": 12
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofraj_x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 27,
+            "sta": 27,
+            "crit": 8,
+            "haste": 8,
+            "int": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofraj_y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 47,
+            "sta": 47,
+            "haste": 13,
+            "int": 14,
+            "crit": 13
+          },
+          "weaponType": "staff",
+          "allowedClasses": [
+            "Mage",
+            "Healer"
+          ],
+          "weaponSpeed": 3,
+          "weaponDamage": 158,
+          "name": "Dreadforged Staff"
+        },
+        "offHand": {
+          "id": "itm_mulofraj_z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 31,
+            "sta": 31,
+            "int": 19,
+            "haste": 9
+          },
+          "weaponType": "relic",
+          "allowedClasses": [
+            "Healer"
+          ],
+          "name": "Dreadforged Relic"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Otto",
+    "className": "Healer",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofraj_10",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "int": 11,
+            "haste": 12,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofraj_11",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "int": 26
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofraj_12",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofraj_13",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "int": 9,
+            "crit": 9,
+            "haste": 8
+          },
+          "armorType": "cloth",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofraj_14",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "haste": 11,
+            "int": 12,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofraj_15",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "crit": 9,
+            "int": 9,
+            "haste": 8
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Boots"
+        },
+        "neck": {
+          "id": "itm_mulofraj_16",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "crit": 6,
+            "haste": 12
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofraj_17",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 6,
+            "int": 6,
+            "crit": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofraj_18",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "int": 12,
+            "crit": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofraj_19",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 27,
+            "sta": 27,
+            "int": 8,
+            "haste": 8,
+            "crit": 8
+          },
+          "name": "Sanctified Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofraj_1a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 47,
+            "sta": 47,
+            "crit": 26,
+            "int": 14
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Sanctified Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofraj_1b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 31,
+            "sta": 31,
+            "haste": 19,
+            "int": 9
+          },
+          "weaponType": "relic",
+          "allowedClasses": [
+            "Healer"
+          ],
+          "name": "Radiant Relic"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Quinn",
+    "className": "Healer",
+    "skill": "pro",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofraj_1c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 12,
+            "int": 11
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofraj_1d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "int": 9,
+            "haste": 9,
+            "crit": 8
+          },
+          "armorType": "cloth",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofraj_1e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "crit": 22,
+            "int": 12
+          },
+          "armorType": "cloth",
+          "name": "Radiant Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofraj_1f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "crit": 18,
+            "int": 8
+          },
+          "armorType": "cloth",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofraj_1g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "crit": 34
+          },
+          "armorType": "cloth",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofraj_1h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "haste": 9,
+            "int": 9,
+            "crit": 8
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofraj_1i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 12,
+            "int": 6
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofraj_1k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofraj_1j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofraj_1l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 27,
+            "sta": 27,
+            "int": 16,
+            "haste": 8
+          },
+          "name": "Sanctified Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofraj_1m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 47,
+            "sta": 47,
+            "haste": 26,
+            "crit": 14
+          },
+          "weaponType": "staff",
+          "allowedClasses": [
+            "Mage",
+            "Healer"
+          ],
+          "weaponSpeed": 3,
+          "weaponDamage": 158,
+          "name": "Dreadforged Staff"
+        },
+        "offHand": {
+          "id": "itm_mulofraj_1n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 31,
+            "sta": 31,
+            "crit": 18,
+            "haste": 10
+          },
+          "weaponType": "relic",
+          "allowedClasses": [
+            "Healer"
+          ],
+          "name": "Radiant Relic"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Selene",
+    "className": "Healer",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofraj_1o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "int": 11,
+            "crit": 12,
+            "haste": 11
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofraj_1p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "int": 17,
+            "crit": 9
+          },
+          "armorType": "cloth",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofraj_1q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofraj_1r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "crit": 17,
+            "haste": 9
+          },
+          "armorType": "cloth",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofraj_1s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "faith": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofraj_1t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "haste": 9,
+            "crit": 9,
+            "int": 8
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofraj_1u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofraj_1v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofraj_1w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofraj_1x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 27,
+            "sta": 27,
+            "crit": 16,
+            "haste": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofraj_1y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 47,
+            "sta": 47,
+            "crit": 27,
+            "haste": 13
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Sanctified Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofraj_1z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "faith": 31,
+            "sta": 31,
+            "crit": 28
+          },
+          "weaponType": "relic",
+          "allowedClasses": [
+            "Healer"
+          ],
+          "name": "Radiant Relic"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Aldric",
+    "className": "Warrior",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofraj_20",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "agi": 22,
+            "crit": 12
+          },
+          "armorType": "plate",
+          "name": "Sanctified Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofraj_21",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 9,
+            "haste": 9,
+            "crit": 8
+          },
+          "armorType": "plate",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofraj_22",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 34
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofraj_23",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 26
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofraj_24",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "agi": 34
+          },
+          "armorType": "plate",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofraj_25",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "plate",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofraj_26",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "agi": 12,
+            "crit": 6
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofraj_28",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofraj_27",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "crit": 6,
+            "haste": 6,
+            "agi": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofraj_29",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "haste": 8,
+            "crit": 16
+          },
+          "name": "Sanctified Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofraj_2a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 47,
+            "sta": 47,
+            "agi": 27,
+            "crit": 13
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Radiant Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofraj_2b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 31,
+            "sta": 31,
+            "haste": 18,
+            "agi": 10
+          },
+          "weaponType": "axe",
+          "allowedClasses": [
+            "Warrior"
+          ],
+          "name": "Dreadforged Axe"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Orin",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_2c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_2d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 17,
+            "haste": 9
+          },
+          "armorType": "cloth",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_2e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 34
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_2f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_2g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_2h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_2i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 6,
+            "haste": 12
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_2k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_2j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_2l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_2m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 47,
+            "sta": 47,
+            "crit": 13,
+            "haste": 27
+          },
+          "weaponType": "wand",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "weaponSpeed": 2,
+          "weaponDamage": 105,
+          "name": "Radiant Wand"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_2n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 31,
+            "sta": 31,
+            "haste": 18,
+            "crit": 10
+          },
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "name": "Sanctified Orb"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Zara",
+    "className": "Rogue",
+    "skill": "pro",
+    "personality": "greedy",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [
+        {
+          "id": "itm_mulofrbc_6s",
+          "slotType": "mainHand",
+          "rarity": "rare",
+          "itemLevel": 60,
+          "requiredLevel": 57,
+          "sourceType": "mob",
+          "source": "Magma Hound",
+          "stats": {
+            "agi": 30,
+            "sta": 30,
+            "crit": 26
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "weaponSpeed": 1.6,
+          "weaponDamage": 54,
+          "name": "Blessed Dagger"
+        }
+      ],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_2o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_2p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 9,
+            "crit": 17
+          },
+          "armorType": "leather",
+          "name": "Sanctified Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_2q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "leather",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_2r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
+          },
+          "armorType": "leather",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_2s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
+          },
+          "armorType": "leather",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_2t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "leather",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_2u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_2w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_2v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_2x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_2y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 47,
+            "sta": 47,
+            "crit": 13,
+            "haste": 27
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "weaponSpeed": 1.6,
+          "weaponDamage": 84,
+          "name": "Sanctified Dagger"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_2z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 31,
+            "sta": 31,
+            "crit": 28
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "name": "Dreadforged Dagger"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Brom",
+    "className": "Warrior",
+    "skill": "pro",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_30",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 11,
+            "agi": 12,
+            "crit": 11
+          },
+          "armorType": "plate",
+          "name": "Sanctified Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_31",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 9,
+            "crit": 9,
+            "haste": 8
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_32",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "plate",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_33",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 18,
+            "agi": 8
+          },
+          "armorType": "plate",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_34",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "agi": 11,
+            "crit": 12,
+            "haste": 11
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_35",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 9,
+            "agi": 17
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_36",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_38",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_37",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_39",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "haste": 16,
+            "agi": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_3a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 47,
+            "sta": 47,
+            "agi": 26,
+            "haste": 14
+          },
+          "weaponType": "sword",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Rogue"
+          ],
+          "weaponSpeed": 2.4,
+          "weaponDamage": 126,
+          "name": "Dreadforged Longsword"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_3b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 210,
+            "blockChance": 0.04,
+            "str": 31,
+            "sta": 31,
+            "crit": 19,
+            "agi": 9
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Radiant Bulwark"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Bram",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "greedy",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_3c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_3d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 26
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_3e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 34
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_3f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 17,
+            "haste": 9
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_3g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 34
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_3h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 18,
+            "haste": 8
+          },
+          "armorType": "cloth",
+          "name": "Radiant Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_3i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_3j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_3k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_3l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "crit": 16,
+            "haste": 8
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_3m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 47,
+            "sta": 47,
+            "crit": 27,
+            "haste": 13
+          },
+          "weaponType": "staff",
+          "allowedClasses": [
+            "Mage",
+            "Healer"
+          ],
+          "weaponSpeed": 3,
+          "weaponDamage": 158,
+          "name": "Radiant Staff"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_3n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 31,
+            "sta": 31,
+            "crit": 28
+          },
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "name": "Sanctified Orb"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Silas",
+    "className": "Rogue",
+    "skill": "pro",
+    "personality": "greedy",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_3o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 11,
+            "crit": 23
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_3p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "crit": 18,
+            "haste": 8
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_3q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
+          },
+          "armorType": "leather",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_3r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "leather",
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_3s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "leather",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_3t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 17,
+            "crit": 9
+          },
+          "armorType": "leather",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_3u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_3v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_3w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_3x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_3y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 47,
+            "sta": 47,
+            "haste": 26,
+            "crit": 14
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "weaponSpeed": 1.6,
+          "weaponDamage": 84,
+          "name": "Radiant Dagger"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_3z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 31,
+            "sta": 31,
+            "crit": 18,
+            "haste": 10
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "name": "Radiant Dagger"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Brakka",
+    "className": "Warrior",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_40",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 11,
+            "agi": 23
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_41",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 18,
+            "haste": 8
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_42",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 11,
+            "agi": 12,
+            "crit": 11
+          },
+          "armorType": "plate",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_43",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "haste": 17,
+            "agi": 9
+          },
+          "armorType": "plate",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_44",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
+          },
+          "armorType": "plate",
+          "name": "Radiant Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_45",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 17,
+            "haste": 9
+          },
+          "armorType": "plate",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_46",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "agi": 6,
+            "crit": 12
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_48",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 6,
+            "agi": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_47",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 6,
+            "agi": 12
+          },
+          "name": "Dreadforged Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_49",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "crit": 16,
+            "agi": 8
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_4a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 47,
+            "sta": 47,
+            "haste": 26,
+            "crit": 14
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 147,
+          "name": "Sanctified Warhammer"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_4b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 210,
+            "blockChance": 0.04,
+            "str": 31,
+            "sta": 31,
+            "haste": 18,
+            "crit": 10
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Dreadforged Bulwark"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Ember",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofrak_4c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofrak_4d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 26
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofrak_4e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 34
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofrak_4f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 18,
+            "crit": 8
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofrak_4g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofrak_4h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "cloth",
+          "name": "Radiant Boots"
+        },
+        "neck": {
+          "id": "itm_mulofrak_4i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofrak_4k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofrak_4j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofrak_4l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "crit": 8,
+            "haste": 16
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofrak_4m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 47,
+            "sta": 47,
+            "crit": 26,
+            "haste": 14
+          },
+          "weaponType": "staff",
+          "allowedClasses": [
+            "Mage",
+            "Healer"
+          ],
+          "weaponSpeed": 3,
+          "weaponDamage": 158,
+          "name": "Dreadforged Staff"
+        },
+        "offHand": {
+          "id": "itm_mulofrak_4n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 31,
+            "sta": 31,
+            "crit": 28
+          },
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "name": "Radiant Orb"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Vex",
+    "className": "Rogue",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_4o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "leather",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_4p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "leather",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_4q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "leather",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_4r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "crit": 17,
+            "haste": 9
+          },
+          "armorType": "leather",
+          "name": "Radiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_4s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 34
+          },
+          "armorType": "leather",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_4t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 17,
+            "crit": 9
+          },
+          "armorType": "leather",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_4u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 18
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_4w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 18
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_4v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_4x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 27,
+            "sta": 27,
+            "haste": 8,
+            "crit": 16
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_4y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 47,
+            "sta": 47,
+            "haste": 27,
+            "crit": 13
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "weaponSpeed": 1.6,
+          "weaponDamage": 84,
+          "name": "Radiant Dagger"
+        },
+        "offHand": {
+          "id": "itm_mulofral_4z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 31,
+            "sta": 31,
+            "haste": 9,
+            "crit": 19
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "name": "Dreadforged Dagger"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Luna",
+    "className": "Warrior",
+    "skill": "pro",
+    "personality": "greedy",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_50",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 23,
+            "agi": 11
+          },
+          "armorType": "plate",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_51",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 9,
+            "agi": 8
+          },
+          "armorType": "plate",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_52",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 22,
+            "haste": 12
+          },
+          "armorType": "plate",
+          "name": "Radiant Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_53",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "plate",
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_54",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 23,
+            "agi": 11
+          },
+          "armorType": "plate",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_55",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 26
+          },
+          "armorType": "plate",
+          "name": "Radiant Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_56",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "agi": 6,
+            "haste": 6,
+            "crit": 6
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_58",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_57",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "agi": 6,
+            "haste": 12
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_59",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "crit": 16,
+            "haste": 8
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_5a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 47,
+            "sta": 47,
+            "agi": 27,
+            "crit": 13
+          },
+          "weaponType": "sword",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Rogue"
+          ],
+          "weaponSpeed": 2.4,
+          "weaponDamage": 126,
+          "name": "Sanctified Longsword"
+        },
+        "offHand": {
+          "id": "itm_mulofral_5b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 31,
+            "sta": 31,
+            "haste": 9,
+            "crit": 10,
+            "agi": 9
+          },
+          "weaponType": "axe",
+          "allowedClasses": [
+            "Warrior"
+          ],
+          "name": "Radiant Axe"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Lyra",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_5c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 23,
+            "crit": 11
+          },
+          "armorType": "cloth",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_5d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 9,
+            "crit": 17
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_5e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_5f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_5g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_5h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 18,
+            "haste": 8
+          },
+          "armorType": "cloth",
+          "name": "Radiant Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_5i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_5j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 18
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_5k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 6,
+            "haste": 12
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_5l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "crit": 8,
+            "haste": 16
+          },
+          "name": "Radiant Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_5m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 47,
+            "sta": 47,
+            "crit": 13,
+            "haste": 27
+          },
+          "weaponType": "wand",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "weaponSpeed": 2,
+          "weaponDamage": 105,
+          "name": "Radiant Wand"
+        },
+        "offHand": {
+          "id": "itm_mulofral_5n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 31,
+            "sta": 31,
+            "haste": 9,
+            "crit": 19
+          },
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "name": "Radiant Orb"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Ilya",
+    "className": "Rogue",
+    "skill": "pro",
+    "personality": "cautious",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_5o",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "leather",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_5p",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 9,
+            "crit": 17
+          },
+          "armorType": "leather",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_5q",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_5r",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 17,
+            "crit": 9
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_5s",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
+          },
+          "armorType": "leather",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_5t",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "leather",
+          "name": "Dreadforged Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_5u",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 18
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_5v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_5w",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 22,
+            "sta": 22,
+            "crit": 6,
+            "haste": 12
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_5x",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 27,
+            "sta": 27,
+            "haste": 24
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_5y",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 47,
+            "sta": 47,
+            "haste": 26,
+            "crit": 14
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "weaponSpeed": 1.6,
+          "weaponDamage": 84,
+          "name": "Dreadforged Dagger"
+        },
+        "offHand": {
+          "id": "itm_mulofral_5z",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "agi": 31,
+            "sta": 31,
+            "crit": 28
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "name": "Sanctified Dagger"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Tamsin",
+    "className": "Warrior",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_60",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 22,
+            "agi": 12
+          },
+          "armorType": "plate",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_61",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "plate",
+          "name": "Radiant Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_62",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "haste": 11,
+            "crit": 12,
+            "agi": 11
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_63",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 9,
+            "crit": 17
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_64",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 34
+          },
+          "armorType": "plate",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_65",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "haste": 17,
+            "crit": 9
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_66",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_68",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 6,
+            "crit": 12
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_67",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 22,
+            "sta": 22,
+            "haste": 6,
+            "agi": 6,
+            "crit": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_69",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "crit": 16,
+            "agi": 8
+          },
+          "name": "Sanctified Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_6a",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "str": 47,
+            "sta": 47,
+            "haste": 27,
+            "crit": 13
+          },
+          "weaponType": "sword",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Rogue"
+          ],
+          "weaponSpeed": 2.4,
+          "weaponDamage": 126,
+          "name": "Sanctified Longsword"
+        },
+        "offHand": {
+          "id": "itm_mulofral_6b",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 210,
+            "blockChance": 0.04,
+            "str": 31,
+            "sta": 31,
+            "haste": 28
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Radiant Bulwark"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Nyx",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "steady",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.1395,
+        0.279
+      ],
+      "awareness": 0.9775,
+      "mistakeRate": 0.004,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.979,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mulofral_6c",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 22,
+            "crit": 12
+          },
+          "armorType": "cloth",
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mulofral_6d",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 26
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Pauldrons"
+        },
+        "chest": {
+          "id": "itm_mulofral_6e",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 11,
+            "crit": 23
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Chestguard"
+        },
+        "hands": {
+          "id": "itm_mulofral_6f",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 26
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mulofral_6g",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 22,
+            "haste": 12
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
+        },
+        "feet": {
+          "id": "itm_mulofral_6h",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 18,
+            "crit": 8
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Boots"
+        },
+        "neck": {
+          "id": "itm_mulofral_6i",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 18
+          },
+          "name": "Radiant Amulet"
+        },
+        "ring1": {
+          "id": "itm_mulofral_6k",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": {
+          "id": "itm_mulofral_6j",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "crit": 12,
+            "haste": 6
+          },
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mulofral_6l",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "crit": 16,
+            "haste": 8
+          },
+          "name": "Dreadforged Charm"
+        },
+        "mainHand": {
+          "id": "itm_mulofral_6m",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 47,
+            "sta": 47,
+            "haste": 40
+          },
+          "weaponType": "wand",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "weaponSpeed": 2,
+          "weaponDamage": 105,
+          "name": "Sanctified Wand"
+        },
+        "offHand": {
+          "id": "itm_mulofral_6n",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 1,
+          "sourceType": "boss",
+          "source": "test gear",
+          "stats": {
+            "int": 31,
+            "sta": 31,
+            "crit": 18,
+            "haste": 10
+          },
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage"
+          ],
+          "name": "Dreadforged Orb"
+        }
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  }
+]

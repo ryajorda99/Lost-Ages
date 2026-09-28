@@ -1,0 +1,704 @@
+[
+  {
+    "name": "Fenn",
+    "className": "Knight",
+    "skill": "average",
+    "personality": "steady",
+    "profile": {
+      "label": "Average",
+      "reaction": [
+        0.32174280000000005,
+        0.6434856000000001
+      ],
+      "awareness": 0.89453125,
+      "mistakeRate": 0.02048,
+      "inputDelay": [
+        0.2,
+        0.5
+      ],
+      "lapsePerSec": 0.02,
+      "positioning": 0.8628,
+      "decisionNoise": 0.3,
+      "healAccuracy": 0.7
+    },
+    "gear": {
+      "className": "Knight",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "name": "Crown of the Hollow King",
+          "slotType": "head",
+          "rarity": "epic",
+          "armorType": "plate",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "stats": {
+            "str": 18,
+            "sta": 22,
+            "faith": 10,
+            "armor": 75,
+            "blockChance": 0.02
+          },
+          "id": "itm_mullgkmy_3",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "bossOnly": true
+        },
+        "shoulders": null,
+        "chest": {
+          "id": "itm_mullee3w_7",
+          "slotType": "chest",
+          "rarity": "common",
+          "itemLevel": 20,
+          "requiredLevel": 17,
+          "sourceType": "mob",
+          "source": "Bone Archer",
+          "stats": {
+            "armor": 32,
+            "str": 4,
+            "sta": 4,
+            "faith": 4
+          },
+          "armorType": "plate",
+          "name": "Simple Chestguard"
+        },
+        "hands": null,
+        "legs": {
+          "id": "itm_mullgy7r_2",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 48,
+            "str": 11,
+            "sta": 11,
+            "faith": 11,
+            "blockChance": 0.03
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Greaves"
+        },
+        "feet": null,
+        "neck": {
+          "id": "itm_mullgkmy_4",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "str": 6,
+            "sta": 6,
+            "faith": 6,
+            "armor": 3,
+            "crit": 5
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": {
+          "id": "itm_mullgkkt_0",
+          "slotType": "mainHand",
+          "rarity": "uncommon",
+          "itemLevel": 25,
+          "requiredLevel": 22,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "str": 7,
+            "sta": 7,
+            "faith": 7,
+            "armor": 9
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 33,
+          "name": "Sturdy Warhammer"
+        },
+        "offHand": null
+      }
+    },
+    "lootState": {
+      "lockouts": {
+        "The Hollow King": 1791225732663
+      },
+      "pity": {
+        "The Hollow King:Crown of the Hollow King": 1,
+        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 3
+      }
+    },
+    "kills": 3,
+    "attempts": 3
+  },
+  {
+    "name": "Grom",
+    "className": "Warrior",
+    "skill": "casual",
+    "personality": "steady",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.4826142000000001,
+        0.9652284000000002
+      ],
+      "awareness": 0.81015625,
+      "mistakeRate": 0.04096,
+      "inputDelay": [
+        0.35,
+        0.8
+      ],
+      "lapsePerSec": 0.04,
+      "positioning": 0.7599,
+      "decisionNoise": 0.45,
+      "healAccuracy": 0.55
+    },
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "name": "Crown of the Hollow King",
+          "slotType": "head",
+          "rarity": "epic",
+          "armorType": "plate",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "stats": {
+            "str": 18,
+            "sta": 22,
+            "faith": 10,
+            "armor": 75,
+            "blockChance": 0.02
+          },
+          "id": "itm_mullgy7s_3",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "bossOnly": true
+        },
+        "shoulders": null,
+        "chest": null,
+        "hands": {
+          "id": "itm_mullgy7s_4",
+          "slotType": "hands",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 36,
+            "str": 13,
+            "sta": 13,
+            "crit": 3,
+            "agi": 4,
+            "haste": 3
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Gauntlets"
+        },
+        "legs": null,
+        "feet": {
+          "id": "itm_mullee5g_e",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 36,
+            "str": 13,
+            "sta": 13,
+            "agi": 3,
+            "crit": 4,
+            "haste": 3
+          },
+          "armorType": "plate",
+          "name": "Radiant Boots"
+        },
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": {
+          "id": "itm_mullee3w_8",
+          "slotType": "mainHand",
+          "rarity": "common",
+          "itemLevel": 20,
+          "requiredLevel": 17,
+          "sourceType": "mob",
+          "source": "Bone Archer",
+          "stats": {
+            "str": 7,
+            "sta": 7
+          },
+          "weaponType": "axe",
+          "allowedClasses": [
+            "Warrior"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 21,
+          "name": "Worn Axe"
+        },
+        "offHand": {
+          "id": "itm_mullee3w_9",
+          "slotType": "offHand",
+          "rarity": "rare",
+          "itemLevel": 25,
+          "requiredLevel": 22,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 56,
+            "blockChance": 0.03,
+            "str": 8,
+            "sta": 8,
+            "haste": 4,
+            "crit": 4
+          },
+          "weaponType": "shield",
+          "allowedClasses": [
+            "Knight",
+            "Warrior"
+          ],
+          "name": "Valiant Bulwark"
+        }
+      }
+    },
+    "lootState": {
+      "lockouts": {
+        "The Hollow King": 1791225732664
+      },
+      "pity": {
+        "The Hollow King:Crown of the Hollow King": 0
+      }
+    },
+    "kills": 3,
+    "attempts": 3
+  },
+  {
+    "name": "Kael",
+    "className": "Rogue",
+    "skill": "skilled",
+    "personality": "greedy",
+    "profile": {
+      "label": "Skilled",
+      "reaction": [
+        0.20108925000000002,
+        0.40217850000000005
+      ],
+      "awareness": 0.9578125000000001,
+      "mistakeRate": 0.007680000000000001,
+      "inputDelay": [
+        0.1,
+        0.3
+      ],
+      "lapsePerSec": 0.008,
+      "positioning": 0.94855,
+      "decisionNoise": 0.15,
+      "healAccuracy": 0.85
+    },
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mullee29_5",
+          "slotType": "head",
+          "rarity": "uncommon",
+          "itemLevel": 20,
+          "requiredLevel": 17,
+          "sourceType": "mob",
+          "source": "Bone Archer",
+          "stats": {
+            "armor": 16,
+            "agi": 7,
+            "sta": 7,
+            "haste": 6
+          },
+          "armorType": "leather",
+          "name": "Reinforced Helm"
+        },
+        "shoulders": null,
+        "chest": null,
+        "hands": {
+          "id": "itm_mulledxt_3",
+          "slotType": "hands",
+          "rarity": "uncommon",
+          "itemLevel": 25,
+          "requiredLevel": 22,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 15,
+            "agi": 7,
+            "sta": 7,
+            "haste": 5
+          },
+          "armorType": "leather",
+          "name": "Reinforced Gauntlets"
+        },
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": {
+          "id": "itm_mullgkmz_6",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "agi": 20,
+            "sta": 20,
+            "haste": 12,
+            "crit": 6
+          },
+          "weaponType": "sword",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Rogue"
+          ],
+          "weaponSpeed": 2.4,
+          "weaponDamage": 54,
+          "name": "Radiant Longsword"
+        },
+        "offHand": {
+          "id": "itm_mullgy7s_5",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "agi": 13,
+            "sta": 13,
+            "crit": 8,
+            "haste": 4
+          },
+          "weaponType": "dagger",
+          "allowedClasses": [
+            "Rogue"
+          ],
+          "name": "Dreadforged Dagger"
+        }
+      }
+    },
+    "lootState": {
+      "lockouts": {
+        "The Hollow King": 1791225732664
+      },
+      "pity": {
+        "The Hollow King:Bonecarver": 3
+      }
+    },
+    "kills": 3,
+    "attempts": 3
+  },
+  {
+    "name": "Dusk",
+    "className": "Mage",
+    "skill": "pro",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Pro",
+      "reaction": [
+        0.12065355000000003,
+        0.24130710000000005
+      ],
+      "awareness": 0.98734375,
+      "mistakeRate": 0.00256,
+      "inputDelay": [
+        0.05,
+        0.15
+      ],
+      "lapsePerSec": 0.002,
+      "positioning": 0.98971,
+      "decisionNoise": 0.05,
+      "healAccuracy": 0.95
+    },
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mullgy7t_6",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 12,
+            "int": 17,
+            "sta": 17,
+            "crit": 14
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": null,
+        "chest": {
+          "id": "itm_mullgkmz_7",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 12,
+            "int": 17,
+            "sta": 17,
+            "haste": 9,
+            "crit": 5
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        },
+        "hands": {
+          "id": "itm_mullee3x_b",
+          "slotType": "hands",
+          "rarity": "rare",
+          "itemLevel": 25,
+          "requiredLevel": 22,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 8,
+            "int": 8,
+            "sta": 8,
+            "haste": 4,
+            "crit": 3
+          },
+          "armorType": "cloth",
+          "name": "Valiant Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mullee2a_6",
+          "slotType": "legs",
+          "rarity": "common",
+          "itemLevel": 20,
+          "requiredLevel": 17,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 8,
+            "int": 6,
+            "sta": 6
+          },
+          "armorType": "cloth",
+          "name": "Worn Greaves"
+        },
+        "feet": null,
+        "neck": null,
+        "ring1": {
+          "id": "itm_mullee5g_g",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "int": 9,
+            "sta": 9,
+            "crit": 6,
+            "haste": 2
+          },
+          "name": "Radiant Ring"
+        },
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "lootState": {
+      "lockouts": {
+        "The Hollow King": 1791225732665
+      },
+      "pity": {
+        "The Hollow King:Shroud of the Hollow King": 3
+      }
+    },
+    "kills": 3,
+    "attempts": 3
+  },
+  {
+    "name": "Vex",
+    "className": "Healer",
+    "skill": "skilled",
+    "personality": "cautious",
+    "profile": {
+      "label": "Skilled",
+      "reaction": [
+        0.20108925000000002,
+        0.40217850000000005
+      ],
+      "awareness": 0.9578125000000001,
+      "mistakeRate": 0.007680000000000001,
+      "inputDelay": [
+        0.1,
+        0.3
+      ],
+      "lapsePerSec": 0.008,
+      "positioning": 0.94855,
+      "decisionNoise": 0.15,
+      "healAccuracy": 0.85
+    },
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mullgkmz_8",
+          "slotType": "head",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 12,
+            "faith": 17,
+            "sta": 17,
+            "crit": 5,
+            "haste": 5,
+            "int": 4
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Helm"
+        },
+        "shoulders": null,
+        "chest": {
+          "name": "Shroud of the Hollow King",
+          "slotType": "chest",
+          "rarity": "epic",
+          "armorType": "cloth",
+          "allowedClasses": [
+            "Mage",
+            "Healer"
+          ],
+          "stats": {
+            "int": 16,
+            "faith": 16,
+            "sta": 18,
+            "haste": 10,
+            "armor": 20
+          },
+          "id": "itm_mullgy7t_7",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "bossOnly": true
+        },
+        "hands": {
+          "id": "itm_mullee3x_c",
+          "slotType": "hands",
+          "rarity": "uncommon",
+          "itemLevel": 25,
+          "requiredLevel": 22,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 8,
+            "faith": 7,
+            "sta": 7,
+            "haste": 5
+          },
+          "armorType": "cloth",
+          "name": "Sturdy Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mullgy55_1",
+          "slotType": "legs",
+          "rarity": "common",
+          "itemLevel": 20,
+          "requiredLevel": 17,
+          "sourceType": "mob",
+          "source": "Crypt Skeleton",
+          "stats": {
+            "armor": 8,
+            "faith": 6,
+            "sta": 6
+          },
+          "armorType": "cloth",
+          "name": "Worn Greaves"
+        },
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": {
+          "id": "itm_mullee5h_h",
+          "slotType": "mainHand",
+          "rarity": "epic",
+          "itemLevel": 30,
+          "requiredLevel": 20,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "faith": 20,
+            "sta": 20,
+            "crit": 6,
+            "haste": 12
+          },
+          "weaponType": "mace",
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Healer"
+          ],
+          "weaponSpeed": 2.8,
+          "weaponDamage": 63,
+          "name": "Dreadforged Warhammer"
+        },
+        "offHand": null
+      }
+    },
+    "lootState": {
+      "lockouts": {
+        "The Hollow King": 1791225732665
+      },
+      "pity": {
+        "The Hollow King:Shroud of the Hollow King": 0
+      }
+    },
+    "kills": 3,
+    "attempts": 3
+  }
+]

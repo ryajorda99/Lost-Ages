@@ -135,6 +135,9 @@ class Character {
     const check = this.canUse(key, target, ctx);
     if (!check.ok) return check;
 
+    // Using an instant off-GCD ability (interrupt, defensive) stops your own cast, like in WoW
+    if (this.cast && a.onGcd === false && !(a.castTime > 0)) this.interrupt("cancelled");
+
     if (a.onGcd !== false) this.gcdRemaining = GCD / (1 + this.haste / 100);
 
     // Cast-time abilities: start casting, pay cost/cooldown when the cast finishes
@@ -150,7 +153,8 @@ class Character {
     const a = this.abilities[key];
     if (this.isDead) return { ok: false, reason: "dead" };
     if (this.stunned > 0) return { ok: false, reason: "stunned" };
-    if (this.cast) return { ok: false, reason: "already casting" };
+    // You can't start a new cast while casting — but instant off-GCD abilities are allowed
+    if (this.cast && !(a.onGcd === false && !(a.castTime > 0))) return { ok: false, reason: "already casting" };
     if (a.onGcd !== false && this.gcdRemaining > 0) return { ok: false, reason: "gcd" };
     if ((this.cooldowns[key] || 0) > 0) return { ok: false, reason: "cooldown" };
     if (this.resource.current < (a.cost || 0)) return { ok: false, reason: `not enough ${this.resource.name}` };
@@ -264,7 +268,7 @@ class Character {
     if (school === "physical" && this.canBlock && Math.random() < this.blockChance) amount *= 0.5;
     if (school === "physical") amount *= 100 / (100 + this.armor);
     amount *= this.getMod("damageTaken");
-       amount *= this.getMod(`damageTaken_${school}`);
+    amount *= this.getMod(`damageTaken_${school}`); // per-school resist, e.g. damageTaken_fire: 0.5
 
     if (this.absorb > 0) {
       const soaked = Math.min(this.absorb, amount);

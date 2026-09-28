@@ -16,6 +16,48 @@ const hollowKing = {
   attackSpeed: 2.0,
   transitionTime: 3,       // seconds of immunity between phases
 
+  // ============================ LOOT ============================
+  // Each player rolls their own loot (personal loot). Everything here is BOSS ONLY:
+  // random rolls are always Epic, and the named items below can't drop anywhere else.
+  loot: {
+    itemLevel: 30,
+    lockoutHours: 168,     // once per week per player (the simulator ignores this)
+    randomRolls: 1,        // random Epic items on top of the unique drops
+    rarityWeights: { epic: 100 },
+    uniqueDrops: [
+      {
+        chance: 0.25,
+        item: {
+          name: "Crown of the Hollow King", slotType: "head", rarity: "epic", armorType: "plate",
+          allowedClasses: ["Knight", "Warrior"], stats: { str: 18, sta: 22, faith: 10, armor: 75, blockChance: 0.02 },
+        },
+      },
+      {
+        chance: 0.25,
+        item: {
+          name: "Shroud of the Hollow King", slotType: "chest", rarity: "epic", armorType: "cloth",
+          allowedClasses: ["Mage", "Healer"], stats: { int: 16, faith: 16, sta: 18, haste: 10, armor: 20 },
+        },
+      },
+      {
+        chance: 0.25,
+        item: {
+          name: "Bonecarver", slotType: "mainHand", rarity: "epic", weaponType: "dagger",
+          allowedClasses: ["Rogue"], weaponDamage: 44, weaponSpeed: 1.6, stats: { agi: 20, sta: 12, crit: 10 },
+        },
+      },
+      {
+        chance: 0.03,
+        item: {
+          name: "Dawnbreaker, Blade of the Oathsworn", slotType: "mainHand", rarity: "legendary",
+          weaponType: "sword", allowedClasses: ["Knight"], weaponDamage: 70, weaponSpeed: 2.4,
+          stats: { str: 30, sta: 28, faith: 22 },
+          effect: "Righteous Strike has a 10% chance to reset Judgment's cooldown.",
+        },
+      },
+    ],
+  },
+
   // ============================ ABILITIES ============================
   // targetMode: "tank" | "random" | "randomNonTank" | "randomRanged" | "lowestHp"
   abilities: {
