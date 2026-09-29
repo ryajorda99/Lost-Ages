@@ -3,8 +3,11 @@
 // No extra packages needed — uses Node's built-in http module.
 //
 // Routes:
-//   /               the viewer page (viewer/index.html)
+//   /               the 2D viewer page (viewer/index.html)
+//   /3d.html        the 3D viewer page (viewer/3d.html)
+//   /<file>         any other file in the viewer/ folder (effects.js, models/knight.glb...)
 //   /api/replays    list of saved replays, newest first
+//   /api/models     list of 3D model files in viewer/models/
 //   /replays/<file> one saved replay
 //   /live           live fight stream (Server-Sent Events)
 
@@ -14,7 +17,15 @@ const path = require("path");
 const { exec } = require("child_process");
 
 const ROOT = path.join(__dirname, "..", "..");
-const VIEWER = path.join(ROOT, "viewer", "index.html");
+const VIEWER_DIR = path.join(ROOT, "viewer");
+const VIEWER = path.join(VIEWER_DIR, "index.html");
+
+// File types the browser needs to know about (3D models are .glb / .gltf)
+const TYPES = {
+  ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css",
+  ".json": "application/json", ".glb": "model/gltf-binary", ".gltf": "model/gltf+json", ".bin": "application/octet-stream",
+  ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".ktx2": "image/ktx2",
+};
 const REPLAYS = path.join(ROOT, "replays");
 
 function startViewerServer({ port = 3000 } = {}) {
@@ -53,6 +64,13 @@ function startViewerServer({ port = 3000 } = {}) {
       return fs.createReadStream(file).pipe(res);
     }
 
+    // Which 3D models are in viewer/models/ (the 3D viewer uses them instead of the placeholder figures)
+    if (url === "/api/models") {
+      const dir = path.join(VIEWER_DIR, "models");
+      const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => /\.(glb|gltf)$/i.test(f)) : [];
+      return send(res, 200, "application/json", JSON.stringify(files));
+    }
+
     // Live stream: the browser keeps this connection open and receives fight updates
     if (url === "/live") {
       res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", Connection: "keep-alive" });
@@ -63,6 +81,14 @@ function startViewerServer({ port = 3000 } = {}) {
       viewerWaiters.forEach(fn => fn());
       viewerWaiters = [];
       return;
+    }
+
+    // Any other file inside the viewer/ folder: 3d.html, effects.js, models/*.glb, textures...
+    if (url === "/3d") return res.writeHead(302, { Location: "/3d.html" + (req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "") }).end();
+    const file = path.join(VIEWER_DIR, path.normalize(url));
+    if (file.startsWith(VIEWER_DIR + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) {
+      res.writeHead(200, { "Content-Type": TYPES[path.extname(file).toLowerCase()] || "application/octet-stream" });
+      return fs.createReadStream(file).pipe(res);
     }
 
     send(res, 404, "text/plain", "Not found");

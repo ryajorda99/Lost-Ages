@@ -4,12 +4,28 @@
 // cast bar and any fire on the ground. Chat/combat messages are saved as events.
 // The replay is a JSON file in the replays/ folder.
 // If a live viewer is attached, every frame is also sent to the browser as it happens.
+//
+// Version 2 (for the 3D viewer, viewer/3d.html) also saves:
+//   - which way everyone is facing and WHICH ability they're casting
+//   - "actions": every ability used and every auto-attack swing, so the 3D viewer
+//     can play the right animation and spell effect (Fireball flying, Resurrection pillar...)
+// The 2D viewer (viewer/index.html) still works with these files — it ignores the new fields.
 
 const fs = require("fs");
 const path = require("path");
 
 const r1 = (n) => Math.round(n * 10) / 10;   // round to 1 decimal to keep files small
 const r2 = (n) => Math.round(n * 100) / 100;
+
+// Angle (radians) a character is facing: toward their target if they have one
+function facing(c, target) {
+  if (target && target !== c && target.position) {
+    c._facing = Math.atan2(target.position.y - c.position.y, target.position.x - c.position.x);
+  }
+  return r2(c._facing || 0);
+}
+
+const castProgress = (c) => (c.cast ? r2(1 - c.cast.remaining / c.cast.total) : 0);
 
 class Recorder {
   /**
@@ -24,7 +40,7 @@ class Recorder {
     this.enemyIds = new Map();   // enemy object -> id (adds get summoned mid-fight)
     this.zoneNames = [];         // string table for zone names
     this.data = {
-      version: 1,
+      version: 2,
       title,
       fps,
       recordedAt: new Date().toISOString(),
@@ -35,7 +51,34 @@ class Recorder {
       result: null,
       zoneNames: this.zoneNames,
     };
+    this.actions = [];           // abilities used since the last frame (see watch())
+    party.forEach(p => this.watch(p));
     this.live?.startFight(this.data);
+  }
+
+  // Listen for abilities and auto-attack swings on a player or enemy
+  watch(c) {
+    if (c._recorded === this) return;
+    c._recorded = this;
+    c.onAbilityUsed = (key, target) => this.action(c, key, target);
+    c.onSwing = (target) => this.action(c, "_swing", target);
+  }
+
+  // Who is this? ["p", index] for players, ["e", id] for enemies, null for nobody
+  ref(u) {
+    if (!u) return null;
+    const i = this.party.indexOf(u);
+    if (i !== -1) return ["p", i];
+    if (u.isEnemy) return ["e", this.enemyId(u)];
+    return null;
+  }
+
+  // One action = [actor kind, actor index, ability key, target kind, target index]
+  action(actor, key, target) {
+    const a = this.ref(actor);
+    if (!a) return;
+    const t = this.ref(target === actor ? null : target) || ["", -1];
+    this.actions.push([a[0], a[1], key, t[0], t[1]]);
   }
 
   enemyId(e) {
@@ -57,8 +100,10 @@ class Recorder {
     if (time < this.nextFrameAt) return;
     this.nextFrameAt = time + 1 / this.fps;
 
+    // Players: [x, y, hp%, dead, casting, facing angle, cast ability key, cast progress 0-1]
     const players = this.party.map(p => [
       r1(p.position.x), r1(p.position.y), r2(Math.max(0, p.hp / p.maxHp)), p.isDead ? 1 : 0, p.cast ? 1 : 0,
+      facing(p, p.cast?.target || p.target), p.cast ? p.cast.key : 0, castProgress(p),
     ]);
 
     const list = [];
@@ -66,8 +111,11 @@ class Recorder {
       list.push(e);
       for (const m of e.minions || []) list.push(m);
     }
+    list.forEach(e => this.watch(e));
+    // Enemies: [id, x, y, hp%, dead, facing angle, cast ability key, cast progress 0-1]
     const foes = list.map(e => [
       this.enemyId(e), r1(e.position.x), r1(e.position.y), r2(Math.max(0, e.hp / e.maxHp)), e.isDead ? 1 : 0,
+      facing(e, e.cast?.target && e.cast.target !== e ? e.cast.target : e.pickTarget?.()), e.cast ? e.cast.key : 0, castProgress(e),
     ]);
 
     // Ground effects: [x, y, radius, age in seconds, hostile (1) or friendly (0), name id, warning seconds]
@@ -89,6 +137,7 @@ class Recorder {
     if (boss?.cast) cast = [boss.abilities[boss.cast.key]?.name || boss.cast.key, r2(1 - boss.cast.remaining / boss.cast.total)];
 
     const frame = { t: r2(time), p: players, e: foes, z: zones };
+    if (this.actions.length) { frame.a = this.actions; this.actions = []; }
     if (cast) frame.c = cast;
     if (boss) frame.ph = boss.phaseIndex + 1;
     // who the boss is attacking (index into players), for drawing a target line
@@ -104,6 +153,10 @@ class Recorder {
       if (this.data.enemies.length !== this.sentEnemies) {   // new adds appeared
         msg.enemies = this.data.enemies;
         this.sentEnemies = this.data.enemies.length;
+      }
+      if (this.zoneNames.length !== this.sentZoneNames) {    // new kinds of ground effect appeared
+        msg.zoneNames = this.zoneNames;
+        this.sentZoneNames = this.zoneNames.length;
       }
       this.live.broadcast(msg);
     }

@@ -59,6 +59,8 @@ const CHAT = {
   learned: ["ok I get it now", "won't happen again", "my bad, I see it now", "got it, move out of the fire", "noted"],
   phase: ["phase change!", "here we go", "watch out", "adds!"],
   taunt: ["taunted, swap!", "I got it", "swapping", "taunt swap"],
+  reviving: ["rezzing", "got the rez", "reviving, cover me", "on it, rezzing"],
+  revived: ["ty for the rez!", "back up", "ty!!", "I'm back"],
 };
 
 class PlayerBot {

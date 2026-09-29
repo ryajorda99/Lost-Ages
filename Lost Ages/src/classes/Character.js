@@ -164,6 +164,10 @@ class Character {
       if (!isHostile(this, target)) return { ok: false, reason: "invalid target" };
     }
     if (a.target === "ally" && target.isDead) return { ok: false, reason: "target is dead" };
+    if (a.target === "deadAlly") {   // revives: only on a dead friend
+      if (!target || target === this || isHostile(this, target)) return { ok: false, reason: "invalid target" };
+      if (!target.isDead) return { ok: false, reason: "target is alive" };
+    }
     if (a.range && target && target !== this && distance(this, target) > a.range) {
       return { ok: false, reason: "out of range" };
     }
@@ -183,6 +187,7 @@ class Character {
     this.resource.current -= a.cost || 0;
     this.cooldowns[key] = a.cooldown || 0;
     const result = a.execute(this, target, ctx) || {};
+    this.onAbilityUsed?.(key, target, result);   // lets the 3D viewer play the animation + effect
     return { ok: true, ...result };
   }
 
@@ -236,6 +241,7 @@ class Character {
       const dmg = this.weaponDamage + this.str * 0.3 + this.agi * 0.3;
       const dealt = this.dealDamage(t, dmg, "physical");
       this.onAutoAttackHit?.(t, dealt, ctx);
+      this.onSwing?.(t);                          // lets the 3D viewer play a swing animation
       this.swingTimer = this.weaponSpeed / (1 + this.haste / 100);
     }
   }

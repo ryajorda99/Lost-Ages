@@ -3,6 +3,7 @@
 // shields, and a group heal. Can deal some holy damage when nobody needs healing.
 
 const { Character } = require("./Character");
+const { makeRevive } = require("./reviveAbility");
 
 const HEALER_ABILITIES = {
   flashHeal: {
@@ -71,9 +72,9 @@ const HEALER_ABILITIES = {
     cost: 15, cooldown: 8, range: 40, target: "ally",
     execute(h, t) {
       // Removes one harmful effect
-         const bad = t.buffs.find(b => b.dispellable);
-   if (bad) t.removeBuff(bad.id);
-   return { removed: bad ? bad.id : null };
+      const bad = t.buffs.find(b => b.dispellable);
+      if (bad) t.removeBuff(bad.id);
+      return { removed: bad ? bad.id : null };
     },
   },
 
@@ -88,6 +89,10 @@ const HEALER_ABILITIES = {
       }
     },
   },
+
+  // Brings a dead player back with 40% health and 40% of their resource.
+  // In raids this uses one of the raid's 4 shared revives.
+  resurrection: makeRevive({ name: "Resurrection", castTime: 3.0, hpPct: 0.4, resourcePct: 0.4 }),
 };
 
 class Healer extends Character {

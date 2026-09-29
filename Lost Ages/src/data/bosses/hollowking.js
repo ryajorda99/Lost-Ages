@@ -1,26 +1,58 @@
-// hollowKing.js — boss definition (data only; the logic lives in src/entities/Boss.js).
-// All ability damage is multiplied by b.power (= statMultiplier), so changing
-// statMultiplier rescales the whole fight.
+// hollowKing.js — RAID TIER 1: The Hollow King (20 players, level 60).
+// The first raid boss: same kind of fight as Azgaroth, but easier and more forgiving.
+// Beat him to gear up (item level 60 epics) for Azgaroth, the Ashen Tyrant (item level 70).
+//
+// Mechanics (the "training wheels" version of Azgaroth's):
+//   - Soul Eruption: glowing circle under a DPS/healer — 2 seconds to move, or die
+//   - Hunter's Grudge: eruptions chase the top damage dealer — keep moving
+//   - Doom: a player explodes after 8s unless a healer Purifies them
+//   - Shadow Bolt: interrupt it (or someone takes a big hit)
+//   - Crushing Blow: tank buster — tanks use a defensive
+//   - Soul Harvest (weak): each death makes him 3% stronger
+//   - Enrage at 2.5 minutes (he hits much harder — no instant wipe like Azgaroth)
+// All ability damage is multiplied by b.power (= statMultiplier).
 
 const { distance } = require("../../classes/Character");
 
 const hollowKing = {
   name: "The Hollow King",
-  level: 22,
+  level: 58,
   type: "undead",
-  statMultiplier: 5,       // x5 base stats
+  statMultiplier: 12,      // 12x the base stats (Azgaroth is 25x)
 
-  baseHp: 9000,            // x5 = 45,000
-  baseDamage: 60,          // x5 = 300 per swing
-  baseArmor: 66,           // x5 = 330
+  baseHp: 9000,            // x12 = 108,000 HP  (Azgaroth: 225,000)
+  baseDamage: 60,          // x12 = 720 per swing  (Azgaroth: 1,500)
+  baseArmor: 25,           // x12 = 300
   attackSpeed: 2.0,
   transitionTime: 3,       // seconds of immunity between phases
+  enrageTimer: 150,        // 2.5 minutes — then he hits 3x harder (see onEnrage)
+
+  // What the simulator uses by default for this boss (same raid team as Azgaroth!)
+  recommended: { level: 60, raidSize: 20 },
+  trash: "hollowCrypt",    // trash mobs file in src/data/mobs/
+
+  // Raid bosses don't scale with your gear — gearing up is how you get stronger
+  gearScaling: false,
+
+  // Enrage: much harder hits instead of Azgaroth's instant raid wipe
+  onEnrage(b) {
+    b.buffs.find(x => x.id === "berserk").mods.damageDealt = 3;
+    b.announce(`${b.name} is ENRAGED — every hit is deadly now!`);
+  },
+
+  // SOUL HARVEST (weak version): each death makes him 3% stronger. Azgaroth's is 5% + more.
+  onPlayerDeath(b, player) {
+    const souls = (b.buffs.find(x => x.id === "soulHarvest")?.stacks || 0) + 1;
+    b.addBuff({ id: "soulHarvest", duration: Infinity, stacks: souls, mods: { damageDealt: 1 + 0.03 * souls } });
+    b.announce(`${b.name} consumes ${player.name}'s soul! (${souls} soul${souls > 1 ? "s" : ""}: +${souls * 3}% damage)`);
+  },
 
   // ============================ LOOT ============================
   // Each player rolls their own loot (personal loot). Everything here is BOSS ONLY:
   // random rolls are always Epic, and the named items below can't drop anywhere else.
+  // Item level 60 — a big step up from normal gear, but weaker than Azgaroth's item level 70.
   loot: {
-    itemLevel: 30,
+    itemLevel: 60,
     lockoutHours: 168,     // once per week per player (the simulator ignores this)
     randomRolls: 1,        // random Epic items on top of the unique drops
     rarityWeights: { epic: 100 },
@@ -29,29 +61,29 @@ const hollowKing = {
         chance: 0.25,
         item: {
           name: "Crown of the Hollow King", slotType: "head", rarity: "epic", armorType: "plate",
-          allowedClasses: ["Knight", "Warrior"], stats: { str: 18, sta: 22, faith: 10, armor: 75, blockChance: 0.02 },
+          allowedClasses: ["Knight", "Warrior"], stats: { str: 34, sta: 42, faith: 16, armor: 130, blockChance: 0.02 },
         },
       },
       {
         chance: 0.25,
         item: {
           name: "Shroud of the Hollow King", slotType: "chest", rarity: "epic", armorType: "cloth",
-          allowedClasses: ["Mage", "Healer"], stats: { int: 16, faith: 16, sta: 18, haste: 10, armor: 20 },
+          allowedClasses: ["Mage", "Healer"], stats: { int: 30, faith: 30, sta: 34, haste: 18, armor: 35 },
         },
       },
       {
         chance: 0.25,
         item: {
           name: "Bonecarver", slotType: "mainHand", rarity: "epic", weaponType: "dagger",
-          allowedClasses: ["Rogue"], weaponDamage: 44, weaponSpeed: 1.6, stats: { agi: 20, sta: 12, crit: 10 },
+          allowedClasses: ["Rogue"], weaponDamage: 72, weaponSpeed: 1.6, stats: { agi: 38, sta: 22, crit: 18 },
         },
       },
       {
         chance: 0.03,
         item: {
           name: "Dawnbreaker, Blade of the Oathsworn", slotType: "mainHand", rarity: "legendary",
-          weaponType: "sword", allowedClasses: ["Knight"], weaponDamage: 70, weaponSpeed: 2.4,
-          stats: { str: 30, sta: 28, faith: 22 },
+          weaponType: "sword", allowedClasses: ["Knight"], weaponDamage: 110, weaponSpeed: 2.4,
+          stats: { str: 55, sta: 48, faith: 38 },
           effect: "Righteous Strike has a 10% chance to reset Judgment's cooldown.",
         },
       },
@@ -74,7 +106,7 @@ const hollowKing = {
     shadowBolt: {
       name: "Shadow Bolt", cost: 0, cooldown: 8, castTime: 2.5, range: 40,
       target: "enemy", targetMode: "randomNonTank",
-      execute: (b, t) => ({ damage: b.dealDamage(t, 90 * b.power, "shadow") }),
+      execute: (b, t) => ({ damage: b.dealDamage(t, 30 * b.power, "shadow") }),   // 360 — interrupt it!
     },
 
     cleave: {
@@ -83,7 +115,7 @@ const hollowKing = {
       // Hits the tank and anyone standing within 6m of the tank
       execute(b, t, ctx) {
         const hit = (ctx.enemies || []).filter(p => !p.isDead && distance(p, t) <= 6);
-        for (const p of hit) b.dealDamage(p, 70 * b.power, "physical");
+        for (const p of hit) b.dealDamage(p, 30 * b.power, "physical");
         return { targetsHit: hit.length };
       },
     },
@@ -93,8 +125,8 @@ const hollowKing = {
       execute(b, t, ctx) {
         const count = b.phaseIndex >= 3 ? 3 : 2;
         b.summon(Array.from({ length: count }, (_, i) => ({
-          name: `Hollow Skeleton ${i + 1}`, level: 20, hp: 250 * b.power, damage: 12 * b.power,
-          attackSpeed: 2.2, type: "undead", armor: 40,
+          name: `Hollow Skeleton ${i + 1}`, level: 58, hp: 300 * b.power, damage: 6 * b.power,
+          attackSpeed: 2.2, type: "undead", armor: 80,
         })), ctx.enemies || []);
       },
     },
@@ -106,7 +138,7 @@ const hollowKing = {
       execute(b, t) {
         t.addBuff({
           id: "soulDrain", duration: 8, tickEvery: 1, dispellable: true,
-          onTick: (o) => b.dealDamage(o, 10 * b.power, "shadow"),
+          onTick: (o) => b.dealDamage(o, 4 * b.power, "shadow"),
         });
       },
     },
@@ -115,15 +147,15 @@ const hollowKing = {
       name: "Crushing Blow", cost: 0, cooldown: 16, castTime: 1.5, range: 6,
       target: "enemy", targetMode: "tank", uninterruptible: true,
       // Tank buster: tanks must use a defensive during the cast
-      execute: (b, t) => ({ damage: b.dealDamage(t, 200 * b.power, "physical") }),
+      execute: (b, t) => ({ damage: b.dealDamage(t, 80 * b.power, "physical") }),
     },
 
     shadowNova: {
       name: "Shadow Nova", cost: 0, cooldown: 22, castTime: 3, target: "self", uninterruptible: true,
       // Hits the whole raid — healers must be ready
       execute(b, t, ctx) {
-        const hit = b.enemiesInRange(ctx, 40);
-        for (const p of hit) b.dealDamage(p, 55 * b.power, "shadow");
+        const hit = b.enemiesInRange(ctx, 60);
+        for (const p of hit) b.dealDamage(p, 18 * b.power, "shadow");
         return { targetsHit: hit.length };
       },
     },
@@ -143,11 +175,11 @@ const hollowKing = {
     doom: {
       name: "Doom", cost: 0, cooldown: 20, range: 40,
       target: "enemy", targetMode: "randomNonTank",
-      // Explodes after 8s unless Purified
+      // Explodes after 8s unless a healer Purifies it — that player DIES
       execute(b, t) {
         t.addBuff({
           id: "doom", duration: 8.05, tickEvery: 8, dispellable: true,
-          onTick: (o) => b.dealDamage(o, 150 * b.power, "shadow"),
+          onTick: (o) => b.lethal(o, "Doom (not purified)"),
         });
       },
     },
@@ -178,17 +210,17 @@ const hollowKing = {
       damageMult: 1.3, attackSpeedMult: 1.2,
       adaptEvery: 20, adaptDuration: 20, maxAdaptations: 2,
       onEnter(b, ctx) {
-        for (const p of b.enemiesInRange(ctx, 40)) b.dealDamage(p, 30 * b.power, "shadow"); // transition roar
+        for (const p of b.enemiesInRange(ctx, 60)) b.dealDamage(p, 12 * b.power, "shadow"); // transition roar
       },
     },
     {
       name: "Hollow Fury", hpBelow: 0.25,
-      description: "ENRAGED. Doom, faster cooldowns, everything hits harder.",
+      description: "Doom, faster cooldowns, everything hits harder.",
       rotation: ["soulEruption", "doom", "crushingBlow", "shadowNova", "raiseDead", "deathGrip", "soulDrain", "shadowBolt", "cleave"],
       damageMult: 1.6, attackSpeedMult: 1.4, cooldownRate: 1.5,
       adaptEvery: 15, adaptDuration: 15, maxAdaptations: 2,
       onEnter(b, ctx) {
-        for (const p of b.enemiesInRange(ctx, 40)) b.dealDamage(p, 40 * b.power, "shadow");
+        for (const p of b.enemiesInRange(ctx, 60)) b.dealDamage(p, 16 * b.power, "shadow");
         b.cooldowns.raiseDead = 0;
       },
     },
@@ -217,10 +249,6 @@ const hollowKing = {
       {
         id: "thorns", name: "Bone Spikes", hint: "reflects 20% of physical damage back at attackers",
         weight: (s) => 0.5 + s.physicalShare * 3,
-      },
-      {
-        id: "unstoppable", name: "Unstoppable", hint: "can't be interrupted or stunned",
-        weight: (s) => 0.5 + s.interrupts * 1.5,
       },
       {
         id: "fixate", name: "Hunter's Grudge", hint: "marks the top damage dealer — the ground erupts under them",

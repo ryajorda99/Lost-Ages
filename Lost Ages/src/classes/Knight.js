@@ -2,6 +2,7 @@
 // Role: hold aggro, survive, light self-healing and party support.
 
 const { Character, MELEE_RANGE } = require("./Character");
+const { makeRevive } = require("./reviveAbility");
 
 // How long Guardian's Oath holds an enemy after the Knight's last hit (seconds)
 const OATH_DURATION = 8;
@@ -112,6 +113,10 @@ const KNIGHT_ABILITIES = {
       k.addBuff({ id: "sonOfLight", duration: 12, mods: { damageTaken: 0.6 } });
     },
   },
+
+  // Redemption: slower than the Healer's Resurrection and brings them back weaker (30% health).
+  // In raids this uses one of the raid's 4 shared revives.
+  redemption: makeRevive({ name: "Redemption", castTime: 4.0, hpPct: 0.3, resourcePct: 0.3 }),
 };
 
 class Knight extends Character {

@@ -22,6 +22,7 @@
 // Every boss fight is also saved to the replays/ folder (rewatch with: node scripts/viewer.js).
 //   --fast          don't show fights — just simulate as fast as possible (good for --farm)
 //   --speed <n>     watch faster, e.g. --speed 2 (default 1 = real time)
+//   --3d            watch in the 3D viewer (viewer/3d.html) instead of the 2D one
 //   --record        with --fast: still save boss fights as replays
 //   --potential <tier>  TESTING: new players start as beginners but can all grow to this tier
 //   --testgear <ilvl>  TESTING: dress everyone in a full set of Epic gear at that item level
@@ -45,6 +46,7 @@ const { gearPower, partyGearPower, applyScaling } = require("../src/utils/enemyS
 const { distance } = require("../src/classes/Character");
 const { Recorder } = require("../src/replay/Recorder");
 const { startViewerServer, openBrowser } = require("../src/replay/viewerServer");
+const { RevivePool } = require("../src/utils/revivePool");
 
 // ================= COMMAND LINE =================
 const argv = process.argv.slice(2);
@@ -69,7 +71,7 @@ for (const [label, value] of [["boss multiplier", multiplier], ["player level", 
   if (!Number.isFinite(value) || value < 0) {
     console.log(`The ${label} must be a number, but got "${[positional[0], positional[1], positional[2], option("raid")][["boss multiplier", "player level", "attempts", "raid size"].indexOf(label)]}".`);
     console.log(`Check your command. Example:  node scripts/simulate.js --boss ashenTyrant`);
-    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed"].includes(a));
+    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d"].includes(a));
     if (unknown.length) console.log(`Unknown option(s): ${unknown.join(", ")}`);
     process.exit(1);
   }
@@ -78,6 +80,7 @@ const QUIET = argv.includes("--quiet");
 const FRESH = argv.includes("--fresh");
 const FARM = argv.includes("--farm");
 const WATCH = !argv.includes("--fast");               // show fights live in the browser
+const USE_3D = argv.includes("--3d");                  // open the 3D viewer instead of the 2D one
 const RECORD = WATCH || argv.includes("--record");     // save boss fights as replays
 let viewer = null;                                     // the live viewer server (when watching)
 if (argv.includes("--noscale")) SCALING.enabled = false;
@@ -223,6 +226,28 @@ if (TEST_GEAR) {
   }
 }
 bots.find(b => b.className === "Knight").mainTank = true; // first Knight pulls the boss
+
+// ================= GEAR CHECK =================
+// Before the pull, every player looks through their bags and puts on anything stronger
+// than what they're wearing — so they go in at their strongest.
+function gearCheck(label) {
+  const lines = [];
+  let upgrades = 0, players = 0;
+  for (const b of bots) {
+    const equipped = b.gear.equipUpgrades(partyLevel);
+    if (!equipped.length) continue;
+    players++;
+    upgrades += equipped.length;
+    for (const { item, replaced } of equipped) {
+      lines.push(`   ${b.name.padEnd(7)} put on ${formatItem(item)}${replaced ? `  (replacing ${replaced.name})` : "  (empty slot)"}`);
+    }
+  }
+  if (!upgrades) { say(`🎒 ${label}: everyone is already wearing their best gear.`); return; }
+  say(`🎒 ${label}: ${players} player${players > 1 ? "s" : ""} equipped ${upgrades} upgrade${upgrades > 1 ? "s" : ""} from their bags`);
+  const show = IS_RAID ? 8 : lines.length;              // raids: keep the list short
+  lines.slice(0, show).forEach(l => say(l));
+  if (lines.length > show) say(`   ...and ${lines.length - show} more`);
+}
 for (const bot of bots) bot.onSay = (b, msg) => log(`💬 [${IS_RAID ? "Raid" : "Party"}] ${b.name}: ${msg}`);
 
 say(`${BOSS_DEF.name} x${multiplier} — ${bots.length} players, level ${partyLevel}${FRESH ? " (fresh group)" : ""}`);
@@ -278,7 +303,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
   const recorder = (record || WATCH) ? new Recorder({ title, party, live: viewer }) : null;
   currentRecorder = recorder;
   const tank = bots.find(b => b.mainTank)?.character || party[0];
-  const stats = Object.fromEntries(party.map(p => [p.name, { damage: 0, healing: 0, diedAt: null, diedTo: null }]));
+  const stats = Object.fromEntries(party.map(p => [p.name, { damage: 0, healing: 0, diedAt: null, diedTo: null, revived: 0 }]));
 
   // What is the boss doing right now? (for "died to X" messages)
   let executing = null;
@@ -323,11 +348,22 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
   const alive = () => enemies.filter(e => !e.isDead);
   const allEnemies = () => boss ? [boss, ...boss.minions.filter(m => !m.isDead)] : alive();
 
+  // Raids share 4 revives, then a 2-minute cooldown. 5-player runs have no limit.
+  const revives = IS_RAID ? new RevivePool() : null;
+  if (revives) revives.onRefresh = () => log(`✨ Raid revives are back (${revives.charges} available)`);
+  for (const p of party) {
+    p.onRevive = (target, pool) => {
+      stats[target.name].revived++;
+      log(`✨ ${p.name} revives ${target.name}${pool ? ` — ${pool.describe()}` : ""}`);
+      bots.find(b => b.character === target)?.say("revived", time, 0);
+    };
+  }
+
   const world = {
-    party, tank,
+    party, tank, revives,
     get boss() { return boss || alive()[0] || enemies[0]; },
     get adds() { return boss ? boss.minions : alive().slice(1); },
-    ctxFor: (c) => ({ allies: party.filter(a => a !== c), enemies: allEnemies() }),
+    ctxFor: (c) => ({ allies: party.filter(a => a !== c), enemies: allEnemies(), revives }),
   };
 
   const dt = 0.05;
@@ -341,6 +377,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
       bot.character.update(dt, world.ctxFor(bot.character));
     }
     for (const e of alive()) e.update(dt, { allies: [], enemies: party });
+    revives?.tick(dt);
     for (const e of enemies) if (e.isDead && !killed.has(e)) { killed.add(e); if (!boss) log(`☠ ${e.name} defeated`); }
     recorder?.capture(time, enemies);
 
@@ -388,8 +425,10 @@ let lootSkipped = 0;
 async function main() {
 if (WATCH) {
   viewer = await startViewerServer({ port: 3000 });
-  say(`\n📺 Opening the fight viewer: ${viewer.url()}  (if it doesn't open, paste that into your browser)`);
-  openBrowser(viewer.url() + "/?live=1");
+  const page = USE_3D ? "/3d.html?live=1" : "/?live=1";
+  say(`\n📺 Opening the ${USE_3D ? "3D " : ""}fight viewer: ${viewer.url()}${page}  (if it doesn't open, paste that into your browser)`);
+  if (!USE_3D) say(`   Want 3D instead? Add --3d to your command, or open ${viewer.url()}/3d.html?live=1`);
+  openBrowser(viewer.url() + page);
   const connected = await viewer.waitForViewer(10000);
   if (!connected) say("   (No browser connected yet — starting anyway. Open the link above to watch.)");
   await sleep(1000);
@@ -397,6 +436,7 @@ if (WATCH) {
 const history = [];
 for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   say(`\n================ ATTEMPT ${attempt} ================`);
+  gearCheck("Gear check before the pull");
 
   // --- 1. Trash pack ---
   const packKeys = TRASH_PACKS[Math.floor(Math.random() * TRASH_PACKS.length)];
@@ -439,7 +479,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   say("Name     Class     Damage   DPS  Healing  Died");
   for (const bot of bots) {
     const s = fight.stats[bot.name];
-    say(`  ${bot.name.padEnd(7)} ${bot.className.padEnd(8)} ${String(Math.round(s.damage)).padStart(7)} ${String(Math.round(s.damage / fight.time)).padStart(5)} ${String(Math.round(s.healing)).padStart(8)}  ${s.diedAt == null ? "-" : `${s.diedAt.toFixed(0)}s (${s.diedTo})`}`);
+    say(`  ${bot.name.padEnd(7)} ${bot.className.padEnd(8)} ${String(Math.round(s.damage)).padStart(7)} ${String(Math.round(s.damage / fight.time)).padStart(5)} ${String(Math.round(s.healing)).padStart(8)}  ${s.diedAt == null ? "-" : `${s.diedAt.toFixed(0)}s (${s.diedTo})`}${s.revived ? `  ✨ revived${s.revived > 1 ? ` x${s.revived}` : ""}` : ""}`);
   }
   if (IS_RAID) {
     const deaths = {};

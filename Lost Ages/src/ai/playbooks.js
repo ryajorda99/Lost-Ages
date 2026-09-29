@@ -6,6 +6,8 @@
 // Use bot.sees(id, condition, now, mechanicName) for anything a human has to notice first.
 // Passing the mechanic's name lets the bot's memory of that mechanic affect how well they handle it.
 
+const { beingRevived } = require("../classes/reviveAbility");
+
 const pct = (u) => u.hp / u.maxHp;
 
 // Which enemy a DPS goes after: most players swap to adds, some tunnel the boss
@@ -80,6 +82,21 @@ function rangedMove(bot, world, dt, now) {
   bot.fidget(now, dt);
 }
 
+// ---------------- Revives ----------------
+// Who should I bring back? Tanks first, then healers, then DPS.
+// Skips anyone already being revived, and only counts bodies the bot has actually noticed.
+const REVIVE_ORDER = { tank: 0, healer: 1, dps: 2 };
+function reviveTarget(bot, w, now) {
+  const pool = w.revives;
+  if (pool && pool.available() <= 0) return null;          // raid is out of revives (or on the 2-min cooldown)
+  const dead = w.party
+    .filter(p => p.isDead && p !== bot.character && !beingRevived(p, { allies: w.party.filter(a => a !== bot.character) }))
+    .filter(p => bot.distanceTo(p) <= 40)
+    .sort((a, b) => (REVIVE_ORDER[a.role] ?? 2) - (REVIVE_ORDER[b.role] ?? 2));
+  const t = dead[0];
+  return t && bot.sees(`dead:${t.name}`, true, now) ? t : null;
+}
+
 const PLAYBOOKS = {
   // ======================= KNIGHT (tank) =======================
   Knight: {
@@ -111,7 +128,10 @@ const PLAYBOOKS = {
 
       const busterIncoming = iAmTanking && bot.sees("bossCast:crushingBlow", bossCastIs(b, "crushingBlow"), now, "Crushing Blow");
       const panic = pct(k) < bot.personality.panicHp;
+      // Off-tank with nothing to pick up can stop and revive someone (never while tanking)
+      const rez = !iAmTanking && !tauntBoss && !grabAdd && !panic ? reviveTarget(bot, w, now) : null;
       return [
+        { key: "redemption", target: rez, score: rez ? (rez.role === "tank" ? 92 : 60) : 0, onUse: () => bot.say("reviving", now, 8) },
         { key: "divineTaunt", target: b, score: tauntBoss ? 100 : 0, onUse: () => swap && bot.say("taunt", now, 10) },
         { key: "divineTaunt", target: looseAdd, score: grabAdd ? 75 : 0 },
         { key: "challenge", target: k, score: wantChallenge ? (looseCount >= 2 ? 85 : 70) : 0 },
@@ -124,6 +144,7 @@ const PLAYBOOKS = {
       ];
     },
     move(bot, w, dt) {
+      if (bot.character.cast?.key === "redemption") return;   // stand still while reviving
       const t = bot.character.target || w.boss;
       if (bot.distanceTo(t) > 4) bot.moveToward(t.position, dt, 3);
     },
@@ -229,8 +250,12 @@ const PLAYBOOKS = {
       const manaPct = h.resource.current / h.resource.max;
       const hurtCount = sorted.filter(a => pct(a) < 0.5).length;
       const bored = sorted[0] && pct(sorted[0]) > 0.95 && manaPct > 0.7;
+      // Revive when nobody is about to die (a dead tank is worth it almost always)
+      const rez = reviveTarget(bot, w, now);
+      const rezScore = !rez ? 0 : rez.role === "tank" ? 95 : lp < 0.35 ? 0 : rez.role === "healer" ? 78 : 65;
 
       return [
+        { key: "resurrection", target: rez, score: rezScore, onUse: () => bot.say("reviving", now, 8) },
         { key: "purify", target: doomed, score: seesDoom ? 100 : 0 },
         { key: "divineHymn", target: h, score: hurtCount >= 3 ? 92 : 0 },
         { key: "prayerOfMending", target: h, score: novaComing ? 85 : hurtCount >= 3 ? 60 : 0 },
