@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lost Ages — Fight Viewer</title>
+<style>
+  :root {
+    --bg: #0e0f13; --panel: #171920; --panel2: #1f222b; --text: #e8e6e3; --muted: #8b8f9a;
+    --accent: #e0a64a; --danger: #e5484d; --ok: #46a758; --border: #2a2d37;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  #app { display: grid; grid-template-columns: 1fr 340px; grid-template-rows: auto 1fr auto; height: 100%; }
+  header { grid-column: 1 / 3; display: flex; gap: 12px; align-items: center; padding: 10px 16px;
+    background: var(--panel); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0 12px 0 0; color: var(--accent); letter-spacing: .5px; }
+  select, button, input[type=file] { background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 10px; font: inherit; cursor: pointer; }
+  button:hover, select:hover { border-color: var(--accent); }
+  #stage { position: relative; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+  aside { background: var(--panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; min-height: 0; }
+  aside h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 12px 14px 6px; }
+  #log { flex: 1; overflow-y: auto; padding: 0 14px 12px; font-size: 12.5px; }
+  #log div { padding: 3px 0; border-bottom: 1px solid #20232b; }
+  #log .t { color: var(--muted); display: inline-block; width: 44px; font-variant-numeric: tabular-nums; }
+  #log .death { color: #ff8b8e; } #log .boss { color: var(--accent); } #log .chat { color: #9fa6b2; }
+  #log .win { color: #7ee08a; font-weight: 600; }
+  #legend { padding: 8px 14px 12px; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px; color: var(--muted);
+    border-top: 1px solid var(--border); }
+  #legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 5px; background: var(--c); vertical-align: -1px; }
+  footer { grid-column: 1 / 3; display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+    background: var(--panel); border-top: 1px solid var(--border); }
+  #scrub { flex: 1; accent-color: var(--accent); }
+  #clock { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 110px; text-align: right; }
+  #liveBadge { background: #e5484d; color: #fff; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px;
+    letter-spacing: 1px; animation: blink 1.4s infinite; }
+  #liveBadge.off { background: #444; animation: none; }
+  @keyframes blink { 50% { opacity: .55; } }
+  #fightTitle { color: var(--text); font-weight: 600; }
+  #log .info { color: #b8c4d6; white-space: pre-wrap; }
+  #log .sep { color: var(--accent); font-weight: 700; margin-top: 8px; border-bottom-color: var(--accent); }
+  #empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+    color: var(--muted); padding: 24px; }
+  label { color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  @media (max-width: 800px) {
+    #app { grid-template-columns: 1fr; grid-template-rows: auto 60vh 1fr auto; }
+    header, footer { grid-column: 1; }
+    aside { border-left: none; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>⚔ LOST AGES — FIGHT VIEWER</h1>
+    <span id="liveBadge" style="display:none">● LIVE</span>
+    <span id="fightTitle"></span>
+    <select id="replayList" title="Recorded fights"></select>
+    <input type="file" id="fileInput" accept=".json" title="Open a replay file">
+    <label><input type="checkbox" id="showNames" checked> Names</label>
+    <label><input type="checkbox" id="showTarget" checked> Boss target</label>
+  </header>
+
+  <div id="stage">
+    <canvas id="canvas"></canvas>
+    <div id="empty">No fight loaded.<br><br>Run a simulation and it will show up here automatically:<br><code>node scripts/simulate.js --boss ashenTyrant</code></div>
+  </div>
+
+  <aside>
+    <h2>Combat log</h2>
+    <div id="log"></div>
+    <div id="legend"></div>
+  </aside>
+
+  <footer>
+    <button id="playBtn" title="Play / pause (Space)">▶ Play</button>
+    <button id="restartBtn" title="Restart">⟲</button>
+    <select id="speed" title="Playback speed">
+      <option value="0.25">0.25×</option><option value="0.5">0.5×</option>
+      <option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
+    </select>
+    <input type="range" id="scrub" min="0" max="1000" value="0">
+    <span id="clock">0.0s / 0.0s</span>
+  </footer>
+</div>
+
+<script>
+// ======================================================================
+//  Lost Ages fight viewer — plays back replays recorded by simulate.js
+// ======================================================================
+
+const CLASS_COLORS = {
+  Knight: "#f5c542", Warrior: "#d9823b", Rogue: "#9bd34a", Mage: "#4fc3f7", Healer: "#f2f2f2",
+};
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const $ = (id) => document.getElementById(id);
+
+let replay = null;     // the loaded replay data
+let time = 0;          // current playback time (seconds)
+let playing = false;
+let speed = 1;
+let view = null;       // camera: { minX, minY, scale, offX, offY }
+let lastLogIndex = -1;
+const LIVE = new URLSearchParams(location.search).has("live");
+let following = true;  // live mode: keep up with the newest frame
+let LIVE_VIEWING_SAVED = false;
+
+// ---------------- Loading ----------------
+function loadReplay(data, { keepLog = false } = {}) {
+  replay = data;
+  time = 0;
+  lastLogIndex = -1;
+  $("empty").style.display = "none";
+  if (!keepLog) $("log").innerHTML = "";
+  $("fightTitle").textContent = data.title || "";
+  buildLegend();
+  if (data.frames.length) fitCamera();
+  playing = true;
+  $("playBtn").textContent = "❚❚ Pause";
+  draw();
+}
+
+// ---------------- LIVE: fights stream in from simulate.js as they happen ----------------
+function logLine(text, cls = "", t = null) {
+  const div = document.createElement("div");
+  div.className = cls;
+  if (t !== null) div.innerHTML = `<span class="t">${t.toFixed(1)}s</span>`;
+  div.append(text);
+  $("log").appendChild(div);
+  while ($("log").children.length > 400) $("log").firstChild.remove();
+  $("log").scrollTop = $("log").scrollHeight;
+}
+
+function eventClass(text) {
+  return text.includes("💀") ? "death" : text.startsWith(">>>") ? "boss"
+    : text.includes("💬") ? "chat" : text.includes("VICTORY") ? "win" : "";
+}
+
+function connectLive() {
+  $("liveBadge").style.display = "";
+  const es = new EventSource("/live");
+  es.onmessage = (m) => {
+    const msg = JSON.parse(m.data);
+    if (msg.type === "start") {
+      logLine(`— ${msg.data.title} —`, "sep");
+      loadReplay(msg.data, { keepLog: true });
+      for (const [t, text] of msg.data.events) logLine(text.replace(/^>>> /, ""), eventClass(text), t);
+      following = true;
+      if (replay.frames.length) time = replay.frames[replay.frames.length - 1].t;
+    } else if (msg.type === "frame" && replay) {
+      replay.frames.push(msg.frame);
+      if (msg.enemies) replay.enemies = msg.enemies;
+      if (replay.frames.length === 1 || replay.frames.length % 25 === 0) fitCamera();
+    } else if (msg.type === "event" && replay) {
+      replay.events.push(msg.e);
+      logLine(msg.e[1].replace(/^>>> /, ""), eventClass(msg.e[1]), msg.e[0]);
+    } else if (msg.type === "info") {
+      if (msg.text.trim()) logLine(msg.text.trim(), msg.text.includes("VICTORY") ? "win" : "info");
+    } else if (msg.type === "done") {
+      logLine("Simulation finished.", "sep");
+      $("liveBadge").className = "off"; $("liveBadge").textContent = "FINISHED";
+    }
+  };
+  es.onerror = () => { $("liveBadge").className = "off"; $("liveBadge").textContent = "DISCONNECTED"; };
+}
+
+async function loadList() {
+  try {
+    const res = await fetch("/api/replays");
+    if (!res.ok) throw new Error();
+    const files = await res.json();
+    const liveOption = LIVE ? `<option value="__live">● Watching live</option>` : "";
+    $("replayList").innerHTML = liveOption + (files.map(f => `<option value="${f}">${f.replace(".json", "")}</option>`).join("")
+      || (LIVE ? "" : `<option>(no replays yet)</option>`));
+    if (!LIVE && files.length) await loadFromServer(files[0]);
+  } catch {
+    // Opened as a plain file (no server): use the file picker instead
+    $("replayList").style.display = "none";
+  }
+}
+
+async function loadFromServer(name) {
+  const res = await fetch(`/replays/${encodeURIComponent(name)}`);
+  loadReplay(await res.json());
+}
+
+$("replayList").onchange = (e) => {
+  if (e.target.value === "__live") return location.reload();
+  if (LIVE) { LIVE_VIEWING_SAVED = true; $("liveBadge").style.display = "none"; }
+  loadFromServer(e.target.value);
+};
+$("fileInput").onchange = async (e) => {
+  const file = e.target.files[0];
+  if (file) loadReplay(JSON.parse(await file.text()));
+};
+
+// ---------------- Camera: fit the whole fight on screen ----------------
+function fitCamera() {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  const add = (x, y, r = 1) => {
+    minX = Math.min(minX, x - r); maxX = Math.max(maxX, x + r);
+    minY = Math.min(minY, y - r); maxY = Math.max(maxY, y + r);
+  };
+  for (const f of replay.frames) {
+    for (const p of f.p) add(p[0], p[1]);
+    for (const e of f.e) add(e[1], e[2], 2);
+    for (const z of f.z) add(z[0], z[1], z[2]);
+  }
+  view = { minX: minX - 4, minY: minY - 4, maxX: maxX + 4, maxY: maxY + 4 };
+  resize();
+}
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (view) {
+    const w = view.maxX - view.minX, h = view.maxY - view.minY;
+    const top = 70; // room for the boss bar
+    view.scale = Math.min(rect.width / w, (rect.height - top) / h);
+    view.offX = (rect.width - w * view.scale) / 2;
+    view.offY = top + (rect.height - top - h * view.scale) / 2;
+    view.w = rect.width; view.h = rect.height;
+  }
+  draw();
+}
+window.addEventListener("resize", resize);
+
+const sx = (x) => view.offX + (x - view.minX) * view.scale;
+const sy = (y) => view.offY + (y - view.minY) * view.scale;
+const sr = (r) => r * view.scale;
+
+// ---------------- Frames: find the two frames around "time" and blend them ----------------
+function frameIndexAt(t) {
+  const frames = replay.frames;
+  let lo = 0, hi = frames.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if (frames[mid].t <= t) lo = mid; else hi = mid - 1;
+  }
+  return lo;
+}
+
+function lerp(a, b, k) { return a + (b - a) * k; }
+
+// ---------------- Drawing ----------------
+function draw() {
+  if (!replay || !view || !replay.frames.length) return;
+  const frames = replay.frames;
+  const i = frameIndexAt(time);
+  const A = frames[i], B = frames[Math.min(i + 1, frames.length - 1)];
+  const k = B.t > A.t ? Math.min(1, Math.max(0, (time - A.t) / (B.t - A.t))) : 0;
+
+  ctx.clearRect(0, 0, view.w, view.h);
+  drawFloor();
+
+  // Ground effects (fire, holy ground)
+  for (const z of A.z) drawZone(z);
+
+  // Boss target line
+  const bossIdx = replay.enemies.findIndex(e => e.boss);
+  const bossA = A.e.find(e => e[0] === bossIdx), bossB = B.e.find(e => e[0] === bossIdx);
+  if ($("showTarget").checked && bossA && !bossA[4] && A.tg !== undefined) {
+    const pA = A.p[A.tg], pB = B.p[A.tg] || pA;
+    if (pA && !pA[3]) {
+      ctx.strokeStyle = "rgba(229,72,77,.35)"; ctx.lineWidth = 2; ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(sx(lerp(bossA[1], bossB?.[1] ?? bossA[1], k)), sy(lerp(bossA[2], bossB?.[2] ?? bossA[2], k)));
+      ctx.lineTo(sx(lerp(pA[0], pB[0], k)), sy(lerp(pA[1], pB[1], k)));
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+  }
+
+  // Enemies
+  for (const e of A.e) {
+    const eb = B.e.find(x => x[0] === e[0]) || e;
+    const info = replay.enemies[e[0]];
+    drawEnemy(info, lerp(e[1], eb[1], k), lerp(e[2], eb[2], k), e[3], e[4]);
+  }
+
+  // Players (dead ones first so the living draw on top)
+  const order = A.p.map((p, idx) => idx).sort((a, b) => A.p[b][3] - A.p[a][3]);
+  for (const idx of order) {
+    const pa = A.p[idx], pb = B.p[idx] || pa;
+    drawPlayer(replay.players[idx], lerp(pa[0], pb[0], k), lerp(pa[1], pb[1], k), pa[2], pa[3], pa[4]);
+  }
+
+  // Boss health + cast bar at the top
+  if (bossA) drawBossBar(replay.enemies[bossIdx], bossA[3], A.c, A.ph);
+
+  if (!LIVE || LIVE_VIEWING_SAVED) updateLog();
+  $("clock").textContent = `${time.toFixed(1)}s / ${frames[frames.length - 1].t.toFixed(1)}s`;
+  $("scrub").value = Math.round((time / frames[frames.length - 1].t) * 1000);
+}
+
+function drawFloor() {
+  ctx.fillStyle = "#14161c";
+  ctx.fillRect(sx(view.minX), sy(view.minY), sr(view.maxX - view.minX), sr(view.maxY - view.minY));
+  ctx.strokeStyle = "#1c1f27"; ctx.lineWidth = 1;
+  const step = 5;
+  for (let x = Math.ceil(view.minX / step) * step; x <= view.maxX; x += step) {
+    ctx.beginPath(); ctx.moveTo(sx(x), sy(view.minY)); ctx.lineTo(sx(x), sy(view.maxY)); ctx.stroke();
+  }
+  for (let y = Math.ceil(view.minY / step) * step; y <= view.maxY; y += step) {
+    ctx.beginPath(); ctx.moveTo(sx(view.minX), sy(y)); ctx.lineTo(sx(view.maxX), sy(y)); ctx.stroke();
+  }
+}
+
+function drawZone([x, y, r, age, hostile, nameId, warn = 1.5]) {
+  const cx = sx(x), cy = sy(y), rr = sr(r);
+  if (!hostile) {                                  // friendly: Holy Grounds
+    ctx.fillStyle = "rgba(245,197,66,.10)"; ctx.strokeStyle = "rgba(245,197,66,.45)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, rr, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    return;
+  }
+  const warning = age < warn;                      // glowing warning before it erupts
+  if (warning) {
+    const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 90);
+    ctx.fillStyle = `rgba(255,140,40,${0.10 + 0.10 * pulse})`;
+    ctx.strokeStyle = `rgba(255,170,60,${0.6 + 0.4 * pulse})`;
+    ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+  } else {
+    const g = ctx.createRadialGradient(cx, cy, rr * 0.1, cx, cy, rr);
+    g.addColorStop(0, "rgba(255,90,20,.55)"); g.addColorStop(1, "rgba(200,30,10,.25)");
+    ctx.fillStyle = g; ctx.strokeStyle = "rgba(255,80,30,.8)"; ctx.lineWidth = 1.5;
+  }
+  ctx.beginPath(); ctx.arc(cx, cy, rr, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+}
+
+function hpBar(cx, cy, w, pct, color) {
+  ctx.fillStyle = "rgba(0,0,0,.6)"; ctx.fillRect(cx - w / 2, cy, w, 4);
+  ctx.fillStyle = color; ctx.fillRect(cx - w / 2, cy, w * pct, 4);
+}
+
+function drawPlayer(info, x, y, hp, dead, casting) {
+  const cx = sx(x), cy = sy(y), r = Math.max(5, sr(0.7));
+  const color = CLASS_COLORS[info.className] || "#ccc";
+  if (dead) {
+    ctx.strokeStyle = "#5a5e68"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx - r, cy - r); ctx.lineTo(cx + r, cy + r);
+    ctx.moveTo(cx + r, cy - r); ctx.lineTo(cx - r, cy + r); ctx.stroke();
+    return;
+  }
+  if (casting) {                                   // a soft ring while casting
+    ctx.strokeStyle = "rgba(160,200,255,.6)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, r + 4, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+  if (info.role === "tank") {                      // tanks get a shield outline
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, r + 1.5, 0, Math.PI * 2); ctx.stroke();
+  }
+  hpBar(cx, cy - r - 8, 22, hp, hp > 0.5 ? "#46a758" : hp > 0.25 ? "#e0a64a" : "#e5484d");
+  if ($("showNames").checked) {
+    ctx.fillStyle = "#c9ccd3"; ctx.font = "10px system-ui"; ctx.textAlign = "center";
+    ctx.fillText(info.name, cx, cy + r + 12);
+  }
+}
+
+function drawEnemy(info, x, y, hp, dead) {
+  if (dead) return;
+  const cx = sx(x), cy = sy(y);
+  const r = info.boss ? Math.max(16, sr(2)) : Math.max(8, sr(info.elite ? 1.4 : 0.9));
+  if (info.boss) {                                 // glow
+    const g = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, r * 2.2);
+    g.addColorStop(0, "rgba(229,72,77,.35)"); g.addColorStop(1, "rgba(229,72,77,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r * 2.2, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.fillStyle = info.boss ? "#9b1c1f" : "#8a3a1c";
+  ctx.strokeStyle = info.boss ? "#ff6b6f" : "#d9823b"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  if (!info.boss) hpBar(cx, cy - r - 8, 26, hp, "#e5484d");
+  if (info.boss || $("showNames").checked) {
+    ctx.fillStyle = info.boss ? "#ffb4b6" : "#d9a37b";
+    ctx.font = info.boss ? "bold 12px system-ui" : "10px system-ui"; ctx.textAlign = "center";
+    ctx.fillText(info.boss ? "BOSS" : info.name, cx, cy + r + 14);
+  }
+}
+
+function drawBossBar(info, hp, cast, phase) {
+  const w = Math.min(520, view.w - 40), x = (view.w - w) / 2, y = 14;
+  ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(x - 2, y - 2, w + 4, 22);
+  ctx.fillStyle = "#9b1c1f"; ctx.fillRect(x, y, w * hp, 18);
+  ctx.fillStyle = "#fff"; ctx.font = "bold 12px system-ui"; ctx.textAlign = "center";
+  ctx.fillText(`${info.name} — ${Math.round(hp * 100)}%${phase ? `  ·  Phase ${phase}` : ""}`, view.w / 2, y + 13);
+  if (cast) {
+    const cw = w * 0.6, cx = (view.w - cw) / 2, cy = y + 26;
+    ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(cx - 2, cy - 2, cw + 4, 16);
+    ctx.fillStyle = "#e0a64a"; ctx.fillRect(cx, cy, cw * cast[1], 12);
+    ctx.fillStyle = "#111"; ctx.font = "bold 11px system-ui";
+    ctx.fillText(cast[0], view.w / 2, cy + 10);
+  }
+}
+
+// ---------------- Combat log synced to playback ----------------
+function updateLog() {
+  const events = replay.events;
+  let idx = -1;
+  for (let j = 0; j < events.length && events[j][0] <= time; j++) idx = j;
+  if (idx === lastLogIndex) return;
+  if (idx < lastLogIndex) $("log").innerHTML = "";          // scrubbed backwards: rebuild
+  const start = idx < lastLogIndex ? 0 : lastLogIndex + 1;
+  const frag = document.createDocumentFragment();
+  for (let j = start; j <= idx; j++) {
+    const [t, text] = events[j];
+    const div = document.createElement("div");
+    div.className = text.includes("💀") ? "death" : text.startsWith(">>>") ? "boss"
+      : text.includes("💬") ? "chat" : text.includes("VICTORY") ? "win" : "";
+    div.innerHTML = `<span class="t">${t.toFixed(1)}s</span>`;
+    div.append(text.replace(/^>>> /, ""));
+    frag.appendChild(div);
+  }
+  $("log").appendChild(frag);
+  $("log").scrollTop = $("log").scrollHeight;
+  lastLogIndex = idx;
+}
+
+function buildLegend() {
+  const classes = [...new Set(replay.players.map(p => p.className))];
+  $("legend").innerHTML = classes.map(c => `<span style="--c:${CLASS_COLORS[c]}">${c}</span>`).join("")
+    + `<span style="--c:#9b1c1f">Boss</span><span style="--c:#ff7a2a">Fire (dashed = warning)</span>`;
+}
+
+// ---------------- Playback controls ----------------
+let lastTick = performance.now();
+function loop(now) {
+  const dt = (now - lastTick) / 1000;
+  lastTick = now;
+  const isLive = LIVE && !LIVE_VIEWING_SAVED;
+  if (replay && replay.frames.length && isLive && following) {
+    // Glide just behind the newest frame so movement looks smooth
+    const target = Math.max(0, replay.frames[replay.frames.length - 1].t - 0.15);
+    time += (target - time) * Math.min(1, dt * 8);
+  } else if (replay && replay.frames.length && playing && !isLive) {
+    const end = replay.frames[replay.frames.length - 1].t;
+    time = Math.min(end, time + dt * speed);
+    if (time >= end) { playing = false; $("playBtn").textContent = "▶ Play"; }
+  }
+  if (replay) draw();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+$("playBtn").onclick = () => {
+  if (!replay) return;
+  if (LIVE && !LIVE_VIEWING_SAVED) {           // live: pause freezes the view, play jumps back to live
+    following = !following; playing = following;
+    $("playBtn").textContent = following ? "❚❚ Pause" : "▶ Back to live";
+    return;
+  }
+  const end = replay.frames[replay.frames.length - 1].t;
+  if (!playing && time >= end) time = 0;
+  playing = !playing;
+  $("playBtn").textContent = playing ? "❚❚ Pause" : "▶ Play";
+};
+$("restartBtn").onclick = () => { time = 0; };
+$("speed").onchange = (e) => { speed = Number(e.target.value); };
+$("scrub").oninput = (e) => {
+  if (!replay) return;
+  if (LIVE && !LIVE_VIEWING_SAVED) { following = false; playing = false; $("playBtn").textContent = "▶ Back to live"; }
+  time = (Number(e.target.value) / 1000) * replay.frames[replay.frames.length - 1].t;
+};
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space" && e.target.tagName !== "INPUT") { e.preventDefault(); $("playBtn").click(); }
+});
+
+// A replay can also be embedded directly in the page (window.REPLAY_DATA)
+if (window.REPLAY_DATA) loadReplay(window.REPLAY_DATA);
+else { loadList(); if (LIVE) connectLive(); }
+resize();
+</script>
+</body>
+</html>

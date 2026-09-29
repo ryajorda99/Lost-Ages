@@ -3,6 +3,9 @@
 
 const { Character, MELEE_RANGE } = require("./Character");
 
+// How long Guardian's Oath holds an enemy after the Knight's last hit (seconds)
+const OATH_DURATION = 8;
+
 const KNIGHT_ABILITIES = {
   righteousStrike: {
     name: "Righteous Strike",
@@ -36,6 +39,27 @@ const KNIGHT_ABILITIES = {
     execute(k, t) {
       t.forceTarget?.(k, 4);
       t.addThreat?.(k, 0, { matchTop: true });
+      t.bindOath?.(k, OATH_DURATION, { force: true });   // taunting takes the oath from the other tank
+    },
+  },
+
+  // CHALLENGE — the Knight's big aggro button.
+  // Every enemy within 12m is forced to attack the Knight for 6s and becomes oath-bound to them.
+  challenge: {
+    name: "Challenge",
+    cost: 20, cooldown: 20, onGcd: false, target: "self",
+    execute(k, t, ctx) {
+      // Never steals an enemy the OTHER tank is holding — only a taunt does that (tank swaps)
+      const grabbed = k.enemiesInRange(ctx, 12).filter(e => {
+        const holder = e.oathHolder?.();
+        return !holder || holder === k || holder.role !== "tank";
+      });
+      for (const e of grabbed) {
+        e.forceTarget?.(k, 6);
+        e.addThreat?.(k, 0, { matchTop: true });
+        e.bindOath?.(k, OATH_DURATION, { force: true });
+      }
+      return { grabbed: grabbed.length };
     },
   },
 
@@ -112,8 +136,12 @@ class Knight extends Character {
     this.resource.current = Math.min(this.resource.max, this.resource.current + 8);
   }
 
-  // Son of Light: every hit the Knight lands also heals the most injured nearby ally
+  // GUARDIAN'S OATH (passive): every hit the Knight lands locks that enemy onto the Knight.
+  // While the oath holds, the enemy ignores everyone else — damage dealers can't pull it off.
+  // It won't steal an enemy another tank holds (only a taunt or Challenge does that).
+  // Son of Light: every hit the Knight lands also heals the most injured nearby ally.
   onDealDamage(target, dealt) {
+    target.bindOath?.(this, OATH_DURATION);
     if (!this.hasBuff("sonOfLight") || !this._lastCtx) return;
     const hurt = this.alliesInRange(this._lastCtx, 30).filter(a => a.hp < a.maxHp);
     hurt.sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp);

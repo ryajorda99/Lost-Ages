@@ -1,7 +1,7 @@
 // Enemy.js — mobs and bosses. Built on the same Character base as players,
 // so buffs, debuffs, stuns, roots, casts and interrupts all work on them automatically.
 
-const { Character, distance } = require("../classes/Character")
+const { Character, distance } = require("../classes/Character");
 
 class Enemy extends Character {
   /**
@@ -23,6 +23,25 @@ class Enemy extends Character {
     this.threat = new Map();         // player -> threat amount
     this.forcedTarget = null;
     this.forcedTimer = 0;
+    // OATH: a tank has locked this enemy onto themselves (see Knight's Guardian's Oath).
+    // While the oath holds, this enemy ONLY attacks that tank — damage dealers can't pull it off.
+    this.oath = null;                // { holder, remaining }
+  }
+
+  /**
+   * Lock this enemy onto a tank for `seconds`.
+   * force = true (a taunt) steals the oath from another tank — that's how tank swaps work.
+   * Without force, a tank can only refresh their own oath (or claim an enemy nobody holds).
+   */
+  bindOath(tank, seconds, { force = false } = {}) {
+    const current = this.oath && this.oath.remaining > 0 && !this.oath.holder.isDead ? this.oath.holder : null;
+    if (!force && current && current !== tank) return false;
+    this.oath = { holder: tank, remaining: seconds };
+    return true;
+  }
+
+  oathHolder() {
+    return this.oath && this.oath.remaining > 0 && !this.oath.holder.isDead ? this.oath.holder : null;
   }
 
   addThreat(source, amount, opts = {}) {
@@ -41,9 +60,11 @@ class Enemy extends Character {
     this.forcedTimer = seconds;
   }
 
-  // Who the enemy attacks: taunter first, otherwise highest threat
+  // Who the enemy attacks: taunter first, then the tank holding its oath, otherwise highest threat
   pickTarget() {
     if (this.forcedTimer > 0 && !this.forcedTarget.isDead) return this.forcedTarget;
+    const oath = this.oathHolder();
+    if (oath) return oath;
     let best = null, bestThreat = -1;
     for (const [p, t] of this.threat) {
       if (!p.isDead && t > bestThreat) { best = p; bestThreat = t; }
@@ -54,6 +75,7 @@ class Enemy extends Character {
   update(dt, ctx = {}) {
     if (this.isDead) return;
     this.forcedTimer = Math.max(0, this.forcedTimer - dt);
+    if (this.oath) this.oath.remaining -= dt;
     this.target = this.pickTarget();
 
     // Very simple AI: walk toward the target, then auto-attack (Character handles the swing)

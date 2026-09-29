@@ -11,8 +11,46 @@ const { distance } = require("../classes/Character");
 
 const MAGIC_SCHOOLS = ["fire", "frost", "holy", "shadow", "arcane", "nature"];
 
+// Checks a boss file for common typos BEFORE the fight, with a clear message.
+function validateBossDef(def) {
+  const problems = [];
+  const name = def.name || "(boss has no name)";
+  for (const key of ["baseHp", "baseDamage", "baseArmor", "attackSpeed", "level"]) {
+    if (typeof def[key] !== "number" || !Number.isFinite(def[key])) {
+      problems.push(`"${key}" must be a number (got ${JSON.stringify(def[key])})`);
+    }
+  }
+  if (def.statMultiplier !== undefined && (typeof def.statMultiplier !== "number" || !Number.isFinite(def.statMultiplier))) {
+    problems.push(`"statMultiplier" must be a number (got ${JSON.stringify(def.statMultiplier)})`);
+  }
+  if (!Array.isArray(def.phases) || def.phases.length === 0) {
+    problems.push(`"phases" must be a list with at least one phase`);
+  } else {
+    if (def.phases[0].hpBelow !== 1 && def.phases[0].hpBelow !== 1.0) {
+      problems.push(`the first phase needs  hpBelow: 1.0  (got ${JSON.stringify(def.phases[0].hpBelow)})`);
+    }
+    def.phases.forEach((p, i) => {
+      if (typeof p.hpBelow !== "number") problems.push(`phase ${i + 1} ("${p.name}") is missing a number for "hpBelow"`);
+      if (!Array.isArray(p.rotation)) problems.push(`phase ${i + 1} ("${p.name}") is missing its "rotation" list`);
+      for (const key of p.rotation || []) {
+        if (!def.abilities || !def.abilities[key]) problems.push(`phase ${i + 1} uses ability "${key}", but there's no ability with that name`);
+      }
+    });
+  }
+  // Find likely typos: keys that differ from a real key only by capital letters
+  const expected = ["baseHp", "baseDamage", "baseArmor", "attackSpeed", "statMultiplier", "enrageTimer", "transitionTime"];
+  for (const key of Object.keys(def)) {
+    const match = expected.find(e => e.toLowerCase() === key.toLowerCase() && e !== key);
+    if (match) problems.push(`found "${key}" — did you mean "${match}"? (capital letters matter)`);
+  }
+  if (problems.length) {
+    throw new Error(`Problem in the boss file for ${name}:\n  - ${problems.join("\n  - ")}`);
+  }
+}
+
 class Boss extends Enemy {
   constructor(def, position = { x: 0, y: 0 }) {
+    validateBossDef(def);
     const m = def.statMultiplier ?? 1;
     super({
       name: def.name,
@@ -44,6 +82,11 @@ class Boss extends Enemy {
     this.minions = [];
     this.events = [];               // announcements for the UI / chat log
 
+    // Abilities can wait before their first use:  firstUseAfter: 6  (seconds into the fight)
+    for (const [key, a] of Object.entries(this.abilities)) {
+      if (a.firstUseAfter) this.cooldowns[key] = a.firstUseAfter;
+    }
+
     // Hard enrage: after def.enrageTimer seconds the boss hits 5x harder (a DPS check)
     this.fightTime = 0;
     this.fallen = new Set();        // players whose deaths the boss has already reacted to
@@ -54,6 +97,27 @@ class Boss extends Enemy {
   announce(msg) {
     this.events.push(msg);
     this.onAnnounce?.(msg);
+  }
+
+  /**
+   * "Move or die": a glowing warning circle appears under a player, then erupts.
+   * Anyone still standing in it when it erupts dies (or takes `damage` if lethal is false).
+   * @param target  the player to put it under
+   * @param o       { name, radius, warn (seconds of warning), lethal, damage, duration }
+   */
+  eruptUnder(target, { name, radius = 4, warn = 1.5, lethal = true, damage = 0, duration = 4 } = {}) {
+    const born = this.fightTime;
+    this.placeZone({
+      name, hostile: true, warn,
+      position: { ...target.position }, radius, duration: warn + duration, tickEvery: 0.25,
+      onTick: (caster, inside) => {
+        if (caster.fightTime - born < warn) return;           // still just a warning
+        for (const p of inside) {
+          if (lethal) caster.lethal(p, `${name} (didn't move)`);
+          else caster.dealDamage(p, damage * 0.25, "shadow"); // damage per second, ticking 4x/sec
+        }
+      },
+    });
   }
 
   // Instantly kill a player who failed a mechanic. Ignores armor, shields and defensives.
@@ -282,4 +346,4 @@ class Boss extends Enemy {
   }
 }
 
-module.exports = { Boss, MAGIC_SCHOOLS };
+module.exports = { Boss, MAGIC_SCHOOLS, validateBossDef };

@@ -105,17 +105,19 @@ const ashenTyrant = {
     },
 
     infernoRift: {
-      name: "Inferno Rift", cost: 0, cooldown: 8, range: 60,
-      target: "enemy", targetMode: "random",
+      name: "Inferno Rift", cost: 0, cooldown: 8, firstUseAfter: 4, range: 60,
+      target: "enemy", targetMode: "randomNonTank",
       // The ground glows for 1.2s (move!), then erupts: anyone still inside DIES.
+      // Targets damage dealers and healers (the tanks are busy holding the boss).
       // 1.2s is tight: fast players make it out, slow ones don't.
       // More rifts open at once as the fight goes on: 1 → 2 → 3 → 4.
       execute(b, t, ctx) {
-        const targets = randomPlayers(ctx.enemies || [], b.phaseIndex + 1);
+        const nonTanks = (ctx.enemies || []).filter(p => p.role !== "tank");
+        const targets = randomPlayers(nonTanks, b.phaseIndex + 1);
         for (const victim of targets) {
           const born = b.fightTime;
           b.placeZone({
-            name: "Inferno Rift", hostile: true,
+            name: "Inferno Rift", hostile: true, warn: 1.2,
             position: { ...victim.position }, radius: 5, duration: 10, tickEvery: 0.25,
             onTick(caster, inside) {
               if (caster.fightTime - born < 1.2) return; // warning time
@@ -127,14 +129,14 @@ const ashenTyrant = {
     },
 
     rainOfFire: {
-      name: "Rain of Fire", cost: 0, cooldown: 18, target: "self",
+      name: "Rain of Fire", cost: 0, cooldown: 18, firstUseAfter: 6, target: "self",
       // Fire erupts under EVERY player at once. 1.5s to move, or die.
       // This tests the whole raid every time — one slow player is one dead player.
       execute(b, t, ctx) {
         const born = b.fightTime;
         for (const p of (ctx.enemies || []).filter(p => !p.isDead)) {
           b.placeZone({
-            name: "Rain of Fire", hostile: true,
+            name: "Rain of Fire", hostile: true, warn: 1.5,
             position: { ...p.position }, radius: 3, duration: 6, tickEvery: 0.25,
             onTick(caster, inside) {
               if (caster.fightTime - born < 1.5) return;
@@ -277,10 +279,23 @@ const ashenTyrant = {
         weight: (s) => 0.5 + s.physicalShare * 3,
       },
       {
-        id: "fixate", name: "Tyrant's Gaze", hint: "hunts the top damage dealer",
+        id: "fixate", name: "Tyrant's Gaze", hint: "the ground erupts under the top damage dealer",
         weight: (s) => (s.topSource ? 2 : 0), duration: 8,
+        // The tank keeps the boss — but the top damage dealer gets hunted by eruptions
+        // every 1.5 seconds for 8 seconds. Stop moving and you die.
         onApply(b, ctx, s) {
-          if (s.topSource) { b.forceTarget(s.topSource, 8); b.announce(`${b.name} glares at ${s.topSource.name}!`); }
+          let victim = s.topSource;
+          if (!victim || victim.isDead || victim.role === "tank") {
+            const options = (ctx.enemies || []).filter(p => !p.isDead && p.role !== "tank");
+            victim = options[Math.floor(Math.random() * options.length)];
+          }
+          if (!victim) return;
+          b.announce(`${b.name} glares at ${victim.name}!`);
+          victim.addBuff({
+            id: "tyrantsGaze", duration: 8, tickEvery: 1.5,
+            onTick: (p) => { if (!p.isDead) b.eruptUnder(p, { name: "Tyrant's Gaze", radius: 3.5, warn: 1.3, duration: 1.5 }); },
+          });
+          b.eruptUnder(victim, { name: "Tyrant's Gaze", radius: 3.5, warn: 1.3, duration: 1.5 });
         },
       },
       {

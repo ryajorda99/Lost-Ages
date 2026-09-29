@@ -12,6 +12,37 @@ const { SKILL_PROFILES, PERSONALITIES } = require("./skillProfiles");
 const { distance } = require("../classes/Character");
 
 const rand = (min, max) => min + Math.random() * (max - min);
+
+// ---- Learning settings (tune these) ----
+const LEARN = {
+  ownDeath: 0.35,   // died to a mechanic: learn 35% of what's left to learn about it
+  watched: 0.12,    // saw it kill a raid-mate: learn 12%
+  practice: 0.03,   // handled it correctly: learn 3%
+  general: 0.10,    // each attempt, overall skill moves 10% closer to their potential
+};
+const HUMAN_ERROR = 0.02; // even a master still fails a mechanic at least 2% of the time
+const TIRED_CHANCE = 0.1; // 10% of attempts a player is "off" (tired, distracted, lag)
+
+// Deaths that can't be avoided by knowing the fight — nothing to learn from them
+const UNLEARNABLE = ["melee hit", "Worldfire", "Heat Wave", "Cataclysm", "Meteor Swarm", "Molten Brand", "Shadow Nova", "Soul Drain"];
+
+// "Inferno Rift (didn't move)" -> "Inferno Rift"
+function mechanicName(cause) {
+  if (!cause) return null;
+  const name = cause.split(" (")[0];
+  if (UNLEARNABLE.includes(name) || /^Hollow Skeleton|^Ash Elemental|^Crypt|^Bone|^Forge|^Cinder|^Magma|^Flameweaver|^Molten Giant/.test(name)) return null;
+  return name;
+}
+
+// Which skill tier a (learning) profile is closest to, by awareness
+function closestTier(p) {
+  let best = "casual", bestDiff = Infinity;
+  for (const [key, t] of Object.entries(SKILL_PROFILES)) {
+    const d = Math.abs(t.awareness - p.awareness);
+    if (d < bestDiff) { best = key; bestDiff = d; }
+  }
+  return SKILL_PROFILES[best].label;
+}
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const CHAT = {
@@ -24,6 +55,8 @@ const CHAT = {
   noUpgrade: ["nothing for me again...", "no loot :(", "rng hates me", "vendor trash lol"],
   legendary: ["NO WAY", "LEGENDARY!!!", "omg omg omg", "I'M SHAKING"],
   win: ["GG!!", "LETS GO", "ez", "gg wp", "finally!!"],
+  tired: ["kinda tired tonight ngl", "my ping is awful rn", "sorry, distracted", "long day at work lol"],
+  learned: ["ok I get it now", "won't happen again", "my bad, I see it now", "got it, move out of the fire", "noted"],
   phase: ["phase change!", "here we go", "watch out", "adds!"],
   taunt: ["taunted, swap!", "I got it", "swapping", "taunt swap"],
 };
@@ -44,6 +77,14 @@ class PlayerBot {
     this.playbook = playbook;
     this.character = null;
     this.attempts = 0;
+
+    // MECHANIC MEMORY: how well this player knows each boss mechanic, 0 (never seen) to 1 (mastered).
+    // e.g. { "Inferno Rift": 0.6, "Pyroclasm": 0.2 }. Goes up when they die to it, watch it
+    // kill someone, or handle it correctly. Saved between runs.
+    this.mastery = {};
+    // POTENTIAL: the best this player can ever get (most people never become pros)
+    this.potential = skill;
+    this.experience = 0;       // boss attempts played
     this.onSay = null;                        // hook: (bot, message) => {}
     this.onNote = null;                       // hook for notable plays / mistakes
   }
@@ -55,7 +96,11 @@ class PlayerBot {
     this.lapseUntil = 0;
     this.noticed = new Map();
     this.chatCooldowns = {};
-    this.knowsPositioning = Math.random() < this.p.positioning;
+    // Some nights you're just off: tired, distracted, laggy. Mechanics go worse.
+    this.tired = Math.random() < TIRED_CHANCE;
+    // Standing behind the boss is a lesson learned from frontal attacks
+    const frontal = Math.max(this.masteryOf("Flame Breath"), this.masteryOf("Cleave"));
+    this.knowsPositioning = Math.random() < this.p.positioning * (0.4 + 0.6 * frontal);
     this.movePlan = null;      // { until, dx, dy } for random fidgeting
     this.fireEpisode = null;   // are they reacting to fire right now? (see dodgeZones)
     this.style = this.playbook.pickStyle?.(this) || {};
@@ -70,17 +115,53 @@ class PlayerBot {
    * and only if it actually noticed it. Each new occurrence is rolled separately.
    * Example: bot.sees("bossCast:shadowBolt", boss.cast?.key === "shadowBolt", now)
    */
-  sees(id, condition, now) {
+  sees(id, condition, now, mechanic = null) {
     if (!condition) {
       this.noticed.delete(id);
       return false;
     }
     let n = this.noticed.get(id);
     if (!n) {
-      n = { reactAt: now + rand(...this.p.reaction), willNotice: Math.random() < this.p.awareness };
+      // For a named boss mechanic, how well they KNOW it changes the odds and the speed
+      const chance = mechanic ? this.handleChance(mechanic) : this.p.awareness;
+      const speed = mechanic ? this.reactionFor(mechanic) : rand(...this.p.reaction);
+      n = { reactAt: now + speed, willNotice: Math.random() < chance, mechanic };
       this.noticed.set(id, n);
     }
-    return n.willNotice && now >= n.reactAt;
+    const ok = n.willNotice && now >= n.reactAt;
+    if (ok && n.mechanic && !n.practiced) { n.practiced = true; this.practice(n.mechanic); }
+    return ok;
+  }
+
+  // ------------------------------------------------------------
+  //  MECHANIC MEMORY
+  // ------------------------------------------------------------
+  masteryOf(mechanic) {
+    return this.mastery[mechanic] || 0;
+  }
+
+  /**
+   * Chance to handle a mechanic correctly this time.
+   * Never seen it: ~40% of their normal awareness. Mastered: their full awareness.
+   * Always capped below 100% — even the best players slip up sometimes.
+   */
+  handleChance(mechanic) {
+    let m = this.masteryOf(mechanic);
+    if (this.tired) m = Math.max(0, m - 0.25);
+    const chance = this.p.awareness * (0.4 + 0.6 * m);
+    return Math.min(1 - HUMAN_ERROR, chance);
+  }
+
+  // Unfamiliar mechanics take longer to react to (up to 50% slower)
+  reactionFor(mechanic) {
+    const m = this.masteryOf(mechanic);
+    return rand(...this.p.reaction) * (1.5 - 0.5 * m) * (this.tired ? 1.2 : 1);
+  }
+
+  // Handled it correctly: a little more confident next time
+  practice(mechanic) {
+    const m = this.masteryOf(mechanic);
+    this.mastery[mechanic] = m + (1 - m) * LEARN.practice;
   }
 
   // ------------------------------------------------------------
@@ -171,10 +252,12 @@ class PlayerBot {
     // even if they pass through several overlapping fire circles.
     let n = this.fireEpisode;
     if (!n || (!n.willNotice && now >= n.retryAt)) {
-      n = { reactAt: now + rand(...this.p.reaction), willNotice: Math.random() < this.p.awareness, retryAt: now + 1.5 };
+      const mechanic = zone.name || "fire";
+      n = { reactAt: now + this.reactionFor(mechanic), willNotice: Math.random() < this.handleChance(mechanic), retryAt: now + 1.5, mechanic };
       this.fireEpisode = n;
     }
     if (!n.willNotice || now < n.reactAt) return false;
+    if (!n.practiced) { n.practiced = true; this.practice(n.mechanic); }
 
     if (!this.escapeTo || this.zoneAt(this.escapeTo)) this.escapeTo = this.safePoint(c.position);
     this.moveToward(this.escapeTo, dt, 0.1, 7, true);
@@ -246,16 +329,46 @@ class PlayerBot {
   }
 
   // ------------------------------------------------------------
-  //  LEARNING — after a wipe, the group gets better at the fight
+  //  LEARNING — after every boss attempt (win or wipe)
   // ------------------------------------------------------------
-  learn(diedTo) {
+  /**
+   * @param diedTo      what killed THIS player (or null)
+   * @param raidDeaths  everything that killed anyone in the raid, e.g. ["Inferno Rift (didn't move)", ...]
+   * Returns the mechanic this player learned the most about (for the chat log).
+   */
+  learn(diedTo, raidDeaths = []) {
     this.attempts++;
-    const p = this.p;
-    p.awareness = Math.min(0.99, p.awareness + (1 - p.awareness) * 0.25);
-    p.mistakeRate *= 0.8;
-    p.positioning = Math.min(0.99, p.positioning + (1 - p.positioning) * 0.3);
-    p.reaction = p.reaction.map(r => Math.max(0.12, r * 0.93));
-    if (diedTo) this.lessons = [...(this.lessons || []), diedTo];
+    this.experience++;
+    const bump = (mech, rate) => {
+      if (!mech) return;
+      const m = this.masteryOf(mech);
+      this.mastery[mech] = m + (1 - m) * rate;
+    };
+
+    // "That killed ME" — the biggest lesson
+    const own = mechanicName(diedTo);
+    bump(own, LEARN.ownDeath);
+
+    // "I watched it kill someone" — the raid talks about it after the wipe
+    for (const mech of new Set(raidDeaths.map(mechanicName).filter(Boolean))) {
+      if (mech !== own) bump(mech, LEARN.watched);
+    }
+
+    // General skill slowly grows toward this player's potential
+    this.growTowardPotential();
+    return own;
+  }
+
+  growTowardPotential() {
+    const target = SKILL_PROFILES[this.potential];
+    if (!target) return;
+    const r = LEARN.general;
+    for (const [k, v] of Object.entries(target)) {
+      if (typeof v === "number") this.p[k] += (v - this.p[k]) * r;
+      else if (Array.isArray(v)) this.p[k] = this.p[k].map((x, i) => x + (v[i] - x) * r);
+    }
+    // Label follows whichever tier they're closest to now
+    this.p.label = closestTier(this.p);
   }
 
   // ------------------------------------------------------------
@@ -286,4 +399,4 @@ class PlayerBot {
   }
 }
 
-module.exports = { PlayerBot, rand };
+module.exports = { PlayerBot, rand, mechanicName, LEARN, HUMAN_ERROR };

@@ -14,7 +14,16 @@
 //   --fresh         start over with a brand new group (no gear)
 //   --quiet         hide the combat log
 //   --noscale       turn off gear scaling
-//   --skill <tier>  TESTING: make everyone casual / average / skilled / pro
+//   --skill <tier>  make everyone this skill level (and that's as good as they'll get)
+//                   Without it, a NEW group starts as beginners and learns the fight over time.
+//   --farm          keep doing attempts even after a kill (watch them learn over many runs)
+//
+// WATCHING: by default your browser opens and shows each fight LIVE as it happens.
+// Every boss fight is also saved to the replays/ folder (rewatch with: node scripts/viewer.js).
+//   --fast          don't show fights — just simulate as fast as possible (good for --farm)
+//   --speed <n>     watch faster, e.g. --speed 2 (default 1 = real time)
+//   --record        with --fast: still save boss fights as replays
+//   --potential <tier>  TESTING: new players start as beginners but can all grow to this tier
 //   --testgear <ilvl>  TESTING: dress everyone in a full set of Epic gear at that item level
 //                      (great for checking if a raid is beatable with the right gear)
 
@@ -34,6 +43,8 @@ const { formatItem, generateItem } = require("../src/items/itemGenerator");
 const SCALING = require("../src/config/scalingConfig");
 const { gearPower, partyGearPower, applyScaling } = require("../src/utils/enemyScaling");
 const { distance } = require("../src/classes/Character");
+const { Recorder } = require("../src/replay/Recorder");
+const { startViewerServer, openBrowser } = require("../src/replay/viewerServer");
 
 // ================= COMMAND LINE =================
 const argv = process.argv.slice(2);
@@ -41,7 +52,7 @@ function option(name) {
   const i = argv.indexOf(`--${name}`);
   return i !== -1 ? argv[i + 1] : undefined;
 }
-const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill"].includes(argv[i - 1])));
+const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill", "--potential", "--speed"].includes(argv[i - 1])));
 
 const BOSS_KEY = option("boss") || "hollowKing";
 const BOSS_DEF = BOSSES[BOSS_KEY];
@@ -53,8 +64,22 @@ const multiplier = Number(positional[0] || BOSS_DEF.statMultiplier);
 const partyLevel = Number(positional[1] || BOSS_DEF.recommended?.level || 20);
 const maxAttempts = Number(positional[2] || 1);
 const RAID_SIZE = Number(option("raid") || BOSS_DEF.recommended?.raidSize || 5);
+// Catch typos in the command (e.g. a word where a number should be)
+for (const [label, value] of [["boss multiplier", multiplier], ["player level", partyLevel], ["attempts", maxAttempts], ["raid size", RAID_SIZE]]) {
+  if (!Number.isFinite(value) || value < 0) {
+    console.log(`The ${label} must be a number, but got "${[positional[0], positional[1], positional[2], option("raid")][["boss multiplier", "player level", "attempts", "raid size"].indexOf(label)]}".`);
+    console.log(`Check your command. Example:  node scripts/simulate.js --boss ashenTyrant`);
+    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed"].includes(a));
+    if (unknown.length) console.log(`Unknown option(s): ${unknown.join(", ")}`);
+    process.exit(1);
+  }
+}
 const QUIET = argv.includes("--quiet");
 const FRESH = argv.includes("--fresh");
+const FARM = argv.includes("--farm");
+const WATCH = !argv.includes("--fast");               // show fights live in the browser
+const RECORD = WATCH || argv.includes("--record");     // save boss fights as replays
+let viewer = null;                                     // the live viewer server (when watching)
 if (argv.includes("--noscale")) SCALING.enabled = false;
 
 const { MOBS, TRASH_PACKS } = require(`../src/data/mobs/${BOSS_DEF.trash || "hollowCrypt"}`);
@@ -66,8 +91,17 @@ const IS_RAID = RAID_SIZE > 5;
 const CLASSES = { Knight, Warrior, Rogue, Mage, Healer };
 
 let time = 0;
-const log = (msg) => { if (!QUIET) console.log(`[${time.toFixed(1).padStart(5)}s] ${msg}`); };
-const say = (msg) => console.log(msg);
+let currentRecorder = null;   // set while a fight is being recorded
+const log = (msg) => {
+  currentRecorder?.event(time, msg);
+  if (!QUIET) console.log(`[${time.toFixed(1).padStart(5)}s] ${msg}`);
+};
+const say = (msg) => {
+  console.log(msg);
+  viewer?.broadcast({ type: "info", text: msg });   // show loot/results in the browser too
+};
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const WATCH_SPEED = Number(option("speed") || 1);
 
 // ================= GROUP MAKEUP =================
 // 5 players: one of each class. Raids: 2 tanks, ~1 healer per 5 players, the rest DPS.
@@ -100,6 +134,9 @@ function loadGroup() {
     return saved.map(s => {
       const bot = makeBot(s.name, s.className, s.skill, s.personality);
       bot.p = { ...SKILL_PROFILES[s.skill], ...s.profile }; // keeps what they learned
+      bot.mastery = s.mastery || {};                        // what they know about each mechanic
+      bot.potential = s.potential || s.skill;
+      bot.experience = s.experience || 0;
       bot.gear = Gear.fromJSON(s.gear);
       bot.lootState = s.lootState;
       bot.kills = s.kills || 0;
@@ -113,17 +150,62 @@ function loadGroup() {
     console.log(`Unknown skill "${forcedSkill}". Use: ${Object.keys(SKILL_PROFILES).join(", ")}`);
     process.exit(1);
   }
-  return raidComposition(RAID_SIZE).map((cls, i) =>
-    makeBot(names[i] || `Player${i + 1}`, cls, forcedSkill || randomSkill(), randomPersonality()));
+  // New players start as beginners ("casual") and each has a hidden POTENTIAL — how good
+  // they can become with practice. Most people top out at average or skilled; few become pros.
+  return raidComposition(RAID_SIZE).map((cls, i) => {
+    const bot = makeBot(names[i] || `Player${i + 1}`, cls, forcedSkill || "casual", randomPersonality());
+    bot.potential = forcedSkill || option("potential") || randomPotential();
+    return bot;
+  });
 }
 
 function saveGroup(bots) {
   fs.mkdirSync(path.dirname(SAVE_FILE), { recursive: true });
   fs.writeFileSync(SAVE_FILE, JSON.stringify(bots.map(b => ({
     name: b.name, className: b.className, skill: b.skillKey, personality: b.personalityKey,
-    profile: b.p, gear: b.gear.toJSON(), lootState: b.lootState, kills: b.kills || 0, attempts: b.attempts || 0,
+    profile: b.p, mastery: b.mastery, potential: b.potential, experience: b.experience,
+    gear: b.gear.toJSON(), lootState: b.lootState, kills: b.kills || 0, attempts: b.attempts || 0,
   })), null, 2));
 }
+
+// Hidden potential for new players: most become average or skilled, few become pros
+function randomPotential() {
+  const r = Math.random();
+  if (r < 0.10) return "casual";
+  if (r < 0.45) return "average";
+  if (r < 0.88) return "skilled";
+  return "pro";
+}
+
+// Mechanics the raid has run into so far (anything someone has learned something about)
+function discoveredMechanics() {
+  const set = new Set();
+  for (const b of bots) for (const m of Object.keys(b.mastery)) set.add(m);
+  return [...set];
+}
+// How well a player knows the mechanics the raid has discovered (0–100%).
+// Tank-only mechanics (Immolation = tank swaps) only count for tanks.
+function knowledge(bot) {
+  const mechs = discoveredMechanics().filter(m => m !== "Immolation" || bot.className === "Knight");
+  if (!mechs.length) return 0;
+  return Math.round(mechs.reduce((a, m) => a + (bot.mastery[m] || 0), 0) / mechs.length * 100);
+}
+function avgKnowledge() {
+  return Math.round(bots.reduce((s, b) => s + knowledge(b), 0) / bots.length);
+}
+function reportKnowledge(raidDeaths) {
+  const counts = {};
+  const { mechanicName } = require("../src/ai/PlayerBot");
+  for (const d of raidDeaths) { const m = mechanicName(d); if (m) counts[m] = (counts[m] || 0) + 1; }
+  const lines = discoveredMechanics()
+    .map(m => {
+      const who = m === "Immolation" ? bots.filter(b => b.className === "Knight") : bots;
+      const avg = Math.round(who.reduce((s, b) => s + (b.mastery[m] || 0), 0) / who.length * 100);
+      return `${m} ${avg}%${counts[m] ? ` (killed ${counts[m]} this time)` : ""}`;
+    });
+  if (lines.length) say(`What the raid knows now: ${lines.join(" | ")}`);
+}
+const attemptLog = [];
 
 const bots = loadGroup();
 
@@ -144,9 +226,9 @@ bots.find(b => b.className === "Knight").mainTank = true; // first Knight pulls 
 for (const bot of bots) bot.onSay = (b, msg) => log(`💬 [${IS_RAID ? "Raid" : "Party"}] ${b.name}: ${msg}`);
 
 say(`${BOSS_DEF.name} x${multiplier} — ${bots.length} players, level ${partyLevel}${FRESH ? " (fresh group)" : ""}`);
-say("Name     Class    Skill    Personality  Gear");
+say("Name     Class    Skill    Personality  Knows fight  Gear");
 for (const b of bots) {
-  say(`  ${b.name.padEnd(7)} ${b.className.padEnd(8)} ${b.p.label.padEnd(8)} ${b.personality.label.padEnd(11)}  ` +
+  say(`  ${b.name.padEnd(7)} ${b.className.padEnd(8)} ${b.p.label.padEnd(8)} ${b.personality.label.padEnd(11)}  ${(knowledge(b) + "%").padStart(4)}         ` +
       `ilvl ${b.gear.itemLevel()} (${b.gear.slotsFilled()}/12 slots)${b.kills ? `, ${b.kills} boss kill(s)` : ""}` +
       (b.mainTank ? "  [main tank]" : ""));
 }
@@ -188,9 +270,13 @@ function spawnParty() {
 }
 
 // ================= ONE FIGHT =================
-function runFight(enemies, { boss = null } = {}) {
+async function runFight(enemies, { boss = null, record = false } = {}) {
   time = 0;
   const party = spawnParty();
+  // When watching, every fight (trash too) streams to the browser
+  const title = boss ? boss.name : `Trash: ${enemies.map(e => e.name).join(", ")}`;
+  const recorder = (record || WATCH) ? new Recorder({ title, party, live: viewer }) : null;
+  currentRecorder = recorder;
   const tank = bots.find(b => b.mainTank)?.character || party[0];
   const stats = Object.fromEntries(party.map(p => [p.name, { damage: 0, healing: 0, diedAt: null, diedTo: null }]));
 
@@ -256,6 +342,7 @@ function runFight(enemies, { boss = null } = {}) {
     }
     for (const e of alive()) e.update(dt, { allies: [], enemies: party });
     for (const e of enemies) if (e.isDead && !killed.has(e)) { killed.add(e); if (!boss) log(`☠ ${e.name} defeated`); }
+    recorder?.capture(time, enemies);
 
     if (boss && time - lastReport >= 20) {
       lastReport = time;
@@ -265,8 +352,17 @@ function runFight(enemies, { boss = null } = {}) {
                  : party.map(p => `${p.name} ${p.isDead ? "DEAD" : Math.round(p.hp / p.maxHp * 100) + "%"}`).join(" | ")));
     }
     time += dt;
+    // Watching: slow the simulation down to real time (so you can follow it)
+    if (WATCH && Math.round(time / dt) % 2 === 0) await sleep((dt * 2 * 1000) / WATCH_SPEED);
   }
-  return { won: !alive().length, time, stats, killed: [...killed] };
+  const won = !alive().length;
+  if (recorder) {
+    recorder.capture(time + 1, enemies);           // final frame
+    recorder.event(time, won ? "🏆 VICTORY!" : "💀 WIPE");
+    recorder.finish({ won, time: Math.round(time * 10) / 10 });
+    currentRecorder = null;
+  }
+  return { won, time, stats, killed: [...killed], recorder };
 }
 
 // ================= LOOT =================
@@ -289,6 +385,15 @@ function giveLoot(bot, items, from) {
 let lootSkipped = 0;
 
 // ================= ATTEMPTS =================
+async function main() {
+if (WATCH) {
+  viewer = await startViewerServer({ port: 3000 });
+  say(`\n📺 Opening the fight viewer: ${viewer.url()}  (if it doesn't open, paste that into your browser)`);
+  openBrowser(viewer.url() + "/?live=1");
+  const connected = await viewer.waitForViewer(10000);
+  if (!connected) say("   (No browser connected yet — starting anyway. Open the link above to watch.)");
+  await sleep(1000);
+}
 const history = [];
 for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   say(`\n================ ATTEMPT ${attempt} ================`);
@@ -301,11 +406,12 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   pack.forEach(m => { mobMult = applyScaling(m, trashPower); });
   say(`\n-- Trash: ${pack.map(m => m.name + (m.elite ? " (elite)" : "")).join(", ")} --`);
   say(`   ${describeScaling(trashPower, mobMult, "mobs")}`);
-  const trash = runFight(pack);
+  const trash = await runFight(pack);
   if (!trash.won) {
     say(`WIPE on trash at ${trash.time.toFixed(0)}s`);
     history.push("wiped on trash");
-    for (const bot of bots) bot.learn(trash.stats[bot.name].diedTo);
+    const trashDeaths = Object.values(trash.stats).map(s => s.diedTo).filter(Boolean);
+    for (const bot of bots) bot.learn(trash.stats[bot.name].diedTo, trashDeaths);
     continue;
   }
   say(`Cleared in ${trash.time.toFixed(0)}s`);
@@ -319,7 +425,13 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   const bossPower = partyPower();
   const bossMult = applyScaling(boss, bossPower);
   say(`   ${describeScaling(bossPower, bossMult, "boss")} (boss HP ${boss.maxHp.toLocaleString()})`);
-  const fight = runFight([boss], { boss });
+  for (const b of bots) if (b.tired && Math.random() < 0.5) say(`   💬 ${b.name}: ${["kinda tired tonight ngl", "my ping is awful rn", "sorry, distracted", "long day at work lol"][Math.floor(Math.random() * 4)]}`);
+  const fight = await runFight([boss], { boss, record: RECORD });
+  if (fight.recorder) {
+    const stamp = new Date().toISOString().slice(0, 19).replace("T", "_").replace(/:/g, "-");
+    const file = fight.recorder.save(`${BOSS_KEY}-${stamp}-attempt${attempt}-${fight.won ? "kill" : "wipe"}`);
+    say(`🎬 Replay saved: replays/${path.basename(file)}  (watch it: node scripts/viewer.js)`);
+  }
 
   if (fight.won) say(`\n🏆 VICTORY in ${fight.time.toFixed(1)}s!`);
   else say(`\nWIPE at ${fight.time.toFixed(1)}s — boss at ${Math.round(boss.hp / boss.maxHp * 100)}% (phase ${boss.phaseIndex + 1})${boss.enraged ? " — hit the enrage timer" : ""}`);
@@ -338,6 +450,15 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     if (souls) say(`Souls consumed by the boss: ${souls}`);
   }
 
+  // ---- Everyone learns from what happened (win OR wipe) ----
+  const raidDeaths = Object.values(fight.stats).map(s => s.diedTo).filter(Boolean);
+  for (const bot of bots) {
+    const lesson = bot.learn(fight.stats[bot.name].diedTo, raidDeaths);
+    if (lesson && Math.random() < 0.5) bot.say("learned", 9999, 0);
+  }
+  reportKnowledge(raidDeaths);
+  attemptLog.push({ won: fight.won, bossPct: Math.round(boss.hp / boss.maxHp * 100), deaths: raidDeaths.length, knowledge: avgKnowledge() });
+
   if (fight.won) {
     say(`\n-- Boss loot --`);
     lootSkipped = 0;
@@ -350,18 +471,27 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     if (lootSkipped) say(`  (+${lootSkipped} other drops that weren't upgrades)`);
     history.push("KILL");
     bots[Math.floor(Math.random() * bots.length)].say("win", 9999, 0);
-    break;
+    if (!FARM) break;
+    continue;
   }
   history.push(`wipe at ${Math.round(boss.hp / boss.maxHp * 100)}%${boss.enraged ? " (enrage)" : ""}`);
   bots[Math.floor(Math.random() * bots.length)].say("wipe", 9999, 0);
-  for (const bot of bots) bot.learn(fight.stats[bot.name].diedTo);
 }
 
 // ================= SUMMARY + SAVE =================
 say("\n================ SUMMARY ================");
-say(history.map((h, i) => `Attempt ${i + 1}: ${h}`).join("\n"));
+say("Attempt  Result          Deaths  Raid knows the fight");
+attemptLog.forEach((a, i) => say(`  ${String(i + 1).padStart(3)}    ${(a.won ? "KILL" : `wipe at ${a.bossPct}%`).padEnd(14)}  ${String(a.deaths).padStart(5)}    ${a.knowledge}%`));
+history.forEach((h, i) => { if (h === "wiped on trash") say(`  (attempt ${i + 1}: wiped on trash)`); });
 const avgIlvl = Math.round(bots.reduce((s, b) => s + b.gear.itemLevel(), 0) / bots.length);
 say(`\nAverage item level: ${avgIlvl}`);
 if (!IS_RAID) for (const b of bots) say(`  ${b.name.padEnd(7)} ${b.className.padEnd(8)} ilvl ${b.gear.itemLevel()} (${b.gear.slotsFilled()}/12 slots)`);
 saveGroup(bots);
 say(`\nSaved to saves/${path.basename(SAVE_FILE)} — run again to continue with the same group.`);
+if (WATCH) {
+  say(`\n📺 Done! The viewer stays open so you can rewatch — press Ctrl+C here when you're finished.`);
+  viewer.broadcast({ type: "done" });
+}
+}
+
+main().catch(err => { console.error(err); process.exit(1); });

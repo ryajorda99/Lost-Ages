@@ -60,7 +60,17 @@ const hollowKing = {
 
   // ============================ ABILITIES ============================
   // targetMode: "tank" | "random" | "randomNonTank" | "randomRanged" | "lowestHp"
+  // The boss's melee always goes to the tank (Guardian's Oath) — abilities hunt everyone else.
   abilities: {
+    soulEruption: {
+      name: "Soul Eruption", cost: 0, cooldown: 12, firstUseAfter: 6, range: 60,
+      target: "enemy", targetMode: "randomNonTank",
+      // Shadow erupts under a damage dealer or healer. 2 seconds to move — or die.
+      execute(b, t) {
+        b.eruptUnder(t, { name: "Soul Eruption", radius: 4, warn: 2.0 });
+      },
+    },
+
     shadowBolt: {
       name: "Shadow Bolt", cost: 0, cooldown: 8, castTime: 2.5, range: 40,
       target: "enemy", targetMode: "randomNonTank",
@@ -149,14 +159,14 @@ const hollowKing = {
     {
       name: "The Hollow Throne", hpBelow: 1.0,
       description: "Shadow Bolts and Cleave.",
-      rotation: ["shadowBolt", "cleave"],
+      rotation: ["soulEruption", "shadowBolt", "cleave"],
       damageMult: 1.0, attackSpeedMult: 1.0,
       adaptEvery: 30, adaptDuration: 20, maxAdaptations: 1,
     },
     {
       name: "Rise of the Dead", hpBelow: 0.75,
       description: "Skeletons rise and Soul Drain begins.",
-      rotation: ["raiseDead", "soulDrain", "shadowBolt", "cleave"],
+      rotation: ["soulEruption", "raiseDead", "soulDrain", "shadowBolt", "cleave"],
       damageMult: 1.15, attackSpeedMult: 1.1,
       adaptEvery: 25, adaptDuration: 20, maxAdaptations: 1,
       onEnter: (b, ctx) => { b.cooldowns.raiseDead = 0; },
@@ -164,7 +174,7 @@ const hollowKing = {
     {
       name: "Crown of Shadows", hpBelow: 0.5,
       description: "Crushing Blow, Shadow Nova and Death Grip. Two adaptations at once.",
-      rotation: ["crushingBlow", "shadowNova", "deathGrip", "soulDrain", "shadowBolt", "cleave"],
+      rotation: ["soulEruption", "crushingBlow", "shadowNova", "deathGrip", "soulDrain", "shadowBolt", "cleave"],
       damageMult: 1.3, attackSpeedMult: 1.2,
       adaptEvery: 20, adaptDuration: 20, maxAdaptations: 2,
       onEnter(b, ctx) {
@@ -174,7 +184,7 @@ const hollowKing = {
     {
       name: "Hollow Fury", hpBelow: 0.25,
       description: "ENRAGED. Doom, faster cooldowns, everything hits harder.",
-      rotation: ["doom", "crushingBlow", "shadowNova", "raiseDead", "deathGrip", "soulDrain", "shadowBolt", "cleave"],
+      rotation: ["soulEruption", "doom", "crushingBlow", "shadowNova", "raiseDead", "deathGrip", "soulDrain", "shadowBolt", "cleave"],
       damageMult: 1.6, attackSpeedMult: 1.4, cooldownRate: 1.5,
       adaptEvery: 15, adaptDuration: 15, maxAdaptations: 2,
       onEnter(b, ctx) {
@@ -213,11 +223,24 @@ const hollowKing = {
         weight: (s) => 0.5 + s.interrupts * 1.5,
       },
       {
-        id: "fixate", name: "Hunter's Grudge", hint: "fixates on the top damage dealer",
+        id: "fixate", name: "Hunter's Grudge", hint: "marks the top damage dealer — the ground erupts under them",
         weight: (s) => (s.topSource ? 2 : 0),
         duration: 8,
+        // The boss still attacks the tank — but the top damage dealer gets hunted by eruptions
+        // every 2 seconds for 8 seconds. Keep moving!
         onApply(b, ctx, s) {
-          if (s.topSource) { b.forceTarget(s.topSource, 8); b.announce(`${b.name} fixates on ${s.topSource.name}!`); }
+          let victim = s.topSource;
+          if (!victim || victim.isDead || victim.role === "tank") {
+            const options = (ctx.enemies || []).filter(p => !p.isDead && p.role !== "tank");
+            victim = options[Math.floor(Math.random() * options.length)];
+          }
+          if (!victim) return;
+          b.announce(`${b.name} marks ${victim.name} with Hunter's Grudge!`);
+          victim.addBuff({
+            id: "huntersGrudge", duration: 8, tickEvery: 2,
+            onTick: (p) => { if (!p.isDead) b.eruptUnder(p, { name: "Hunter's Grudge", radius: 3.5, warn: 2.0, duration: 2 }); },
+          });
+          b.eruptUnder(victim, { name: "Hunter's Grudge", radius: 3.5, warn: 2.0, duration: 2 });
         },
       },
       {

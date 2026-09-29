@@ -3,7 +3,8 @@
 //
 // options(bot, world, now) returns [{ key, target, score }]; higher score = higher priority.
 // world = { boss, party, adds, tank, ctxFor(character) }
-// Use bot.sees(id, condition, now) for anything a human has to notice first.
+// Use bot.sees(id, condition, now, mechanicName) for anything a human has to notice first.
+// Passing the mechanic's name lets the bot's memory of that mechanic affect how well they handle it.
 
 const pct = (u) => u.hp / u.maxHp;
 
@@ -17,6 +18,11 @@ function dpsTarget(bot, world) {
 // Anyone within reach of an interruptible boss cast
 function bossCastIs(boss, key) {
   return boss.cast && boss.cast.key === key;
+}
+
+// Name of what the boss is casting (the mechanic players learn), e.g. "Pyroclasm"
+function castName(boss) {
+  return boss.cast ? boss.abilities[boss.cast.key]?.name : null;
 }
 
 // Is the boss casting something that CAN be interrupted? Returns an id for bot.sees(), or null.
@@ -40,7 +46,7 @@ function inFrontOf(boss, p) {
 function dodgeFrontal(bot, world, dt, now) {
   const b = world.boss, c = bot.character;
   const danger = b.cast && b.abilities[b.cast.key]?.frontal && c.role !== "tank" && inFrontOf(b, c);
-  if (!bot.sees("frontal", !!danger, now)) return false;
+  if (!bot.sees("frontal", !!danger, now, b.cast ? b.abilities[b.cast.key]?.name : null)) return false;
   bot.moveToward(bot.safeMeleeSpot(b, b.pickTarget()), dt, 0.3);
   return true;
 }
@@ -89,7 +95,8 @@ const PLAYBOOKS = {
       const dpsHasAggro = bossTarget && bossTarget.role !== "tank";
       // Tank swap: the other tank has 3+ Molten Brand stacks and mine have worn off
       const swap = bossTarget && !iAmTanking && bossTarget.role === "tank" && stacks(bossTarget) >= 3 && stacks(k) === 0;
-      const tauntBoss = bot.sees("tauntBoss", !!(pull || dpsHasAggro || swap), now);
+      // Tank swaps are a learned skill (Immolation is what happens when you get it wrong)
+      const tauntBoss = bot.sees("tauntBoss", !!(pull || dpsHasAggro || swap), now, swap ? "Immolation" : null);
 
       // Off-tank: pick up adds that are chewing on non-tanks
       const looseAdd = !iAmTanking && (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank");
@@ -98,11 +105,16 @@ const PLAYBOOKS = {
       const target = !iAmTanking && looseAdd ? looseAdd : b;
       k.setTarget(target);
 
-      const busterIncoming = iAmTanking && bot.sees("bossCast:crushingBlow", bossCastIs(b, "crushingBlow"), now);
+      // Challenge (AoE aggro): pick up enemies that are hitting healers/DPS, or open the pull
+      const looseCount = [b, ...(w.adds || [])].filter(e => !e.isDead && e.pickTarget?.() && e.pickTarget().role !== "tank" && bot.distanceTo(e) < 12).length;
+      const wantChallenge = (bot.mainTank && now < 0.5) || (looseCount > 0 && bot.sees(`loose:${looseCount}`, true, now));
+
+      const busterIncoming = iAmTanking && bot.sees("bossCast:crushingBlow", bossCastIs(b, "crushingBlow"), now, "Crushing Blow");
       const panic = pct(k) < bot.personality.panicHp;
       return [
         { key: "divineTaunt", target: b, score: tauntBoss ? 100 : 0, onUse: () => swap && bot.say("taunt", now, 10) },
         { key: "divineTaunt", target: looseAdd, score: grabAdd ? 75 : 0 },
+        { key: "challenge", target: k, score: wantChallenge ? (looseCount >= 2 ? 85 : 70) : 0 },
         { key: "shieldOfValor", target: k, score: busterIncoming ? 95 : panic || (iAmTanking && stacks(k) >= 3) ? 80 : 0 },
         { key: "sonOfLight", target: k, score: busterIncoming && pct(k) < 0.7 ? 90 : pct(k) < 0.25 ? 85 : 0 },
         { key: "holyTouch", target: k, score: pct(k) < 0.25 ? 88 : 0 },
@@ -125,7 +137,7 @@ const PLAYBOOKS = {
       const t = dpsTarget(bot, w);
       wr.setTarget(t);
       const addsNear = w.adds.filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
-      const kickIt = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now) && bot.distanceTo(b) < 5;
+      const kickIt = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now, castName(b)) && bot.distanceTo(b) < 5;
       const burst = bot.personality.cooldownsEarly || b.phaseIndex >= 2;
       return [
         { key: "pummel", target: b, score: kickIt ? 90 : 0, onUse: (r) => r.interrupted && bot.say("gotInterrupt", now) },
@@ -153,7 +165,7 @@ const PLAYBOOKS = {
       const r = bot.character, b = w.boss;
       const t = dpsTarget(bot, w);
       r.setTarget(t);
-      const kickIt = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now) && bot.distanceTo(b) < 5;
+      const kickIt = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now, castName(b)) && bot.distanceTo(b) < 5;
       const targeted = bot.sees("targeted", b.pickTarget() === r, now);
       return [
         { key: "stealth", target: r, score: now < 0.5 ? 100 : 0 },
@@ -179,7 +191,7 @@ const PLAYBOOKS = {
       m.setTarget(t);
       // Skilled mages wait to counterspell late in the cast; casual ones fire it immediately
       const waitForIt = bot.p.decisionNoise < 0.2 ? (b.cast?.remaining ?? 0) < 1.2 : true;
-      const counter = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now) && waitForIt;
+      const counter = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now, castName(b)) && waitForIt;
       const threatened = bot.sees("targeted", b.pickTarget() === m, now) || pct(m) < bot.personality.panicHp;
       const addsClose = w.adds.filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
       const moving = !!bot.movePlan;
@@ -211,7 +223,7 @@ const PLAYBOOKS = {
       const lp = pct(low);
 
       const doomed = alive.find(a => a.hasBuff("doom"));
-      const seesDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now);
+      const seesDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, "Doom");
       const novaComing = bot.sees("bossCast:shadowNova", bossCastIs(b, "shadowNova"), now);
       const dispel = alive.find(a => a.buffs.some(x => x.dispellable && x.id !== "doom"));
       const manaPct = h.resource.current / h.resource.max;
