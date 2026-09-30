@@ -20,6 +20,8 @@ const LEARN = {
   practice: 0.03,   // handled it correctly: learn 3%
   general: 0.10,    // each attempt, overall skill moves 10% closer to their potential
 };
+// Healers/Knights: checking that a body isn't still lying in the fire before reviving it
+const SAFE_REVIVE = "Safe Revive";
 const HUMAN_ERROR = 0.02; // even a master still fails a mechanic at least 2% of the time
 const TIRED_CHANCE = 0.1; // 10% of attempts a player is "off" (tired, distracted, lag)
 
@@ -61,6 +63,13 @@ const CHAT = {
   taunt: ["taunted, swap!", "I got it", "swapping", "taunt swap"],
   reviving: ["rezzing", "got the rez", "reviving, cover me", "on it, rezzing"],
   revived: ["ty for the rez!", "back up", "ty!!", "I'm back"],
+  waitRez: ["waiting for the fire to clear before I rez", "can't rez yet, they're in the fire", "rez once the fire's gone"],
+  rezCancel: ["cancelling rez, fire's on the body", "stopped the rez — fire", "fire on them, cancelling"],
+  goMelee: ["going in with the scythe", "Reaper stance, moving in", "melee time 💀"],
+  goRanged: ["backing off", "too hot, going ranged", "Deathcaller stance, back to range"],
+  servants: ["servants up", "rise, my minions", "pets out 🧟"],
+  badRez: ["my bad, rezzed you in the fire", "oops, that was in the fire", "sorry!! didn't see the fire", "wasted that rez, my bad"],
+  diedAgain: ["rezzed me in the fire lol", "bro I was still in the fire", "why'd you rez me in that 😭"],
 };
 
 class PlayerBot {
@@ -133,6 +142,33 @@ class PlayerBot {
     const ok = n.willNotice && now >= n.reactAt;
     if (ok && n.mechanic && !n.practiced) { n.practiced = true; this.practice(n.mechanic); }
     return ok;
+  }
+
+  /**
+   * Before starting a revive: does this player check whether the body is still lying
+   * in fire (or under a warning circle that's about to go off)?
+   * Rolled ONCE per body per fire — a player who didn't look won't suddenly notice a tick later.
+   * It's mostly common sense, so everyone starts decent at it, and it gets better with
+   * "Safe Revive" mastery (learned by reviving someone into the fire and watching them die again).
+   */
+  checksBody(id, inDanger, now) {
+    if (!inDanger) { this.noticed.delete(id); return false; }
+    let n = this.noticed.get(id);
+    if (!n) {
+      let m = this.masteryOf(SAFE_REVIVE);
+      if (this.tired) m = Math.max(0, m - 0.25);
+      const chance = Math.min(1 - HUMAN_ERROR, this.p.awareness * (0.75 + 0.25 * m));
+      n = { willNotice: Math.random() < chance, reactAt: now };
+      this.noticed.set(id, n);
+      if (n.willNotice) this.practice(SAFE_REVIVE);
+    }
+    return n.willNotice;
+  }
+
+  // "I did that wrong and it cost us" — learn from your own mistake (like dying to a mechanic)
+  learnFromMistake(mechanic) {
+    const m = this.masteryOf(mechanic);
+    this.mastery[mechanic] = m + (1 - m) * LEARN.ownDeath;
   }
 
   // ------------------------------------------------------------
@@ -401,4 +437,4 @@ class PlayerBot {
   }
 }
 
-module.exports = { PlayerBot, rand, mechanicName, LEARN, HUMAN_ERROR };
+module.exports = { PlayerBot, rand, mechanicName, LEARN, HUMAN_ERROR, SAFE_REVIVE };

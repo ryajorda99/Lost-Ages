@@ -56,7 +56,7 @@
 <body>
 <div id="app">
   <header>
-    <h1>⚔ LOST AGES — FIGHT VIEWER</h1>
+    <h1>⚔ LOST AGES — FIGHT VIEWER <a href="/" style="font-size:12px;color:#e6c35c;margin-left:10px" title="Back to the 3D viewer">3D view</a></h1>
     <span id="liveBadge" style="display:none">● LIVE</span>
     <span id="fightTitle"></span>
     <select id="replayList" title="Recorded fights"></select>
@@ -95,6 +95,7 @@
 
 const CLASS_COLORS = {
   Knight: "#f5c542", Warrior: "#d9823b", Rogue: "#9bd34a", Mage: "#4fc3f7", Healer: "#f2f2f2",
+  Druid: "#ff8c1a", Necromancer: "#b06cff",
 };
 
 const canvas = document.getElementById("canvas");
@@ -284,6 +285,14 @@ function draw() {
     const eb = B.e.find(x => x[0] === e[0]) || e;
     const info = replay.enemies[e[0]];
     drawEnemy(info, lerp(e[1], eb[1], k), lerp(e[2], eb[2], k), e[3], e[4]);
+  }
+
+  // Necromancer's Corrupted Servants: small green blobs
+  for (const pt of A.pt || []) {
+    const pb = (B.pt || []).find(q => q[0] === pt[0]) || pt;
+    const x = sx(lerp(pt[2], pb[2], k)), y = sy(lerp(pt[3], pb[3], k));
+    ctx.fillStyle = "#6fbf3a"; ctx.strokeStyle = "#1d3a10"; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(x, y, Math.max(3, sr(0.45)), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
 
   // Players (dead ones first so the living draw on top)

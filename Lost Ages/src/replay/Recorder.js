@@ -6,6 +6,7 @@
 // If a live viewer is attached, every frame is also sent to the browser as it happens.
 //
 // Version 2 (for the 3D viewer, viewer/3d.html) also saves:
+//   - pets (the Necromancer's Corrupted Servants) in frame.pt
 //   - which way everyone is facing and WHICH ability they're casting
 //   - "actions": every ability used and every auto-attack swing, so the 3D viewer
 //     can play the right animation and spell effect (Fireball flying, Resurrection pillar...)
@@ -44,7 +45,11 @@ class Recorder {
       title,
       fps,
       recordedAt: new Date().toISOString(),
-      players: party.map(p => ({ name: p.name, className: p.className, role: p.role })),
+      // abilities: [key, name, cooldown, cast time] — the 3D viewer's action bar shows these with cooldowns
+      players: party.map(p => ({
+        name: p.name, className: p.className, role: p.role, resource: p.resource.name,
+        abilities: Object.entries(p.abilities).map(([k, a]) => [k, a.name, a.cooldown || 0, a.castTime || 0]),
+      })),
       enemies: [],               // filled as enemies appear: { name, maxHp, boss, elite }
       frames: [],
       events: [],
@@ -52,6 +57,7 @@ class Recorder {
       zoneNames: this.zoneNames,
     };
     this.actions = [];           // abilities used since the last frame (see watch())
+    this.petIds = new Map();     // summoned pets (Necromancer's Corrupted Servants) -> id
     party.forEach(p => this.watch(p));
     this.live?.startFight(this.data);
   }
@@ -70,10 +76,16 @@ class Recorder {
     const i = this.party.indexOf(u);
     if (i !== -1) return ["p", i];
     if (u.isEnemy) return ["e", this.enemyId(u)];
+    if (u.isPet) return ["m", this.petId(u)];
     return null;
   }
 
-  // One action = [actor kind, actor index, ability key, target kind, target index]
+  petId(pet) {
+    if (!this.petIds.has(pet)) this.petIds.set(pet, this.petIds.size);
+    return this.petIds.get(pet);
+  }
+
+  // One action = [actor kind ("p" player, "e" enemy, "m" pet), actor index, ability key, target kind, target index]
   action(actor, key, target) {
     const a = this.ref(actor);
     if (!a) return;
@@ -100,10 +112,11 @@ class Recorder {
     if (time < this.nextFrameAt) return;
     this.nextFrameAt = time + 1 / this.fps;
 
-    // Players: [x, y, hp%, dead, casting, facing angle, cast ability key, cast progress 0-1]
+    // Players: [x, y, hp%, dead, casting, facing angle, cast ability key, cast progress 0-1, resource % (mana/rage...)]
     const players = this.party.map(p => [
       r1(p.position.x), r1(p.position.y), r2(Math.max(0, p.hp / p.maxHp)), p.isDead ? 1 : 0, p.cast ? 1 : 0,
       facing(p, p.cast?.target || p.target), p.cast ? p.cast.key : 0, castProgress(p),
+      r2(p.resource.max ? p.resource.current / p.resource.max : 0),
     ]);
 
     const list = [];
@@ -136,7 +149,18 @@ class Recorder {
     let cast = null;
     if (boss?.cast) cast = [boss.abilities[boss.cast.key]?.name || boss.cast.key, r2(1 - boss.cast.remaining / boss.cast.total)];
 
+    // Pets: [pet id, owner index, x, y, facing angle]
+    const pets = [];
+    this.party.forEach((p, i) => {
+      for (const pet of p.servants || []) {
+        if (pet.isDead) continue;
+        this.watch(pet);
+        pets.push([this.petId(pet), i, r1(pet.position.x), r1(pet.position.y), facing(pet, pet.target)]);
+      }
+    });
+
     const frame = { t: r2(time), p: players, e: foes, z: zones };
+    if (pets.length) frame.pt = pets;
     if (this.actions.length) { frame.a = this.actions; this.actions = []; }
     if (cast) frame.c = cast;
     if (boss) frame.ph = boss.phaseIndex + 1;

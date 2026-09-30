@@ -4,75 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lost Ages — 3D Fight Viewer</title>
+<!--
+  3d.html — watch Lost Ages fights in 3D (live or saved replays).
 
+  Opened automatically by:   node scripts/simulate.js --boss ashenTyrant
+  Or for saved replays:       node scripts/viewer.js
+  (The old top-down view is still there: add --2d, or open /2d)
+
+  The game interface on top (boss frame, raid frames, action bar, minimap, chat) is in hud.js.
+  Spell visuals are in effects.js. Press G to turn glow + particles off on slower PCs.
+
+  CHARACTERS: until you add real 3D models, everyone is drawn as a simple low-poly
+  figure built in code (armour, weapons and colours per class).
+  To use real models, put .glb files in viewer/models/ — press M in the viewer to see
+  which file names it looks for (e.g. models/knight.glb, models/the-hollow-king.glb).
+  Animation clips are matched by name: Idle, Run/Walk, Attack/Slash, Cast/Spell, Death/Die.
+
+  Uses Three.js (loaded from the internet, so you need a connection the first time).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#0d0f16; --panel:rgba(12,14,22,.82); --line:rgba(255,255,255,.1); --text:#e8e6e0; --dim:#9a98a8; --gold:#e6c35c; }
+  /* The game interface (boss frame, raid frames, action bar, minimap...) lives in hud.js */
   * { box-sizing: border-box; }
-  html, body { margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--text); font:13px/1.35 system-ui, "Segoe UI", sans-serif; }
+  html, body { margin:0; height:100%; overflow:hidden; background:#0d0f16; color:#ece6d6; font:13px/1.35 "Alegreya Sans", "Segoe UI", sans-serif; }
   canvas { display:block; }
-  .panel { position:absolute; background:var(--panel); border:1px solid var(--line); border-radius:8px; backdrop-filter:blur(4px); }
 
-  #topbar { top:10px; left:10px; right:10px; height:40px; display:flex; align-items:center; gap:10px; padding:0 12px; }
-  #topbar .title { font-weight:700; color:var(--gold); white-space:nowrap; }
-  #topbar .status { color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #topbar .spacer { flex:1; }
-  button, select { background:#1c2030; color:var(--text); border:1px solid var(--line); border-radius:5px; padding:4px 9px; font:inherit; cursor:pointer; }
-  button:hover, select:hover { border-color:#556; }
-  button.on { border-color:var(--gold); color:var(--gold); }
-  select { max-width:260px; }
-
-  #boss { top:60px; left:50%; transform:translateX(-50%); width:min(520px, calc(100% - 20px)); padding:8px 12px; display:none; }
-  #boss .row { display:flex; justify-content:space-between; margin-bottom:4px; }
-  #boss .name { font-weight:700; }
-  #boss .phase { color:var(--gold); }
-  .bar { position:relative; height:16px; background:#2a1a1a; border-radius:4px; overflow:hidden; }
-  .bar .fill { position:absolute; inset:0 auto 0 0; background:linear-gradient(#d33,#911); transition:width .15s; }
-  .bar span { position:absolute; inset:0; text-align:center; font-size:11px; line-height:16px; font-weight:600; text-shadow:0 1px 2px #000; }
-  #castbar { margin-top:5px; height:14px; background:#221c10; display:none; }
-  #castbar .fill { background:linear-gradient(#f5c542,#b8860b); transition:none; }
-  #castbar span { line-height:14px; }
-
-  #raid { top:60px; left:10px; width:190px; padding:6px; max-height:calc(100% - 180px); overflow:auto; }
-  .rf { display:flex; align-items:center; gap:6px; padding:2px 4px; border-radius:4px; cursor:pointer; }
-  .rf:hover { background:rgba(255,255,255,.06); }
-  .rf.follow { outline:1px solid var(--gold); }
-  .rf .n { width:62px; font-size:11px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-  .rf .b { flex:1; height:9px; background:#222; border-radius:3px; overflow:hidden; }
-  .rf .b div { height:100%; transition:width .15s; }
-  .rf.dead { opacity:.45; }
-  .rf.dead .n { text-decoration:line-through; }
-  .rf .c { width:8px; height:8px; border-radius:2px; background:var(--gold); opacity:0; }
-  .rf .c.on { opacity:1; }
-
-  #log { right:10px; bottom:10px; width:min(400px, calc(100% - 20px)); height:210px; padding:6px 8px; overflow:auto; font-size:12px; }
-  #log div { padding:1px 0; }
-  #log .t { color:var(--dim); margin-right:6px; font-variant-numeric:tabular-nums; }
-  #log .death { color:#ff7b7b; } #log .rez { color:#ffe28a; } #log .boss { color:#ffb35c; font-weight:600; } #log .chat { color:#9fd0ff; } #log .info { color:#b8f5b0; }
-
-  #help { left:10px; bottom:10px; padding:6px 10px; color:var(--dim); font-size:11px; }
-  #help b { color:var(--text); }
-
-  #models { top:60px; right:10px; width:min(340px, calc(100% - 20px)); padding:10px 12px; display:none; max-height:60%; overflow:auto; }
-  #models h3 { margin:0 0 6px; font-size:13px; color:var(--gold); }
-  #models code { color:#ffd9a0; }
-  #models .ok { color:#8f8; } #models .no { color:var(--dim); }
-
-  #banner { position:absolute; top:38%; left:50%; transform:translate(-50%,-50%); font-size:64px; font-weight:800; letter-spacing:4px; text-shadow:0 4px 24px #000; pointer-events:none; display:none; }
-  #banner.win { color:var(--gold); } #banner.wipe { color:#ff5555; }
-
+  /* Name plates above everyone's head */
   #plates { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
   .plate { position:absolute; transform:translate(-50%,-100%); text-align:center; white-space:nowrap; }
-  .plate .pn { font-size:10px; text-shadow:0 1px 2px #000, 0 0 3px #000; }
-  .plate .ph { width:44px; height:4px; margin:1px auto 0; background:rgba(0,0,0,.6); border-radius:2px; overflow:hidden; }
-  .plate .ph div { height:100%; background:#4c4; }
-  .plate.enemy .ph { width:70px; height:5px; } .plate.enemy .ph div { background:#d33; }
-  .plate.boss { display:none; }
+  .plate .pn { font-size:11px; font-weight:700; text-shadow:0 1px 2px #000, 0 0 3px #000; }
+  .plate .ph { width:46px; height:5px; margin:1px auto 0; background:rgba(0,0,0,.7); border:1px solid #000; border-radius:2px; overflow:hidden; }
+  .plate .ph div { height:100%; background:linear-gradient(#6fe06a,#2a8a26); }
+  .plate.enemy .pn { font-family:Cinzel, serif; }
+  .plate.enemy .ph { width:74px; height:6px; } .plate.enemy .ph div { background:linear-gradient(#ff5a4a,#8c1612); }
+  .plate.boss, .plate.pet { display:none; }
   .plate.dead { opacity:.35; } .plate.dead .ph { display:none; }
   body.nonames .plate:not(.enemy) .pn { display:none; }
 
-  #loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--dim); font-size:15px; }
-
-  @media (max-width: 700px) { #raid { display:none; } #log { height:130px; } #help { display:none; } #banner { font-size:40px; } }
+  #loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#9a93a8; font:16px Cinzel, serif; }
 </style>
 <script type="importmap">
 { "imports": {
@@ -85,36 +56,19 @@
 <div id="loading">Loading 3D viewer…</div>
 <div id="plates"></div>
 
-<div id="topbar" class="panel">
-  <span class="title">⚔ Lost Ages 3D</span>
-  <span class="status" id="status">connecting…</span>
-  <span class="spacer"></span>
-  <button id="liveBtn" title="Watch the fight that's running now">● Live</button>
-  <select id="replaySel" title="Saved replays"><option value="">Saved replays…</option></select>
-  <button id="pauseBtn">❚❚</button>
-  <button id="speedBtn">1×</button>
-  <button id="modelsBtn" title="Which 3D model files the viewer looks for (M)">Models</button>
-  <a href="/" style="color:var(--dim)">2D</a>
-</div>
 
-<div id="boss" class="panel">
-  <div class="row"><span class="name" id="bossName"></span><span class="phase" id="bossPhase"></span></div>
-  <div class="bar" id="bossBar"><div class="fill"></div><span></span></div>
-  <div class="bar" id="castbar"><div class="fill"></div><span></span></div>
-</div>
-
-<div id="raid" class="panel"></div>
-<div id="models" class="panel"></div>
-<div id="log" class="panel"></div>
-<div id="help" class="panel"><b>Drag</b> rotate · <b>Right-drag</b> pan · <b>Scroll</b> zoom · <b>Click a name</b> follow · <b>B</b> follow boss · <b>N</b> names · <b>M</b> models · <b>Space</b> pause</div>
-<div id="banner"></div>
 
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { EffectSystem, effectFor, castColor } from "./effects.js";
+import { createHUD } from "./hud.js";
 
 const $ = (id) => document.getElementById(id);
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -155,6 +109,80 @@ Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, n
 scene.add(sun, sun.target);
 const bossLight = new THREE.PointLight(0xff5522, 0, 40, 1.5);   // glow around fiery bosses
 scene.add(bossLight);
+// Cool light from behind: outlines characters against the dark floor
+const rim = new THREE.DirectionalLight(0x6a7cff, 0.9);
+rim.position.set(-40, 25, -50);
+scene.add(rim);
+
+// ---------- Glow (bloom): spells, torches, eyes and fire shine ----------
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.55, 0.35, 0.93);   // strength, spread, how bright before it glows
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+let fancy = true;   // G toggles glow + particles
+
+// ---------- Particles: embers rising from fire, sparks from spell hits, floating motes ----------
+function dotTexture() {
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d");
+  const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grd.addColorStop(0, "rgba(255,255,255,1)"); grd.addColorStop(0.35, "rgba(255,255,255,.55)"); grd.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+class Particles {
+  constructor(max = 2500) {
+    this.max = max; this.next = 0;
+    this.pos = new Float32Array(max * 3).fill(-9999);
+    this.col = new Float32Array(max * 3);
+    this.vel = new Float32Array(max * 3);
+    this.base = new Float32Array(max * 3);
+    this.life = new Float32Array(max);
+    this.maxLife = new Float32Array(max);
+    this.drag = new Float32Array(max);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(this.pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(this.col, 3));
+    this.points = new THREE.Points(geo, new THREE.PointsMaterial({
+      size: 0.32, map: dotTexture(), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    this.points.frustumCulled = false;
+    scene.add(this.points);
+    this.tmp = new THREE.Color();
+  }
+  // Spawn one particle at (x,y,z) moving (vx,vy,vz), glowing `color`, living `life` seconds
+  one(x, y, z, vx, vy, vz, color, life, drag = 0.6) {
+    const i = this.next; this.next = (this.next + 1) % this.max;
+    this.pos.set([x, y, z], i * 3); this.vel.set([vx, vy, vz], i * 3);
+    this.tmp.setHex(color); this.base.set([this.tmp.r, this.tmp.g, this.tmp.b], i * 3);
+    this.life[i] = this.maxLife[i] = life; this.drag[i] = drag;
+  }
+  // A burst of sparks flying out from a point
+  burst(p, color, count, speed = 3) {
+    for (let n = 0; n < count; n++) {
+      const a = Math.random() * Math.PI * 2, up = Math.random();
+      this.one(p.x, p.y, p.z, Math.cos(a) * speed * (0.3 + Math.random()), up * speed * 1.2, Math.sin(a) * speed * (0.3 + Math.random()), color, 0.4 + Math.random() * 0.5, 2.5);
+    }
+  }
+  update(dt) {
+    for (let i = 0; i < this.max; i++) {
+      if (this.life[i] <= 0) continue;
+      this.life[i] -= dt;
+      const k = i * 3, d = Math.max(0, 1 - this.drag[i] * dt);
+      this.vel[k] *= d; this.vel[k + 2] *= d;
+      this.pos[k] += this.vel[k] * dt; this.pos[k + 1] += this.vel[k + 1] * dt; this.pos[k + 2] += this.vel[k + 2] * dt;
+      const f = this.life[i] > 0 ? Math.min(1, this.life[i] / this.maxLife[i] * 1.5) : 0;
+      this.col[k] = this.base[k] * f; this.col[k + 1] = this.base[k + 1] * f; this.col[k + 2] = this.base[k + 2] * f;
+      if (this.life[i] <= 0) this.pos[k + 1] = -9999;
+    }
+    this.points.geometry.attributes.position.needsUpdate = true;
+    this.points.geometry.attributes.color.needsUpdate = true;
+  }
+  clear() { this.life.fill(0); this.pos.fill(-9999); this.col.fill(0); }
+}
+const particles = new Particles();
 
 // Stone floor texture drawn in code (no image files needed)
 function stoneTexture() {
@@ -199,8 +227,20 @@ for (let i = 0; i < 18; i++) {
   scene.add(p, t);
 }
 
+// A few torches cast real flickering light (more would slow things down)
+const torchLights = [];
+for (let i = 0; i < 6; i++) {
+  const a = (i / 6) * Math.PI * 2 + 0.17;
+  const l = new THREE.PointLight(0xff8a3a, 30, 32, 1.6);
+  l.position.set(Math.cos(a) * 58, 9, Math.sin(a) * 58);
+  scene.add(l);
+  torchLights.push(l);
+}
+
 // Each boss gets its own mood
+let theme = "stone";
 function setTheme(bossName = "") {
+  theme = /Azgaroth|Ashen|Tyrant|Forge/i.test(bossName) ? "fire" : /Hollow|Crypt/i.test(bossName) ? "shadow" : "stone";
   if (/Azgaroth|Ashen|Tyrant|Forge/i.test(bossName)) {
     scene.background.set(0x160806); scene.fog.color.set(0x160806);
     floorMat.color.set(0xd09080); hemi.color.set(0xcc7755); sun.color.set(0xffb080);
@@ -214,12 +254,13 @@ function setTheme(bossName = "") {
 }
 
 const effects = new EffectSystem(scene);
+effects.onBurst = (pos, color, size) => { if (fancy && size >= 0.6) particles.burst(pos, color, Math.round(4 + size * 4), 2 + size * 1.5); };
 
 // =====================================================================
 //  CHARACTER LOOKS (placeholder figures until you add .glb models)
 // =====================================================================
-const CLASS_COLORS = { Knight: "#f58cba", Warrior: "#c79c6e", Rogue: "#fff569", Mage: "#69ccf0", Healer: "#ffffff" };
-const ROLE_RING = { tank: 0x4a8cff, healer: 0x44dd66, dps: 0xff5555, enemy: 0xff8800 };
+const CLASS_COLORS = { Knight: "#f58cba", Warrior: "#c79c6e", Rogue: "#fff569", Mage: "#69ccf0", Healer: "#ffffff", Druid: "#ff8c1a", Necromancer: "#b06cff" };
+const ROLE_RING = { tank: 0x4a8cff, healer: 0x44dd66, dps: 0xff5555, enemy: 0xff8800, pet: 0x6fbf3a };
 
 const CLASS_LOOK = {
   Knight:  { body: 0xb8bcc8, trim: 0xd4af37, cape: 0x2a4a9a, weapon: "sword", offhand: "shield", helm: true },
@@ -227,9 +268,12 @@ const CLASS_LOOK = {
   Rogue:   { body: 0x2e2838, trim: 0x6a2a8a, weapon: "dagger", offhand: "dagger", hood: true },
   Mage:    { body: 0x2a4aa8, trim: 0x9ad0ff, weapon: "staff", orb: 0x7fd4ff, robe: true, hat: true },
   Healer:  { body: 0xece6d6, trim: 0xd4af37, weapon: "staff", orb: 0xffd966, robe: true, halo: true },
+  Druid:   { body: 0x5a4a2a, trim: 0x6aa84f, cape: 0x2f5a2a, weapon: "staff", orb: 0x8fe36a, antlers: true },
+  Necromancer: { body: 0x1e1a24, trim: 0x8a4dff, weapon: "scythe", robe: true, hood: true, eyes: 0x9bff6a },
 };
 
 function enemyLook(name, isBoss, elite) {
+  if (/Corrupted Servant/i.test(name)) return { body: 0x4a6a3a, glow: 0x1a3300, trim: 0x2a3a1a, hunch: true, noWeapon: true, eyes: 0x9bff6a, size: 0.8 };
   if (/Hollow King/i.test(name)) return { body: 0x2a2833, trim: 0x8a6aff, weapon: "greatsword", crown: true, eyes: 0xb07cff, size: 2.6, cape: 0x1a1030 };
   if (/Azgaroth|Tyrant/i.test(name)) return { body: 0x2a1410, trim: 0xff5a1a, glow: 0x661800, weapon: "axe", horns: true, eyes: 0xffaa33, size: 3.0, wings: true };
   if (/Elemental/i.test(name)) return { body: 0x442211, glow: 0xff6a1a, robe: true, eyes: 0xffee88, size: 1.3, noWeapon: true };
@@ -272,6 +316,12 @@ function buildWeapon(kind, look) {
     g.add(mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.3), wood, 0, 0.45));
     g.add(mesh(new THREE.BoxGeometry(0.05, 0.35, 0.4), steel, 0, 0.95, 0.12));
     g.rotation.x = Math.PI / 2;
+  } else if (kind === "scythe") {
+    g.add(mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.8), wood, 0, 0.5));
+    const blade = mesh(new THREE.TorusGeometry(0.38, 0.035, 4, 14, Math.PI * 0.7), steel, 0, 1.3, -0.3);
+    blade.rotation.y = Math.PI / 2;
+    g.add(blade);
+    g.rotation.x = Math.PI / 2.4;
   } else if (kind === "dagger") {
     g.add(mesh(new THREE.BoxGeometry(0.05, 0.35, 0.02), steel, 0, 0.2));
     g.add(mesh(new THREE.BoxGeometry(0.14, 0.03, 0.04), trim, 0, 0.03));
@@ -334,11 +384,19 @@ function buildFigure(look) {
   const head = new THREE.Group();
   head.position.y = 0.8;
   spine.add(head);
-  head.add(mesh(new THREE.IcosahedronGeometry(0.2, 1), mat(look.robe || look.hood ? 0xe0b89a : look.body)));
+  head.add(mesh(new THREE.IcosahedronGeometry(0.2, 1), mat(look.eyes && look.hood ? 0x2a2630 : look.robe || look.hood ? 0xe0b89a : look.body)));
 
   if (look.helm) head.add(mesh(new THREE.IcosahedronGeometry(0.225, 1), trimMat, 0, 0.03, -0.01));
   if (look.helm) head.add(mesh(new THREE.BoxGeometry(0.3, 0.04, 0.05), mat(0x111111), 0, 0.02, 0.2));
-  if (look.hood) head.add(mesh(new THREE.ConeGeometry(0.28, 0.5, 8), bodyMat, 0, 0.12, -0.05));
+  if (look.hood) {
+    // A hood that's open at the front, so the face (and glowing eyes) show
+    const hood = mesh(new THREE.SphereGeometry(0.27, 12, 8, Math.PI / 2 + 0.9, Math.PI * 2 - 1.8, 0, Math.PI * 0.72),
+      mat(look.body, { side: THREE.DoubleSide }), 0, 0.03, -0.02);
+    head.add(hood);
+    const tip = mesh(new THREE.ConeGeometry(0.12, 0.3, 6), bodyMat, 0, 0.12, -0.26);
+    tip.rotation.x = -1.1;
+    head.add(tip);
+  }
   if (look.hat) {
     head.add(mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.03, 12), bodyMat, 0, 0.16, 0));
     const tip = mesh(new THREE.ConeGeometry(0.2, 0.6, 10), bodyMat, 0, 0.45, -0.05);
@@ -361,6 +419,16 @@ function buildFigure(look) {
       const h = mesh(new THREE.ConeGeometry(0.06, 0.4, 6), mat(0x1a1410), 0.16 * side, 0.2, 0);
       h.rotation.z = -0.6 * side;
       head.add(h);
+    }
+  }
+  if (look.antlers) {
+    for (const side of [-1, 1]) {
+      const main = mesh(new THREE.CylinderGeometry(0.015, 0.025, 0.42), mat(0x8a6a44), 0.12 * side, 0.3, -0.02);
+      main.rotation.z = -0.5 * side;
+      head.add(main);
+      const tine = mesh(new THREE.CylinderGeometry(0.01, 0.018, 0.2), mat(0x8a6a44), 0.2 * side, 0.4, 0.04);
+      tine.rotation.set(0.5, 0, 0.3 * side);
+      head.add(tine);
     }
   }
   if (look.eyes) {
@@ -464,7 +532,7 @@ class Unit {
     this.pose.add(this.figure);
 
     // Coloured ring on the ground: blue tank, green healer, red dps, orange enemy
-    const ringColor = ROLE_RING[o.kind === "p" ? o.role : "enemy"] ?? 0xffffff;
+    const ringColor = ROLE_RING[o.kind === "p" ? o.role : o.kind === "m" ? "pet" : "enemy"] ?? 0xffffff;
     this.ring = new THREE.Mesh(new THREE.RingGeometry(0.55, 0.68, 28),
       new THREE.MeshBasicMaterial({ color: ringColor, transparent: true, opacity: 0.7, depthWrite: false }));
     this.ring.rotation.x = -Math.PI / 2;
@@ -481,7 +549,7 @@ class Unit {
 
     // Nameplate
     this.plate = document.createElement("div");
-    this.plate.className = "plate" + (o.kind === "e" ? " enemy" : "") + (o.isBoss ? " boss" : "");
+    this.plate.className = "plate" + (o.kind === "e" ? " enemy" : "") + (o.kind === "m" ? " pet" : "") + (o.isBoss ? " boss" : "");
     const color = o.kind === "p" ? CLASS_COLORS[o.className] || "#fff" : "#ff9a7a";
     this.plate.innerHTML = `<div class="pn" style="color:${color}">${o.name}</div><div class="ph"><div></div></div>`;
     this.plateFill = this.plate.querySelector(".ph div");
@@ -509,7 +577,8 @@ class Unit {
   }
 
   // New data from the simulation (10 times a second)
-  setFrame(x, z, hp, dead, casting, facing, castKey, castProg, frameDt) {
+  setFrame(x, z, hp, dead, casting, facing, castKey, castProg, frameDt, resourcePct) {
+    if (resourcePct != null) this.resourcePct = resourcePct;
     const moved = Math.hypot(x - this.tx, z - this.tz);
     if (!this.placed) { this.root.position.set(x, 0, z); this.placed = true; }
     else this.speed = moved / frameDt;
@@ -637,7 +706,7 @@ class Unit {
   updatePlate(width, height) {
     const p = this.root.position;
     const v = new THREE.Vector3(p.x, p.y + this.height + 0.35, p.z).project(camera);
-    const show = this.root.visible && v.z < 1 && !(this.dead && this.kind === "e");
+    const show = this.root.visible && v.z < 1 && !(this.dead && this.kind === "e") && this.kind !== "m";
     this.plate.style.display = show ? "" : "none";
     if (!show) return;
     this.plate.style.left = ((v.x + 1) / 2 * width) + "px";
@@ -715,24 +784,24 @@ scene.add(targetLine);
 // =====================================================================
 //  FIGHT STATE
 // =====================================================================
-let data = null, players = [], enemies = [], lastT = null, bossUnit = null, bossTarget = null, follow = null;
+let data = null, players = [], enemies = [], pets = [], lastT = null, bossUnit = null, bossTarget = null, follow = null;
 
 function resetFight(d) {
   players.forEach(u => u.dispose());
   enemies.forEach(u => u?.dispose());
+  pets.forEach(u => u?.dispose());
+  pets = [];
   effects.clear();
   syncZones([]);
   data = d; lastT = null; bossUnit = null; bossTarget = null; follow = null;
   players = d.players.map((p, i) => new Unit({ kind: "p", index: i, ...p }));
   enemies = [];
-  $("log").innerHTML = "";
-  $("banner").style.display = "none";
-  $("boss").style.display = "none";
+  particles.clear();
   const bossInfo = (d.enemies || []).find(e => e.boss);
   setTheme(bossInfo?.name || d.title);
-  buildRaidFrames();
+  hud.reset(d, players);
   renderModelsPanel();
-  $("status").textContent = d.title;
+  hud.status(d.title);
 }
 
 function enemyUnit(id) {
@@ -746,10 +815,16 @@ function enemyUnit(id) {
   return enemies[id];
 }
 
+// Necromancer's Corrupted Servants
+function petUnit(id) {
+  if (!pets[id]) pets[id] = new Unit({ kind: "m", index: id, name: "Corrupted Servant" });
+  return pets[id];
+}
+
 function applyFrame(f) {
   const frameDt = lastT == null ? 0.1 : Math.max(0.05, f.t - lastT);
   lastT = f.t;
-  f.p.forEach((r, i) => players[i]?.setFrame(r[0], r[1], r[2], !!r[3], !!r[4], r[5], r[6], r[7], frameDt));
+  f.p.forEach((r, i) => players[i]?.setFrame(r[0], r[1], r[2], !!r[3], !!r[4], r[5], r[6], r[7], frameDt, r[8]));
   const seen = new Set();
   for (const r of f.e) {
     const u = enemyUnit(r[0]);
@@ -758,30 +833,25 @@ function applyFrame(f) {
     seen.add(r[0]);
   }
   enemies.forEach((u, id) => { if (u && !seen.has(id)) u.root.visible = false; });
+  const seenPets = new Set();
+  for (const [id, , x, y, fc] of f.pt || []) {
+    const u = petUnit(id);
+    const fresh = !u.placed;
+    u.setFrame(x, y, 1, false, false, fc, 0, 0, frameDt);
+    if (fresh) effects.play({ type: "poof", color: 0x7dff6a }, u, null);   // rising from the ground
+    seenPets.add(id);
+  }
+  pets.forEach((u, id) => { if (u && !seenPets.has(id) && u.root.visible) { effects.play({ type: "poof", color: 0x333344 }, u, null); u.root.visible = false; } });
   syncZones(f.z);
   for (const a of f.a || []) playAction(a);
 
-  // Boss frame
-  if (bossUnit) {
-    $("boss").style.display = "block";
-    $("bossName").textContent = bossUnit.name;
-    $("bossPhase").textContent = f.ph ? `Phase ${f.ph}` : "";
-    $("bossBar").querySelector(".fill").style.width = (bossUnit.hp * 100) + "%";
-    $("bossBar").querySelector("span").textContent = Math.round(bossUnit.hp * 100) + "%";
-    const cb = $("castbar");
-    if (f.c) {
-      cb.style.display = "block";
-      cb.querySelector(".fill").style.width = (f.c[1] * 100) + "%";
-      cb.querySelector("span").textContent = f.c[0];
-    } else cb.style.display = "none";
-  }
   bossTarget = f.tg != null ? players[f.tg] : null;
-  updateRaidFrames();
-  $("status").textContent = `${data.title} — ${f.t.toFixed(0)}s`;
+  hud.frame(f, { players, bossUnit, bossTarget, follow });
+  hud.status(`${data.title}`);
 }
 
 function unitRef(kind, i) {
-  return kind === "p" ? players[i] : kind === "e" ? enemyUnit(i) : null;
+  return kind === "p" ? players[i] : kind === "e" ? enemyUnit(i) : kind === "m" ? pets[i] || null : null;
 }
 function playAction([ak, ai, key, tk, ti]) {
   const actor = unitRef(ak, ai);
@@ -789,62 +859,27 @@ function playAction([ak, ai, key, tk, ti]) {
   const target = unitRef(tk, ti);
   const dist = target ? actor.root.position.distanceTo(target.root.position) : 0;
   const spec = effectFor(key, dist);
+  if (ak === "p" && key !== "_swing") hud.abilityUsed(ai, key, lastT ?? 0);
   actor.act(key, target, spec);
   effects.play(spec, actor, target);
 }
 
-// ---------- Raid frames (left panel) ----------
-function buildRaidFrames() {
-  const box = $("raid");
-  box.innerHTML = "";
-  players.forEach((u) => {
-    const row = document.createElement("div");
-    row.className = "rf";
-    row.innerHTML = `<span class="c" title="Boss is attacking"></span><span class="n" style="color:${CLASS_COLORS[u.className]}">${u.name}</span><span class="b"><div style="background:${CLASS_COLORS[u.className]}"></div></span>`;
-    row.onclick = () => { follow = follow === u ? null : u; updateRaidFrames(); };
-    u.frame = row;
-    box.appendChild(row);
-  });
-}
-function updateRaidFrames() {
-  for (const u of players) {
-    if (!u.frame) continue;
-    u.frame.classList.toggle("dead", u.dead);
-    u.frame.classList.toggle("follow", follow === u);
-    u.frame.querySelector(".b div").style.width = Math.round(u.hp * 100) + "%";
-    u.frame.querySelector(".c").classList.toggle("on", bossTarget === u);
-  }
-}
-
-// ---------- Combat log ----------
-function addLog(time, text, cls = "") {
-  const box = $("log");
-  if (!cls) cls = /💀|died/.test(text) ? "death" : /✨|revive/i.test(text) ? "rez" : /^>>>|PHASE|BERSERK/.test(text) ? "boss" : /💬/.test(text) ? "chat" : "";
-  const row = document.createElement("div");
-  row.className = cls;
-  row.innerHTML = (time != null ? `<span class="t">${Number(time).toFixed(0)}s</span>` : "") + text.replace(/</g, "&lt;");
-  box.appendChild(row);
-  while (box.children.length > 120) box.firstChild.remove();
-  box.scrollTop = box.scrollHeight;
-}
-
-function showResult(result) {
-  if (!result) return;
-  const b = $("banner");
-  b.textContent = result.won ? "VICTORY" : "WIPE";
-  b.className = result.won ? "win" : "wipe";
-  b.style.display = "block";
-}
+// ---------- The game interface (hud.js) ----------
+const hud = createHUD({
+  classColors: CLASS_COLORS,
+  onFollow: (u) => { follow = follow === u ? null : u; },
+});
+const addLog = (t, text, cls) => hud.log(t, text, cls);
+const showResult = (r) => hud.result(r);
 
 // ---------- Models panel ----------
 function renderModelsPanel() {
-  const box = $("models");
-  if (!data) { box.innerHTML = ""; return; }
-  const files = [...new Set([...players, ...enemies.filter(Boolean)].map(modelFileFor))];
-  box.innerHTML = `<h3>3D models for this fight</h3>
+  if (!data) { hud.models(""); return; }
+  const files = [...new Set([...players, ...enemies.filter(Boolean), ...pets.filter(Boolean)].map(modelFileFor))];
+  hud.models(`<div class="hud-title" style="font-size:13px;margin-bottom:6px">3D models for this fight</div>
     <p style="margin:0 0 8px;color:var(--dim)">Put <code>.glb</code> files in <code>viewer/models/</code> with these names, then refresh the page.
     Until then the viewer draws the built-in figures.</p>` +
-    files.map(f => availableModels.has(f) ? `<div class="ok">✔ models/${f}</div>` : `<div class="no">○ models/${f}</div>`).join("");
+    files.map(f => availableModels.has(f) ? `<div class="ok">✔ models/${f}</div>` : `<div class="no">○ models/${f}</div>`).join(""));
 }
 
 // =====================================================================
@@ -855,11 +890,11 @@ let replay = null, replayClock = 0, frameIdx = 0, eventIdx = 0;
 
 function startLive() {
   mode = "live"; replay = null;
-  $("liveBtn").classList.add("on");
-  $("replaySel").value = "";
+  hud.el("live").classList.add("on");
+  hud.el("replays").value = "";
   source?.close();
   source = new EventSource("/live");
-  $("status").textContent = "waiting for a fight… (run node scripts/simulate.js)";
+  hud.status("waiting for a fight… (run node scripts/simulate.js)");
   source.onmessage = (ev) => {
     const msg = JSON.parse(ev.data);
     if (msg.type === "start") {
@@ -878,14 +913,13 @@ function startLive() {
     else if (msg.type === "end") showResult(msg.result);
     else if (msg.type === "info") addLog(null, msg.text, "info");
   };
-  source.onerror = () => { $("status").textContent = "not connected — is the simulation running?"; };
+  source.onerror = () => hud.status("not connected — is the simulation running?");
 }
 
 async function loadReplayList() {
   try {
     const list = await (await fetch("/api/replays")).json();
-    const sel = $("replaySel");
-    sel.innerHTML = `<option value="">Saved replays…</option>` + list.map(f => `<option>${f}</option>`).join("");
+    hud.setReplays(list);
     return list;
   } catch { return []; }
 }
@@ -893,11 +927,11 @@ async function loadReplayList() {
 async function startReplay(file) {
   source?.close(); source = null;
   mode = "replay";
-  $("liveBtn").classList.remove("on");
+  hud.el("live").classList.remove("on");
   const d = await (await fetch("/replays/" + encodeURIComponent(file))).json();
   resetFight(d);
   replay = d; replayClock = 0; frameIdx = 0; eventIdx = 0; paused = false;
-  $("pauseBtn").textContent = "❚❚";
+  hud.el("pause").textContent = "❚❚";
 }
 
 function tickReplay(dt) {
@@ -905,26 +939,31 @@ function tickReplay(dt) {
   replayClock += dt * speed;
   while (frameIdx < replay.frames.length && replay.frames[frameIdx].t <= replayClock) applyFrame(replay.frames[frameIdx++]);
   while (eventIdx < replay.events.length && replay.events[eventIdx][0] <= replayClock) { const [t, text] = replay.events[eventIdx++]; addLog(t, text); }
-  if (frameIdx >= replay.frames.length && replay.result && $("banner").style.display === "none") showResult(replay.result);
+  if (frameIdx >= replay.frames.length && replay.result && !replay.shownResult) { replay.shownResult = true; showResult(replay.result); }
 }
 
 // ---------- Controls ----------
-$("liveBtn").onclick = startLive;
-$("replaySel").onchange = (e) => e.target.value && startReplay(e.target.value);
-$("pauseBtn").onclick = () => { paused = !paused; $("pauseBtn").textContent = paused ? "▶" : "❚❚"; };
-$("speedBtn").onclick = () => { speed = speed >= 4 ? 1 : speed * 2; $("speedBtn").textContent = speed + "×"; };
-$("modelsBtn").onclick = () => { const m = $("models"); m.style.display = m.style.display === "block" ? "none" : "block"; $("modelsBtn").classList.toggle("on"); };
+hud.el("live").onclick = startLive;
+hud.el("replays").onchange = (e) => e.target.value && startReplay(e.target.value);
+hud.el("pause").onclick = () => { paused = !paused; hud.el("pause").textContent = paused ? "▶" : "❚❚"; };
+hud.el("speed").onclick = () => { speed = speed >= 4 ? 1 : speed * 2; hud.el("speed").textContent = speed + "×"; };
+hud.el("modelsbtn").onclick = () => hud.toggleModels();
+const setFancy = (on) => { fancy = on; hud.el("gfx").classList.toggle("on", on); if (!on) particles.clear(); };
+hud.el("gfx").onclick = () => setFancy(!fancy);
+setFancy(true);
 addEventListener("keydown", (e) => {
   if (e.target.tagName === "SELECT") return;
-  if (e.code === "Space") { e.preventDefault(); $("pauseBtn").click(); }
+  if (e.code === "Space") { e.preventDefault(); hud.el("pause").click(); }
   if (e.key === "b" || e.key === "B") follow = null;
   if (e.key === "n" || e.key === "N") document.body.classList.toggle("nonames");
-  if (e.key === "m" || e.key === "M") $("modelsBtn").click();
+  if (e.key === "m" || e.key === "M") hud.toggleModels();
+  if (e.key === "g" || e.key === "G") setFancy(!fancy);
 });
 addEventListener("resize", () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
 });
 
 // =====================================================================
@@ -941,8 +980,35 @@ function frame() {
   const animDt = paused ? 0 : dt * (mode === "replay" ? speed : 1);
   players.forEach(u => u.update(animDt, t));
   enemies.forEach(u => u?.update(animDt, t));
+  pets.forEach(u => u?.update(animDt, t));
   effects.update(animDt);
   animateZones(t);
+  if (fancy) {
+    // Embers rise out of burning ground
+    for (const g of zoneMeshes) {
+      if (!g.visible || !g.userData.hostile || g.userData.age < g.userData.warn) continue;
+      const r = g.scale.x, n = Math.min(12, r * r * animDt * 2.5 + (Math.random() < r * animDt * 2 ? 1 : 0));
+      const col = g.userData.disc.material.color.getHex();
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * r;
+        particles.one(g.position.x + Math.cos(a) * d, 0.1, g.position.z + Math.sin(a) * d,
+          (Math.random() - 0.5) * 0.6, 1.2 + Math.random() * 2, (Math.random() - 0.5) * 0.6, Math.random() < 0.3 ? 0xffe0a0 : col, 0.8 + Math.random() * 0.9);
+      }
+    }
+    // Floating motes around the camera: embers (fire), wisps (shadow) or dust
+    if (animDt > 0 && Math.random() < 0.9) {
+      const c = controls.target;
+      for (let i = 0; i < 2; i++) {
+        const a = Math.random() * Math.PI * 2, d = Math.random() * 40;
+        const kind = theme === "fire" ? [0xff7a2a, 0.9] : theme === "shadow" ? [0x8a7cff, 0.35] : [0x8a8578, 0.25];
+        particles.one(c.x + Math.cos(a) * d, Math.random() * 3, c.z + Math.sin(a) * d,
+          (Math.random() - 0.5) * 0.4, kind[1] + Math.random() * 0.5, (Math.random() - 0.5) * 0.4, kind[0], 3 + Math.random() * 4, 0.1);
+      }
+    }
+    particles.update(animDt);
+  }
+  // Torches flicker
+  torchLights.forEach((l, i) => { l.intensity = 26 + Math.sin(t * 9 + i * 2.1) * 4 + Math.random() * 3; });
 
   // Boss target line
   if (bossUnit && bossTarget && !bossUnit.dead && bossUnit.root.visible) {
@@ -974,7 +1040,20 @@ function frame() {
   const w = innerWidth, h = innerHeight;
   players.forEach(u => u.updatePlate(w, h));
   enemies.forEach(u => u?.updatePlate(w, h));
-  renderer.render(scene, camera);
+  pets.forEach(u => u?.updatePlate(w, h));
+
+  // Minimap
+  if (data) {
+    const look = controls.target.clone().sub(camera.position);
+    hud.drawMinimap({
+      players, enemies, pets, zones: zoneState, theme, follow,
+      zoneColor: (nameId, hostile) => zoneColor(data?.zoneNames?.[nameId] || "", hostile),
+      camTarget: controls.target, camAngle: Math.atan2(look.z, look.x),
+    });
+  }
+
+  if (fancy) composer.render();
+  else renderer.render(scene, camera);
 }
 
 // =====================================================================
@@ -986,7 +1065,7 @@ const params = new URLSearchParams(location.search);
 const replays = await loadReplayList();
 if (params.get("replay")) startReplay(params.get("replay"));
 else if (params.has("live")) startLive();
-else if (replays.length) { $("replaySel").value = replays[0]; startReplay(replays[0]); }
+else if (replays.length) { hud.el("replays").value = replays[0]; startReplay(replays[0]); }
 else startLive();
 </script>
 </body>

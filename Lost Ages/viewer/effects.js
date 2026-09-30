@@ -78,6 +78,28 @@ export const EFFECTS = {
   battleShout:     { type: "nova", color: C.blood, radius: 20 },
   recklessness:    { type: "shield", color: C.blood, onSelf: true },
 
+  // ---------- Druid ----------
+  wrath:           { type: "projectile", color: C.nature, size: 0.3, speed: 28 },
+  moonfire:        { type: "strike", color: 0xb8c8ff },
+  starsurge:       { type: "projectile", color: C.arcane, size: 0.5, speed: 24 },
+  rejuvenation:    { type: "heal", color: C.nature },
+  regrowth:        { type: "heal", color: C.nature, big: true },
+  tranquility:     { type: "nova", color: C.nature, radius: 40, pillar: true },
+  removeCorruption:{ type: "heal", color: 0xffffff },
+  innervate:       { type: "beam", color: C.frost },
+  markOfTheWild:   { type: "nova", color: C.nature, radius: 40 },
+  barkskin:        { type: "shield", color: 0x9a7a4a, onSelf: true },
+
+  // ---------- Necromancer ----------
+  reaperForm:      { type: "poof", color: C.shadow, onSelf: true },
+  deathcallerForm: { type: "poof", color: C.nature, onSelf: true },
+  deathBolt:       { type: "projectile", color: C.shadow, size: 0.35, speed: 26 },
+  plague:          { type: "strike", color: C.nature },
+  reap:            { type: "slash", color: C.shadow, big: true },
+  soulCleave:      { type: "nova", color: C.shadow, radius: 8 },
+  raiseCorrupted:  { type: "nova", color: C.nature, radius: 5 },
+  boneShield:      { type: "shield", color: 0xe8e0c8, onSelf: true },
+
   // ---------- The Hollow King ----------
   soulEruption:    { type: "poof", color: C.shadow, onSelf: true },   // the eruption itself is the purple circle on the ground
   shadowBolt:      { type: "projectile", color: C.shadow, size: 0.6, speed: 22 },
@@ -187,6 +209,7 @@ export class EffectSystem {
 
   // A quick flash that grows and fades (used when things hit)
   burst(color, pos, size = 0.8, life = 0.3) {
+    this.onBurst?.(pos, color, size);   // 3d.html adds flying sparks here
     const m = new THREE.Mesh(SPHERE, glow(color, 0.8));
     m.position.copy(pos);
     this.add(life, [m], (k) => { m.scale.setScalar(size * (0.3 + k)); m.material.opacity = 0.8 * (1 - k); });

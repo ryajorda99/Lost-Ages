@@ -3,8 +3,8 @@
 // No extra packages needed — uses Node's built-in http module.
 //
 // Routes:
-//   /               the 2D viewer page (viewer/index.html)
-//   /3d.html        the 3D viewer page (viewer/3d.html)
+//   /               the 3D viewer page (viewer/3d.html) — the default
+//   /2d             the old top-down 2D viewer (viewer/index.html)
 //   /<file>         any other file in the viewer/ folder (effects.js, models/knight.glb...)
 //   /api/replays    list of saved replays, newest first
 //   /api/models     list of 3D model files in viewer/models/
@@ -18,7 +18,8 @@ const { exec } = require("child_process");
 
 const ROOT = path.join(__dirname, "..", "..");
 const VIEWER_DIR = path.join(ROOT, "viewer");
-const VIEWER = path.join(VIEWER_DIR, "index.html");
+const VIEWER_3D = path.join(VIEWER_DIR, "3d.html");
+const VIEWER_2D = path.join(VIEWER_DIR, "index.html");
 
 // File types the browser needs to know about (3D models are .glb / .gltf)
 const TYPES = {
@@ -41,9 +42,10 @@ function startViewerServer({ port = 3000 } = {}) {
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split("?")[0]);
 
-    if (url === "/" || url === "/index.html") {
-      return fs.readFile(VIEWER, (err, data) =>
-        err ? send(res, 500, "text/plain", "viewer/index.html not found") : send(res, 200, "text/html; charset=utf-8", data));
+    if (url === "/" || url === "/3d" || url === "/2d" || url === "/index.html") {
+      const file = url === "/2d" || url === "/index.html" ? VIEWER_2D : VIEWER_3D;
+      return fs.readFile(file, (err, data) =>
+        err ? send(res, 500, "text/plain", `viewer/${path.basename(file)} not found`) : send(res, 200, "text/html; charset=utf-8", data));
     }
 
     if (url === "/api/replays") {
@@ -84,7 +86,6 @@ function startViewerServer({ port = 3000 } = {}) {
     }
 
     // Any other file inside the viewer/ folder: 3d.html, effects.js, models/*.glb, textures...
-    if (url === "/3d") return res.writeHead(302, { Location: "/3d.html" + (req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "") }).end();
     const file = path.join(VIEWER_DIR, path.normalize(url));
     if (file.startsWith(VIEWER_DIR + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) {
       res.writeHead(200, { "Content-Type": TYPES[path.extname(file).toLowerCase()] || "application/octet-stream" });

@@ -68,7 +68,14 @@ const hollowKing = {
         chance: 0.25,
         item: {
           name: "Shroud of the Hollow King", slotType: "chest", rarity: "epic", armorType: "cloth",
-          allowedClasses: ["Mage", "Healer"], stats: { int: 30, faith: 30, sta: 34, haste: 18, armor: 35 },
+          allowedClasses: ["Mage", "Healer", "Necromancer"], stats: { int: 30, faith: 30, sta: 34, haste: 18, armor: 35 },
+        },
+      },
+      {
+        chance: 0.25,
+        item: {
+          name: "Barrowroot Mantle", slotType: "shoulders", rarity: "epic", armorType: "leather",
+          allowedClasses: ["Druid"], stats: { int: 26, faith: 22, sta: 28, haste: 14, armor: 60 },
         },
       },
       {
@@ -235,7 +242,7 @@ const hollowKing = {
       {
         id: "arcaneWard", name: "Warded Against Magic", hint: "takes 50% less spell damage",
         weight: (s) => 1 + s.magicShare * 6,
-        mods: { damageTaken_fire: 0.5, damageTaken_frost: 0.5, damageTaken_holy: 0.5, damageTaken_shadow: 0.5, damageTaken_arcane: 0.5 },
+        mods: { damageTaken_fire: 0.5, damageTaken_frost: 0.5, damageTaken_holy: 0.5, damageTaken_shadow: 0.5, damageTaken_arcane: 0.5, damageTaken_nature: 0.5 },
       },
       {
         id: "ironHide", name: "Iron Hide", hint: "takes 50% less physical damage",

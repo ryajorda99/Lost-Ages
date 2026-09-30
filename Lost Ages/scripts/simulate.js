@@ -22,7 +22,7 @@
 // Every boss fight is also saved to the replays/ folder (rewatch with: node scripts/viewer.js).
 //   --fast          don't show fights — just simulate as fast as possible (good for --farm)
 //   --speed <n>     watch faster, e.g. --speed 2 (default 1 = real time)
-//   --3d            watch in the 3D viewer (viewer/3d.html) instead of the 2D one
+//   --2d            watch in the old top-down 2D viewer instead of 3D (3D is the default)
 //   --record        with --fast: still save boss fights as replays
 //   --potential <tier>  TESTING: new players start as beginners but can all grow to this tier
 //   --testgear <ilvl>  TESTING: dress everyone in a full set of Epic gear at that item level
@@ -31,11 +31,11 @@
 const fs = require("fs");
 const path = require("path");
 
-const { Knight, Mage, Warrior, Rogue, Healer } = require("../src/classes");
+const { Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer } = require("../src/classes");
 const { Enemy } = require("../src/entities/Enemy");
 const { Boss } = require("../src/entities/Boss");
 const BOSSES = require("../src/data/bosses");
-const { PlayerBot } = require("../src/ai/PlayerBot");
+const { PlayerBot, SAFE_REVIVE } = require("../src/ai/PlayerBot");
 const { PLAYBOOKS } = require("../src/ai/playbooks");
 const { SKILL_PROFILES, randomSkill, randomPersonality } = require("../src/ai/skillProfiles");
 const { Gear } = require("../src/items/Gear");
@@ -71,7 +71,7 @@ for (const [label, value] of [["boss multiplier", multiplier], ["player level", 
   if (!Number.isFinite(value) || value < 0) {
     console.log(`The ${label} must be a number, but got "${[positional[0], positional[1], positional[2], option("raid")][["boss multiplier", "player level", "attempts", "raid size"].indexOf(label)]}".`);
     console.log(`Check your command. Example:  node scripts/simulate.js --boss ashenTyrant`);
-    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d"].includes(a));
+    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d", "--2d"].includes(a));
     if (unknown.length) console.log(`Unknown option(s): ${unknown.join(", ")}`);
     process.exit(1);
   }
@@ -80,7 +80,7 @@ const QUIET = argv.includes("--quiet");
 const FRESH = argv.includes("--fresh");
 const FARM = argv.includes("--farm");
 const WATCH = !argv.includes("--fast");               // show fights live in the browser
-const USE_3D = argv.includes("--3d");                  // open the 3D viewer instead of the 2D one
+const USE_3D = !argv.includes("--2d");                 // 3D viewer by default; --2d for the old top-down view
 const RECORD = WATCH || argv.includes("--record");     // save boss fights as replays
 let viewer = null;                                     // the live viewer server (when watching)
 if (argv.includes("--noscale")) SCALING.enabled = false;
@@ -91,7 +91,7 @@ const { MOBS, TRASH_PACKS } = require(`../src/data/mobs/${BOSS_DEF.trash || "hol
 const SAVE_FILE = path.join(__dirname, "..", "saves", RAID_SIZE === 5 ? "party.json" : `raid-${RAID_SIZE}.json`);
 const IS_RAID = RAID_SIZE > 5;
 
-const CLASSES = { Knight, Warrior, Rogue, Mage, Healer };
+const CLASSES = { Knight, Warrior, Rogue, Mage, Healer, Druid, Necromancer };
 
 let time = 0;
 let currentRecorder = null;   // set while a fight is being recorded
@@ -115,6 +115,10 @@ function raidComposition(size) {
   const dpsClasses = ["Warrior", "Mage", "Rogue"];
   const list = [...Array(tanks).fill("Knight"), ...Array(healers).fill("Healer")];
   for (let i = 0; list.length < size; i++) list.push(dpsClasses[i % dpsClasses.length]);
+  // Raids bring one Druid (in place of a Rogue) and one Necromancer (in place of a Mage)
+  const swap = (from, to) => { const i = list.lastIndexOf(from); if (i !== -1) list[i] = to; };
+  swap("Rogue", "Druid");
+  swap("Mage", "Necromancer");
   return list;
 }
 
@@ -162,6 +166,52 @@ function loadGroup() {
   });
 }
 
+// ================= ROSTER CHANGES =================
+// One-time change for an existing raid: Wren (a Rogue or Mage) becomes Courtney the Druid,
+// and one player of the other class becomes a Necromancer. They keep their skill and what
+// they've learned about the fights. Their gear is re-made for the new class at the same
+// item level and rarity (a Rogue's daggers are no use to a Druid).
+function migrateRoster(list) {
+  if (list.length <= 5 || list.some(b => b.className === "Druid" || b.className === "Necromancer")) return list;
+  const lastOf = (cls, not) => list.filter(b => b.className === cls && b !== not).pop();
+  const druidFrom = list.find(b => b.name === "Wren" && b.className !== "Knight" && b.className !== "Healer") || lastOf("Rogue");
+  const necroClass = druidFrom?.className === "Mage" ? "Rogue" : "Mage";
+  const necroFrom = lastOf(necroClass, druidFrom) || lastOf(necroClass === "Mage" ? "Rogue" : "Mage", druidFrom);
+  const changes = [];
+  const convert = (old, newClass, newName) => {
+    const bot = makeBot(newName, newClass, old.skillKey, old.personalityKey);
+    Object.assign(bot, {
+      p: old.p, mastery: old.mastery, potential: old.potential, experience: old.experience,
+      lootState: old.lootState, kills: old.kills, attempts: old.attempts,
+    });
+    // Same item level and rarity in every slot they had filled, made for the new class
+    for (const [slot, item] of Object.entries(old.gear.equipped)) {
+      if (!item) continue;
+      const slotType = slot.startsWith("ring") ? "ring" : slot;
+      const rarity = item.rarity === "legendary" ? "epic" : item.rarity;   // legendaries are one-of-a-kind
+      let made = null;
+      for (const sourceType of [item.sourceType, "boss", "dungeon", "mob"]) {   // a source that can drop this rarity + slot
+        try { made = generateItem({ itemLevel: item.itemLevel, rarity, forClass: newClass, sourceType, slotType, source: "class change" }); break; }
+        catch { /* try the next source */ }
+      }
+      if (!made) continue;
+      made.requiredLevel = Math.min(made.requiredLevel, partyLevel);
+      bot.gear.bag.push(made);
+    }
+    bot.gear.equipUpgrades(partyLevel);
+    list[list.indexOf(old)] = bot;
+    changes.push(`${old.name} (${old.className}) → ${newName} the ${newClass}`);
+  };
+  if (druidFrom) convert(druidFrom, "Druid", "Courtney");
+  if (necroFrom) convert(necroFrom, "Necromancer", necroFrom.name);
+  if (changes.length) {
+    console.log(`\n🔁 Roster change: ${changes.join(", ")}`);
+    console.log(`   They keep their skill and fight knowledge. Their gear was re-made for the new class (same item level).`);
+    list.migrated = true;
+  }
+  return list;
+}
+
 function saveGroup(bots) {
   fs.mkdirSync(path.dirname(SAVE_FILE), { recursive: true });
   fs.writeFileSync(SAVE_FILE, JSON.stringify(bots.map(b => ({
@@ -187,9 +237,12 @@ function discoveredMechanics() {
   return [...set];
 }
 // How well a player knows the mechanics the raid has discovered (0–100%).
-// Tank-only mechanics (Immolation = tank swaps) only count for tanks.
+// Role mechanics (Immolation = tank swaps, Safe Revive = healers/knights) only count for those classes.
+// Safe Revive (not reviving people into fire) only counts for Healers and Knights.
+const ROLE_MECHANICS = { Immolation: ["Knight"], [SAFE_REVIVE]: ["Knight", "Healer"] };
+const appliesTo = (m, bot) => !ROLE_MECHANICS[m] || ROLE_MECHANICS[m].includes(bot.className);
 function knowledge(bot) {
-  const mechs = discoveredMechanics().filter(m => m !== "Immolation" || bot.className === "Knight");
+  const mechs = discoveredMechanics().filter(m => appliesTo(m, bot));
   if (!mechs.length) return 0;
   return Math.round(mechs.reduce((a, m) => a + (bot.mastery[m] || 0), 0) / mechs.length * 100);
 }
@@ -202,7 +255,7 @@ function reportKnowledge(raidDeaths) {
   for (const d of raidDeaths) { const m = mechanicName(d); if (m) counts[m] = (counts[m] || 0) + 1; }
   const lines = discoveredMechanics()
     .map(m => {
-      const who = m === "Immolation" ? bots.filter(b => b.className === "Knight") : bots;
+      const who = bots.filter(b => appliesTo(m, b));
       const avg = Math.round(who.reduce((s, b) => s + (b.mastery[m] || 0), 0) / who.length * 100);
       return `${m} ${avg}%${counts[m] ? ` (killed ${counts[m]} this time)` : ""}`;
     });
@@ -210,7 +263,8 @@ function reportKnowledge(raidDeaths) {
 }
 const attemptLog = [];
 
-const bots = loadGroup();
+const bots = migrateRoster(loadGroup());
+if (bots.migrated) saveGroup(bots);   // save the new roster right away
 
 // --testgear: give everyone a full Epic set (for balance testing)
 const TEST_GEAR = Number(option("testgear") || 0);
@@ -251,9 +305,9 @@ function gearCheck(label) {
 for (const bot of bots) bot.onSay = (b, msg) => log(`💬 [${IS_RAID ? "Raid" : "Party"}] ${b.name}: ${msg}`);
 
 say(`${BOSS_DEF.name} x${multiplier} — ${bots.length} players, level ${partyLevel}${FRESH ? " (fresh group)" : ""}`);
-say("Name     Class    Skill    Personality  Knows fight  Gear");
+say("Name      Class       Skill    Personality  Knows fight  Gear");
 for (const b of bots) {
-  say(`  ${b.name.padEnd(7)} ${b.className.padEnd(8)} ${b.p.label.padEnd(8)} ${b.personality.label.padEnd(11)}  ${(knowledge(b) + "%").padStart(4)}         ` +
+  say(`  ${b.name.padEnd(8)} ${b.className.padEnd(11)} ${b.p.label.padEnd(8)} ${b.personality.label.padEnd(11)}  ${(knowledge(b) + "%").padStart(4)}         ` +
       `ilvl ${b.gear.itemLevel()} (${b.gear.slotsFilled()}/12 slots)${b.kills ? `, ${b.kills} boss kill(s)` : ""}` +
       (b.mainTank ? "  [main tank]" : ""));
 }
@@ -281,6 +335,8 @@ function startSpot(bot, index) {
     case "Rogue":   return { x: 5, y: 3 + n * 1.5 };
     case "Mage":    return { x: -20, y: -8 + n * 3 };
     case "Healer":  return { x: -18, y: 6 - n * 3 };
+    case "Druid":   return { x: -22, y: 12 + n * 3 };
+    case "Necromancer": return { x: -22, y: -14 - n * 3 };   // starts at range; walks in for Reaper stance
   }
 }
 
@@ -338,7 +394,17 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
       stats[p.name].diedAt = time;
       stats[p.name].diedTo = p._lastHitBy;
       log(`💀 ${p.name} (${p.className}) died to ${p._lastHitBy}`);
-      bot.say("died", time, 0);
+      // Revived straight into the fire and died again? That revive was wasted — the reviver learns from it
+      const rez = p._revive;
+      p._revive = null;
+      if (rez && rez.zone && time - rez.at <= 8) {
+        revivesWasted++;
+        log(`⚠ Wasted revive — ${rez.by.name} revived ${p.name} while they were still in ${rez.zone}`);
+        rez.by.learnFromMistake(SAFE_REVIVE);
+        rez.by.noticed.set(`bodyInFire:${p.name}`, { willNotice: true, reactAt: 0 });   // they won't make the same mistake twice in a row
+        bot.say("diedAgain", time, 0);
+        rez.by.say("badRez", time, 0);
+      } else bot.say("died", time, 0);
     };
   }
 
@@ -350,12 +416,17 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
 
   // Raids share 4 revives, then a 2-minute cooldown. 5-player runs have no limit.
   const revives = IS_RAID ? new RevivePool() : null;
+  let revivesUsed = 0, revivesWasted = 0;
   if (revives) revives.onRefresh = () => log(`✨ Raid revives are back (${revives.charges} available)`);
   for (const p of party) {
     p.onRevive = (target, pool) => {
       stats[target.name].revived++;
-      log(`✨ ${p.name} revives ${target.name}${pool ? ` — ${pool.describe()}` : ""}`);
-      bots.find(b => b.character === target)?.say("revived", time, 0);
+      revivesUsed++;
+      // Is the body still lying in fire / under a warning circle?
+      const zone = boss?.zones.find(z => z.hostile && distance({ position: z.position }, target) <= z.radius);
+      target._revive = { by: bots.find(b => b.character === p), at: time, zone: zone?.name || null };
+      log(`✨ ${p.name} revives ${target.name}${pool ? ` — ${pool.describe()}` : ""}${zone ? `  ⚠ still in ${zone.name}!` : ""}`);
+      if (!zone) bots.find(b => b.character === target)?.say("revived", time, 0);
     };
   }
 
@@ -399,7 +470,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
     recorder.finish({ won, time: Math.round(time * 10) / 10 });
     currentRecorder = null;
   }
-  return { won, time, stats, killed: [...killed], recorder };
+  return { won, time, stats, killed: [...killed], recorder, revivesUsed, revivesWasted };
 }
 
 // ================= LOOT =================
@@ -425,9 +496,9 @@ let lootSkipped = 0;
 async function main() {
 if (WATCH) {
   viewer = await startViewerServer({ port: 3000 });
-  const page = USE_3D ? "/3d.html?live=1" : "/?live=1";
+  const page = USE_3D ? "/?live=1" : "/2d?live=1";
   say(`\n📺 Opening the ${USE_3D ? "3D " : ""}fight viewer: ${viewer.url()}${page}  (if it doesn't open, paste that into your browser)`);
-  if (!USE_3D) say(`   Want 3D instead? Add --3d to your command, or open ${viewer.url()}/3d.html?live=1`);
+  if (USE_3D) say(`   (Prefer the old top-down view? Add --2d, or open ${viewer.url()}/2d?live=1)`);
   openBrowser(viewer.url() + page);
   const connected = await viewer.waitForViewer(10000);
   if (!connected) say("   (No browser connected yet — starting anyway. Open the link above to watch.)");
@@ -476,16 +547,17 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   if (fight.won) say(`\n🏆 VICTORY in ${fight.time.toFixed(1)}s!`);
   else say(`\nWIPE at ${fight.time.toFixed(1)}s — boss at ${Math.round(boss.hp / boss.maxHp * 100)}% (phase ${boss.phaseIndex + 1})${boss.enraged ? " — hit the enrage timer" : ""}`);
 
-  say("Name     Class     Damage   DPS  Healing  Died");
+  say("Name      Class        Damage   DPS  Healing  Died");
   for (const bot of bots) {
     const s = fight.stats[bot.name];
-    say(`  ${bot.name.padEnd(7)} ${bot.className.padEnd(8)} ${String(Math.round(s.damage)).padStart(7)} ${String(Math.round(s.damage / fight.time)).padStart(5)} ${String(Math.round(s.healing)).padStart(8)}  ${s.diedAt == null ? "-" : `${s.diedAt.toFixed(0)}s (${s.diedTo})`}${s.revived ? `  ✨ revived${s.revived > 1 ? ` x${s.revived}` : ""}` : ""}`);
+    say(`  ${bot.name.padEnd(8)} ${bot.className.padEnd(11)} ${String(Math.round(s.damage)).padStart(7)} ${String(Math.round(s.damage / fight.time)).padStart(5)} ${String(Math.round(s.healing)).padStart(8)}  ${s.diedAt == null ? "-" : `${s.diedAt.toFixed(0)}s (${s.diedTo})`}${s.revived ? `  ✨ revived${s.revived > 1 ? ` x${s.revived}` : ""}` : ""}`);
   }
   if (IS_RAID) {
     const deaths = {};
     for (const s of Object.values(fight.stats)) if (s.diedTo) deaths[s.diedTo] = (deaths[s.diedTo] || 0) + 1;
     const total = Object.values(fight.stats).reduce((a, s) => a + s.damage, 0);
     say(`Raid DPS: ${Math.round(total / fight.time).toLocaleString()} | Deaths: ${Object.entries(deaths).map(([k, v]) => `${k} x${v}`).join(", ") || "none"}`);
+    if (fight.revivesUsed) say(`Revives: ${fight.revivesUsed} used${fight.revivesWasted ? `, ${fight.revivesWasted} wasted (revived into the fire)` : ", none wasted"}`);
     const souls = boss.buffs.find(b => b.id === "soulHarvest")?.stacks;
     if (souls) say(`Souls consumed by the boss: ${souls}`);
   }

@@ -6,7 +6,7 @@
 // Use bot.sees(id, condition, now, mechanicName) for anything a human has to notice first.
 // Passing the mechanic's name lets the bot's memory of that mechanic affect how well they handle it.
 
-const { beingRevived } = require("../classes/reviveAbility");
+const { beingRevived, REVIVE_KEYS } = require("../classes/reviveAbility");
 
 const pct = (u) => u.hp / u.maxHp;
 
@@ -85,16 +85,38 @@ function rangedMove(bot, world, dt, now) {
 // ---------------- Revives ----------------
 // Who should I bring back? Tanks first, then healers, then DPS.
 // Skips anyone already being revived, and only counts bodies the bot has actually noticed.
+// SMART PART: a body still lying in fire (or under a warning circle) would just die again
+// and waste one of the raid's 4 revives — so players who check skip it and revive someone
+// else, or wait for the fire to go away. Players who don't check revive them anyway.
 const REVIVE_ORDER = { tank: 0, healer: 1, dps: 2 };
 function reviveTarget(bot, w, now) {
   const pool = w.revives;
   if (pool && pool.available() <= 0) return null;          // raid is out of revives (or on the 2-min cooldown)
+  const others = { allies: w.party.filter(a => a !== bot.character) };
   const dead = w.party
-    .filter(p => p.isDead && p !== bot.character && !beingRevived(p, { allies: w.party.filter(a => a !== bot.character) }))
+    .filter(p => p.isDead && p !== bot.character && !beingRevived(p, others))
     .filter(p => bot.distanceTo(p) <= 40)
     .sort((a, b) => (REVIVE_ORDER[a.role] ?? 2) - (REVIVE_ORDER[b.role] ?? 2));
-  const t = dead[0];
-  return t && bot.sees(`dead:${t.name}`, true, now) ? t : null;
+  let waiting = false;
+  for (const t of dead) {
+    if (!bot.sees(`dead:${t.name}`, true, now)) continue;                       // haven't noticed this body yet
+    if (bot.checksBody(`bodyInFire:${t.name}`, !!bot.zoneAt(t.position), now)) { waiting = true; continue; }
+    return t;
+  }
+  if (waiting) bot.say("waitRez", now, 25);
+  return null;
+}
+
+// Mid-cast: fire landed on the body I'm reviving — cancel before I waste the revive
+function cancelUnsafeRevive(bot, now) {
+  const c = bot.character;
+  if (!c.cast || !REVIVE_KEYS.includes(c.cast.key)) return;
+  const t = c.cast.target;
+  if (bot.sees(`rezCancel:${t.name}`, !!bot.zoneAt(t.position), now)) {
+    c.interrupt("cancelled");
+    bot.noticed.set(`bodyInFire:${t.name}`, { willNotice: true, reactAt: 0 });   // they know it's in the fire now
+    bot.say("rezCancel", now, 10);
+  }
 }
 
 const PLAYBOOKS = {
@@ -102,6 +124,7 @@ const PLAYBOOKS = {
   Knight: {
     options(bot, w, now) {
       const k = bot.character, b = w.boss;
+      cancelUnsafeRevive(bot, now);
       const bossTarget = b.pickTarget();
       const iAmTanking = bossTarget === k;
       const stacks = (u) => u?.buffs.find(x => x.id === "moltenBrand")?.stacks || 0;
@@ -235,6 +258,7 @@ const PLAYBOOKS = {
   Healer: {
     options(bot, w, now) {
       const h = bot.character, b = w.boss;
+      cancelUnsafeRevive(bot, now);
       const alive = w.party.filter(p => !p.isDead);
       const sorted = alive.slice().sort((a, c) => pct(a) - pct(c));
 
@@ -268,6 +292,102 @@ const PLAYBOOKS = {
       ];
     },
     move: rangedMove,
+  },
+
+  // ======================= DRUID (damage + support) =======================
+  // Deals damage most of the time, but watches the raid: heals people in trouble,
+  // throws Tranquility when lots of people are hurt, gives healers mana back (Innervate)
+  // and cleanses Doom. Some Druids love to support, others would rather just do damage.
+  Druid: {
+    pickStyle: (bot) => ({
+      swapsToAdds: Math.random() < 0.3 + bot.p.awareness * 0.6,
+      supportBias: 0.6 + Math.random() * 0.6,   // how much this player cares about helping (0.6–1.2)
+    }),
+    options(bot, w, now) {
+      const d = bot.character, b = w.boss;
+      const t = dpsTarget(bot, w);
+      d.setTarget(t);
+      const alive = w.party.filter(p => !p.isDead);
+      const low = alive.slice().sort((a, c) => pct(a) - pct(c))[0];
+      const lp = low ? pct(low) : 1;
+      const hurt = alive.filter(a => pct(a) < 0.5).length;
+      const tank = b.pickTarget?.();
+      const oomHealer = alive.filter(a => a.role === "healer" && a.resource.current / a.resource.max < 0.35)
+        .sort((a, c) => a.resource.current - c.resource.current)[0];
+      const doomed = alive.find(a => a.hasBuff("doom"));
+      const moving = !!bot.movePlan;
+      const sup = bot.style.supportBias;
+
+      // Support needs a human to notice first
+      const saveLow = low && lp < 0.35 && bot.sees(`low:${low.name}`, true, now);
+      const raidHurt = bot.sees("raidHurt", hurt >= 4, now);
+      const giveMana = oomHealer && bot.sees(`oom:${oomHealer.name}`, true, now);
+      const cleanseDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, "Doom");
+      const threatened = bot.sees("targeted", b.pickTarget() === d, now) || pct(d) < bot.personality.panicHp;
+
+      return [
+        { key: "markOfTheWild", target: d, score: d.hasBuff("markOfTheWild") ? 0 : now < 2 ? 99 : 40 },
+        { key: "removeCorruption", target: doomed, score: cleanseDoom ? 96 : 0 },
+        { key: "barkskin", target: d, score: threatened ? 85 : 0 },
+        { key: "tranquility", target: d, score: raidHurt ? 90 * sup : 0 },
+        { key: "innervate", target: oomHealer, score: giveMana ? 80 * sup : 0 },
+        { key: "regrowth", target: low, score: saveLow && !moving ? 78 * sup : 0 },
+        { key: "rejuvenation", target: low, score: saveLow && !low.hasBuff(`rejuvenation_${d.name}`) ? 76 * sup : 0 },
+        // Keep a heal-over-time rolling on the tank and on anyone who's hurt
+        { key: "rejuvenation", target: tank, score: tank?.role === "tank" && !tank.hasBuff(`rejuvenation_${d.name}`) ? 58 * sup : 0 },
+        { key: "rejuvenation", target: low, score: low && lp < 0.6 && !low.hasBuff(`rejuvenation_${d.name}`) ? 57 * sup : 0 },
+        { key: "moonfire", target: t, score: !t.hasBuff(`moonfire_${d.name}`) ? 56 : moving ? 40 : 0 },
+        { key: "starsurge", target: t, score: moving ? 0 : 54 },
+        { key: "wrath", target: t, score: moving ? 0 : 45 },
+      ];
+    },
+    move: rangedMove,
+  },
+
+  // ======================= NECROMANCER (ranged OR melee dps) =======================
+  // Likes to fight up close in Reaper stance (more damage) but backs off to Deathcaller
+  // stance when it gets dangerous: low health, the boss is hitting them, fire under the
+  // boss, or the boss is winding up a frontal attack. Keeps Corrupted Servants up.
+  Necromancer: {
+    pickStyle: (bot) => ({
+      swapsToAdds: Math.random() < 0.3 + bot.p.awareness * 0.6,
+      likesMelee: Math.random() < 0.65,   // some necromancers just prefer staying at range
+    }),
+    options(bot, w, now) {
+      const n = bot.character, b = w.boss;
+      const t = dpsTarget(bot, w);
+      n.setTarget(t);
+      const moving = !!bot.movePlan;
+
+      // Is it too dangerous to be in melee right now?
+      const bossFrontal = b.cast && b.abilities[b.cast.key]?.frontal;
+      const fireAtTarget = !!bot.zoneAt(t.position);
+      const targeted = b.pickTarget() === n;
+      const danger = pct(n) < 0.4 || targeted || bossFrontal || fireAtTarget;
+      if (danger) bot.stayRangedUntil = now + 8;          // once spooked, stay back for a bit
+      const wantMelee = bot.style.likesMelee && !danger && now >= (bot.stayRangedUntil || 0);
+      const goMelee = n.stance === "ranged" && bot.sees("goMelee", wantMelee, now);
+      const goRanged = n.stance === "melee" && bot.sees("goRanged", !wantMelee, now, bossFrontal ? castName(b) : null);
+
+      const addsNear = w.adds.filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
+      const melee = n.stance === "melee";
+      return [
+        { key: "deathcallerForm", target: n, score: goRanged ? 95 : 0, onUse: () => bot.say("goRanged", now, 15) },
+        { key: "reaperForm", target: n, score: goMelee ? 88 : 0, onUse: () => bot.say("goMelee", now, 15) },
+        { key: "boneShield", target: n, score: targeted || pct(n) < bot.personality.panicHp ? 85 : 0 },
+        { key: "raiseCorrupted", target: n, score: !t.isDead && !moving ? 72 : 0, onUse: () => bot.say("servants", now, 60) },
+        // Reaper stance
+        { key: "soulCleave", target: n, score: melee && addsNear >= 2 ? 60 : 0 },
+        { key: "reap", target: t, score: melee ? 50 : 0 },
+        // Deathcaller stance
+        { key: "plague", target: t, score: !melee && !t.hasBuff(`plague_${n.name}`) ? 55 : 0 },
+        { key: "deathBolt", target: t, score: !melee && !moving ? 45 : 0 },
+      ];
+    },
+    move(bot, w, dt, now) {
+      if (bot.character.stance === "melee") meleeMove(bot, w, dt, now);
+      else rangedMove(bot, w, dt, now);
+    },
   },
 };
 

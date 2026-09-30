@@ -263,7 +263,7 @@ const ashenTyrant = {
       {
         id: "arcaneWard", name: "Obsidian Ward", hint: "takes 50% less spell damage",
         weight: (s) => 1 + s.magicShare * 6,
-        mods: { damageTaken_fire: 0.5, damageTaken_frost: 0.5, damageTaken_holy: 0.5, damageTaken_shadow: 0.5, damageTaken_arcane: 0.5 },
+        mods: { damageTaken_fire: 0.5, damageTaken_frost: 0.5, damageTaken_holy: 0.5, damageTaken_shadow: 0.5, damageTaken_arcane: 0.5, damageTaken_nature: 0.5 },
       },
       {
         id: "ironHide", name: "Molten Carapace", hint: "takes 50% less physical damage",
@@ -340,7 +340,14 @@ const ashenTyrant = {
         chance: 0.2,
         item: {
           name: "Cinderweave Robes", slotType: "chest", rarity: "epic", armorType: "cloth",
-          allowedClasses: ["Mage", "Healer"], stats: { int: 40, faith: 40, sta: 45, haste: 25, armor: 45 },
+          allowedClasses: ["Mage", "Healer", "Necromancer"], stats: { int: 40, faith: 40, sta: 45, haste: 25, armor: 45 },
+        },
+      },
+      {
+        chance: 0.2,
+        item: {
+          name: "Ashbark Vestments", slotType: "chest", rarity: "epic", armorType: "leather",
+          allowedClasses: ["Druid"], stats: { int: 38, faith: 32, sta: 45, haste: 22, armor: 90 },
         },
       },
       {
@@ -371,7 +378,7 @@ const ashenTyrant = {
         chance: 0.02,
         item: {
           name: "Staff of the Last Ember", slotType: "mainHand", rarity: "legendary",
-          weaponType: "staff", allowedClasses: ["Mage", "Healer"], weaponDamage: 60, weaponSpeed: 3.0,
+          weaponType: "staff", allowedClasses: ["Mage", "Healer", "Druid", "Necromancer"], weaponDamage: 60, weaponSpeed: 3.0,
           stats: { int: 70, faith: 70, sta: 55, haste: 35 },
           effect: "Spells have a chance to cost no mana.",
         },
