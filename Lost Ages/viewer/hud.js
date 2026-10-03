@@ -149,6 +149,21 @@ body { font-family: var(--ui); }
 @keyframes slotflash { 0% { box-shadow: 0 0 0 2px #fff, 0 0 20px #fff; filter:brightness(2); } 100% { } }
 .slot[title]:hover { filter:brightness(1.25); }
 
+/* Playing a character yourself */
+#hud-player.you { box-shadow: inset 0 1px 0 rgba(255,235,180,.12), 0 0 0 1px #000, 0 0 0 2px var(--gold), 0 0 26px rgba(243,220,154,.45); }
+#hud-player .you-badge { display:none; font:700 10px var(--display); letter-spacing:.12em; color:#1a1206; background:linear-gradient(#f3dc9a,#b8862e); padding:1px 7px; border-radius:8px; margin-left:6px; vertical-align:middle; }
+#hud-player.you .you-badge { display:inline-block; }
+#hud-take { font-size:11px; padding:2px 9px; }
+#hud-player .targets { display:flex; gap:14px; font-size:11.5px; color:var(--dim); margin-top:5px; min-height:15px; }
+#hud-player .targets b { color:var(--ink); }
+#hud-player .targets .en b { color:#ff9a8a; } #hud-player .targets .al b { color:#9dffa0; }
+#hud-player .keys { font-size:10.5px; color:var(--dim); text-align:center; margin-top:6px; display:none; }
+#hud-player.you .keys { display:block; }
+#hud-player.you .slot { cursor:pointer; }
+#hud-error { position:absolute; top:150px; left:50%; transform:translateX(-50%); font:700 17px var(--ui); color:#ff4a3a;
+  text-shadow:0 2px 3px #000, 0 0 6px #000; pointer-events:none; opacity:0; transition:opacity .5s; white-space:nowrap; }
+#hud-error.show { opacity:1; transition:none; }
+
 /* ---------- Minimap ---------- */
 #hud-map { top:10px; right:10px; width:196px; padding:8px; text-align:center; }
 #hud-map canvas { width:180px; height:180px; border-radius:50%; display:block;
@@ -213,12 +228,15 @@ const HTML = `
 <div id="hud-map" class="hud-frame"><canvas width="360" height="360"></canvas><div class="zone"></div><div class="clock"></div></div>
 <div id="hud-player" class="hud-frame">
   <div class="medal"></div>
-  <div class="top"><span><span class="pname"></span> <span class="pclass"></span></span><span class="hint">click a name to switch</span></div>
+  <div class="top"><span><span class="pname"></span><span class="you-badge">YOU</span> <span class="pclass"></span></span><span><span class="hint">click a name to switch</span> <button class="hbtn" id="hud-take" style="display:none">🎮 Take control</button></span></div>
   <div class="gbar hp"><div class="f"></div><span></span></div>
   <div class="gbar res"><div class="f"></div><span></span></div>
   <div class="gbar cast"><div class="f"></div><span></span></div>
   <div id="hud-bar"></div>
+  <div class="targets"><span class="en"></span><span class="al"></span></div>
+  <div class="keys"><b>WASD</b> move · <b>1–0 - =</b> abilities · <b>Tab</b> / click enemy = target · <b>click a raid frame</b> = heal/buff/revive target · <b>Esc</b> stop playing</div>
 </div>
+<div id="hud-error"></div>
 <div id="hud-log" class="hud-frame">
   <div class="tabs"><span class="tab on" data-f="all">All</span><span class="tab" data-f="combat">Combat</span><span class="tab" data-f="chat">Chat</span></div>
   <div class="lines"></div>
@@ -228,7 +246,7 @@ const HTML = `
 <div id="hud-banner"><div class="big"></div><div class="small"></div></div>
 `;
 
-export function createHUD({ classColors, onFollow }) {
+export function createHUD({ classColors, onFollow, onTake, onSlot }) {
   const style = document.createElement("style");
   style.textContent = CSS;
   document.head.appendChild(style);
@@ -242,6 +260,18 @@ export function createHUD({ classColors, onFollow }) {
   const map = q("#hud-map canvas"), mctx = map.getContext("2d");
 
   let data = null, frames = [], slots = [], shown = null;
+  let control = { playable: false, name: null };   // who YOU are playing (live fights only)
+  const takeBtn = q("#hud-take");
+  takeBtn.onclick = () => shown && onTake?.(control.name === shown.u.name ? null : shown.u);
+  function refreshControl() {
+    if (!shown) return;
+    const mine = control.name && control.name === shown.u.name;
+    player.classList.toggle("you", !!mine);
+    takeBtn.style.display = control.playable ? "" : "none";
+    takeBtn.textContent = mine ? "Stop playing (Esc)" : "🎮 Take control";
+    takeBtn.classList.toggle("on", !!mine);
+    player.querySelector(".hint").style.display = mine ? "none" : "";
+  }
   const usedAt = [];   // usedAt[playerIndex][abilityKey] = fight time it was last used
 
   // Log tabs
@@ -281,6 +311,7 @@ export function createHUD({ classColors, onFollow }) {
     player.querySelector(".pname").style.color = c;
     player.querySelector(".pclass").textContent = `${u.className} · ${u.role}`;
     player.querySelector(".res .f").style.background = `linear-gradient(${RESOURCE_COLOR[info.resource] || "#3a7bff"}, #0d1a44)`;
+    refreshControl();
     bar.innerHTML = "";
     slots = (info.abilities || []).map(([key, name, cd, castTime], n) => {
       const el = document.createElement("div");
@@ -291,6 +322,7 @@ export function createHUD({ classColors, onFollow }) {
       const icon = ICONS[key];
       el.innerHTML = (icon ? icon : `<span class="ini">${name.split(" ").map(w => w[0]).join("").slice(0, 2)}</span>`) +
         `<span class="key">${KEYS[n] || ""}</span><div class="cd"></div><div class="cdt"></div>`;
+      el.onclick = () => onSlot?.(key, shown);
       bar.appendChild(el);
       return { key, cd, el, cdt: el.querySelector(".cdt") };
     });
@@ -398,6 +430,18 @@ export function createHUD({ classColors, onFollow }) {
     },
 
     status(text) { q("#hud-status").textContent = text; },
+    setControl(c) { control = { ...control, ...c }; refreshControl(); },
+    setTargets(enemyText, allyText) {
+      player.querySelector(".targets .en").innerHTML = enemyText ? `🎯 <b>${esc(enemyText)}</b>` : "";
+      player.querySelector(".targets .al").innerHTML = allyText ? `💚 <b>${esc(allyText)}</b>` : "";
+    },
+    error(text) {
+      const e = q("#hud-error");
+      e.textContent = text;
+      e.classList.add("show");
+      clearTimeout(api._errT);
+      api._errT = setTimeout(() => e.classList.remove("show"), 1400);
+    },
     models(html) { q("#hud-models").innerHTML = html; },
     toggleModels() { const m = q("#hud-models"); m.style.display = m.style.display === "block" ? "none" : "block"; q("#hud-modelsbtn").classList.toggle("on"); },
     setReplays(list, selected = "") {

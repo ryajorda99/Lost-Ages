@@ -10,6 +10,8 @@
 //   /api/models     list of 3D model files in viewer/models/
 //   /replays/<file> one saved replay
 //   /live           live fight stream (Server-Sent Events)
+//   POST /api/control  { name }  take control of a raid member (name: null to hand it back to the bot)
+//   POST /api/input    { move, cast, enemyTarget, allyTarget }  your keyboard/mouse input while playing
 
 const http = require("http");
 const fs = require("fs");
@@ -73,11 +75,31 @@ function startViewerServer({ port = 3000 } = {}) {
       return send(res, 200, "application/json", JSON.stringify(files));
     }
 
+    // Playing a character yourself: the browser sends control + input here
+    if (req.method === "POST" && (url === "/api/control" || url === "/api/input")) {
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; if (body.length > 10000) req.destroy(); });
+      req.on("end", () => {
+        let msg = {};
+        try { msg = JSON.parse(body || "{}"); } catch { return send(res, 400, "text/plain", "bad JSON"); }
+        if (url === "/api/control") {
+          if (!api.onControl) return send(res, 409, "application/json", JSON.stringify({ ok: false, reason: "No live fight running" }));
+          const result = api.onControl(msg.name ?? null) || { ok: true };
+          if (result.ok) { api.controlled = msg.name ?? null; api.broadcast({ type: "control", name: api.controlled }); }
+          return send(res, 200, "application/json", JSON.stringify(result));
+        }
+        api.onInput?.(msg);
+        send(res, 204, "text/plain", "");
+      });
+      return;
+    }
+
     // Live stream: the browser keeps this connection open and receives fight updates
     if (url === "/live") {
       res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", Connection: "keep-alive" });
       res.write(`data: ${JSON.stringify({ type: "hello" })}\n\n`);
       if (liveData) res.write(`data: ${JSON.stringify({ type: "start", data: liveData })}\n\n`);
+      res.write(`data: ${JSON.stringify({ type: "control", name: api.controlled ?? null, playable: !!api.onControl })}\n\n`);
       clients.add(res);
       req.on("close", () => clients.delete(res));
       viewerWaiters.forEach(fn => fn());
@@ -101,6 +123,9 @@ function startViewerServer({ port = 3000 } = {}) {
 
   const api = {
     port,
+    controlled: null,   // name of the raid member a human is playing (or null)
+    onControl: null,    // set by simulate.js: (name) => { ok, reason }
+    onInput: null,      // set by simulate.js: (input) => void
     url: () => `http://localhost:${api.port}`,
 
     // Send a message to every browser watching live

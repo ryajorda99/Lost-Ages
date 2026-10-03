@@ -23,6 +23,8 @@
 //   --fast          don't show fights — just simulate as fast as possible (good for --farm)
 //   --speed <n>     watch faster, e.g. --speed 2 (default 1 = real time)
 //   --2d            watch in the old top-down 2D viewer instead of 3D (3D is the default)
+//   --play <name>   PLAY one of the raid members yourself (e.g. --play Courtney). You can also
+//                   click "Take control" in the 3D viewer. WASD move, 1-0 abilities, Tab target.
 //   --record        with --fast: still save boss fights as replays
 //   --potential <tier>  TESTING: new players start as beginners but can all grow to this tier
 //   --testgear <ilvl>  TESTING: dress everyone in a full set of Epic gear at that item level
@@ -47,6 +49,7 @@ const { distance } = require("../src/classes/Character");
 const { Recorder } = require("../src/replay/Recorder");
 const { startViewerServer, openBrowser } = require("../src/replay/viewerServer");
 const { RevivePool } = require("../src/utils/revivePool");
+const { HumanController } = require("../src/ai/HumanController");
 
 // ================= COMMAND LINE =================
 const argv = process.argv.slice(2);
@@ -54,7 +57,7 @@ function option(name) {
   const i = argv.indexOf(`--${name}`);
   return i !== -1 ? argv[i + 1] : undefined;
 }
-const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill", "--potential", "--speed"].includes(argv[i - 1])));
+const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill", "--potential", "--speed", "--play"].includes(argv[i - 1])));
 
 const BOSS_KEY = option("boss") || "hollowKing";
 const BOSS_DEF = BOSSES[BOSS_KEY];
@@ -71,7 +74,7 @@ for (const [label, value] of [["boss multiplier", multiplier], ["player level", 
   if (!Number.isFinite(value) || value < 0) {
     console.log(`The ${label} must be a number, but got "${[positional[0], positional[1], positional[2], option("raid")][["boss multiplier", "player level", "attempts", "raid size"].indexOf(label)]}".`);
     console.log(`Check your command. Example:  node scripts/simulate.js --boss ashenTyrant`);
-    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d", "--2d"].includes(a));
+    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d", "--2d", "--play"].includes(a));
     if (unknown.length) console.log(`Unknown option(s): ${unknown.join(", ")}`);
     process.exit(1);
   }
@@ -104,7 +107,10 @@ const say = (msg) => {
   viewer?.broadcast({ type: "info", text: msg });   // show loot/results in the browser too
 };
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-const WATCH_SPEED = Number(option("speed") || 1);
+const PLAY_AS = option("play");                         // --play <name>: you control that raid member
+if (PLAY_AS && argv.includes("--fast")) { console.log("--play needs the live viewer — remove --fast."); process.exit(1); }
+const WATCH_SPEED = PLAY_AS ? 1 : Number(option("speed") || 1);   // playing is always real time
+const human = new HumanController();
 
 // ================= GROUP MAKEUP =================
 // 5 players: one of each class. Raids: 2 tanks, ~1 healer per 5 players, the rest DPS.
@@ -302,7 +308,10 @@ function gearCheck(label) {
   lines.slice(0, show).forEach(l => say(l));
   if (lines.length > show) say(`   ...and ${lines.length - show} more`);
 }
-for (const bot of bots) bot.onSay = (b, msg) => log(`💬 [${IS_RAID ? "Raid" : "Party"}] ${b.name}: ${msg}`);
+for (const bot of bots) bot.onSay = (b, msg) => {
+  if (human.isControlling(b)) return;   // the bot doesn't talk for you while you're playing
+  log(`💬 [${IS_RAID ? "Raid" : "Party"}] ${b.name}: ${msg}`);
+};
 
 say(`${BOSS_DEF.name} x${multiplier} — ${bots.length} players, level ${partyLevel}${FRESH ? " (fresh group)" : ""}`);
 say("Name      Class       Skill    Personality  Knows fight  Gear");
@@ -444,7 +453,8 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
 
   while (alive().length && party.some(p => !p.isDead) && time < 900) {
     for (const bot of bots) {
-      bot.think(time, dt, world);
+      if (human.isControlling(bot)) human.act(bot, world, dt, time, recorder);   // YOU
+      else bot.think(time, dt, world);
       bot.character.update(dt, world.ctxFor(bot.character));
     }
     for (const e of alive()) e.update(dt, { allies: [], enemies: party });
@@ -500,13 +510,33 @@ if (WATCH) {
   say(`\n📺 Opening the ${USE_3D ? "3D " : ""}fight viewer: ${viewer.url()}${page}  (if it doesn't open, paste that into your browser)`);
   if (USE_3D) say(`   (Prefer the old top-down view? Add --2d, or open ${viewer.url()}/2d?live=1)`);
   openBrowser(viewer.url() + page);
-  const connected = await viewer.waitForViewer(10000);
+  // Playing a character yourself (from the viewer's "Take control" button or --play)
+  viewer.onControl = (name) => {
+    if (name && !bots.some(b => b.name === name)) return { ok: false, reason: `No raid member called ${name}` };
+    const before = human.name;
+    human.take(name);
+    if (name) log(`🎮 You are now playing ${name} (${bots.find(b => b.name === name).className})`);
+    else if (before) log(`🤖 ${before} is back on autopilot`);
+    return { ok: true };
+  };
+  viewer.onInput = (msg) => human.input(msg);
+  human.onResult = (r) => viewer.broadcast({ type: "castResult", ...r });
+  if (PLAY_AS) {
+    const who = bots.find(b => b.name.toLowerCase() === PLAY_AS.toLowerCase());
+    if (!who) { say(`No raid member called "${PLAY_AS}". Your raid: ${bots.map(b => b.name).join(", ")}`); process.exit(1); }
+    viewer.onControl(who.name);
+    viewer.controlled = who.name;
+    say(`🎮 You're playing ${who.name} the ${who.className}. WASD to move, 1-0 for abilities, Tab to target.`);
+  }
+  const connected = await viewer.waitForViewer(PLAY_AS ? 60000 : 10000);
   if (!connected) say("   (No browser connected yet — starting anyway. Open the link above to watch.)");
-  await sleep(1000);
+  if (PLAY_AS) viewer.broadcast({ type: "control", name: human.name, playable: true });
+  await sleep(PLAY_AS ? 3000 : 1000);   // a moment to get your bearings
 }
 const history = [];
 for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   say(`\n================ ATTEMPT ${attempt} ================`);
+  human.played = new Set(human.name ? [human.name] : []);
   gearCheck("Gear check before the pull");
 
   // --- 1. Trash pack ---
@@ -522,7 +552,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     say(`WIPE on trash at ${trash.time.toFixed(0)}s`);
     history.push("wiped on trash");
     const trashDeaths = Object.values(trash.stats).map(s => s.diedTo).filter(Boolean);
-    for (const bot of bots) bot.learn(trash.stats[bot.name].diedTo, trashDeaths);
+    for (const bot of bots) if (!human.played.has(bot.name)) bot.learn(trash.stats[bot.name].diedTo, trashDeaths);
     continue;
   }
   say(`Cleared in ${trash.time.toFixed(0)}s`);
@@ -565,6 +595,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   // ---- Everyone learns from what happened (win OR wipe) ----
   const raidDeaths = Object.values(fight.stats).map(s => s.diedTo).filter(Boolean);
   for (const bot of bots) {
+    if (human.played.has(bot.name)) continue;   // you played this one — the learning is yours!
     const lesson = bot.learn(fight.stats[bot.name].diedTo, raidDeaths);
     if (lesson && Math.random() < 0.5) bot.say("learned", 9999, 0);
   }

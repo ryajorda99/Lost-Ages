@@ -7,34 +7,35 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9995285153284541,
-      "Flame Breath": 0.9746226949262826,
-      "Pyroclasm": 0.8998414338349825,
-      "Inferno Rift": 0.9785712036337368,
-      "Crushing Blow": 0.8734938744670679,
-      "Soul Eruption": 0.9402248158039928,
+      "Rain of Fire": 0.9996096144638373,
+      "Flame Breath": 0.9776679715351287,
+      "Pyroclasm": 0.9118604617747846,
+      "Inferno Rift": 0.9817083794217578,
+      "Crushing Blow": 0.8809703864860643,
+      "Soul Eruption": 0.9473978379075136,
       "Shadow Bolt": 0.318528,
       "Hunter's Grudge": 0.8004603802568999,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
@@ -56,6 +57,42 @@
           },
           "armorType": "plate",
           "name": "Polished Chestguard"
+        },
+        {
+          "id": "itm_muoomfbq_4",
+          "slotType": "head",
+          "rarity": "uncommon",
+          "itemLevel": 60,
+          "requiredLevel": 57,
+          "sourceType": "mob",
+          "source": "Cinder Imp",
+          "stats": {
+            "armor": 96,
+            "str": 14,
+            "sta": 14,
+            "faith": 14,
+            "blockChance": 0.01
+          },
+          "armorType": "plate",
+          "name": "Reinforced Helm"
+        },
+        {
+          "id": "itm_muoopy56_d",
+          "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "str": 12,
+            "sta": 12,
+            "faith": 12,
+            "crit": 6,
+            "blockChance": 0.01,
+            "armor": 8
+          },
+          "name": "Sanctified Amulet"
         }
       ],
       "equipped": {
@@ -259,15 +296,15 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589850
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 1,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 1
+        "The Hollow King:Crown of the Hollow King": 2,
+        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 2
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Bram",
@@ -277,36 +314,37 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9989321980066338,
-      "Flame Breath": 0.9897732520105453,
-      "Pyroclasm": 0.8998414338349825,
-      "Inferno Rift": 0.9709887064579822,
-      "Soul Eruption": 0.9632225161749016,
+      "Rain of Fire": 0.9991158684919088,
+      "Flame Breath": 0.9910004617692799,
+      "Pyroclasm": 0.9118604617747846,
+      "Inferno Rift": 0.9744700616830243,
+      "Soul Eruption": 0.968606739806896,
       "Shadow Bolt": 0.318528,
       "Crushing Blow": 0.5183533282983936,
       "Hunter's Grudge": 0.806446568849193,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Immolation": 0.087327,
-      "Safe Revive": 0.4748111508922655
+      "Immolation": 0.11470719,
+      "Safe Revive": 0.5206743175182966,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
@@ -515,15 +553,15 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589850
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 3,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 2
+        "The Hollow King:Crown of the Hollow King": 4,
+        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 3
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Kira",
@@ -533,35 +571,36 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9998212265176295,
-      "Flame Breath": 0.9909463335352537,
-      "Pyroclasm": 0.8998414338349825,
-      "Inferno Rift": 0.9859875072982904,
-      "Soul Eruption": 0.9759508553407238,
+      "Rain of Fire": 0.9998564176771816,
+      "Flame Breath": 0.9942916632939774,
+      "Pyroclasm": 0.9118604617747846,
+      "Inferno Rift": 0.9876690064224956,
+      "Soul Eruption": 0.9788367526998369,
       "Shadow Bolt": 0.318528,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.6758387420567338,
+      "Doom": 0.6855635797950318,
       "Cleave": 0.12,
-      "Safe Revive": 0.6007351252492542
+      "Safe Revive": 0.6465336770976142,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -705,7 +744,7 @@
           "name": "Sanctified Boots"
         },
         "neck": {
-          "id": "itm_mun8usc0_j",
+          "id": "itm_muoopy56_f",
           "slotType": "neck",
           "rarity": "epic",
           "itemLevel": 60,
@@ -715,9 +754,8 @@
           "stats": {
             "faith": 19,
             "sta": 19,
-            "int": 5,
-            "crit": 5,
-            "haste": 5
+            "haste": 10,
+            "int": 5
           },
           "name": "Radiant Amulet"
         },
@@ -814,14 +852,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589850
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 3
+        "The Hollow King:Shroud of the Hollow King": 4
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Quinn",
@@ -831,39 +869,82 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9997094358632885,
-      "Flame Breath": 0.9873636376066984,
-      "Pyroclasm": 0.9453551211199381,
-      "Inferno Rift": 0.9883087984701108,
-      "Soul Eruption": 0.9958491190937212,
+      "Rain of Fire": 0.999759415219316,
+      "Flame Breath": 0.9888800010938946,
+      "Pyroclasm": 0.9519125065855456,
+      "Inferno Rift": 0.992400719005572,
+      "Soul Eruption": 0.9964568080584004,
       "Shadow Bolt": 0.49663999999999997,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8526127808715738,
       "Doom": 0.5736016645821373,
       "Cleave": 0.12,
-      "Safe Revive": 0.5490024653529653
+      "Safe Revive": 0.5883867270610869,
+      "Tyrant's Gaze": 0.14639999999999997
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "name": "Shroud of the Hollow King",
+          "slotType": "chest",
+          "rarity": "epic",
+          "armorType": "cloth",
+          "allowedClasses": [
+            "Mage",
+            "Healer",
+            "Necromancer"
+          ],
+          "stats": {
+            "int": 30,
+            "faith": 30,
+            "sta": 34,
+            "haste": 18,
+            "armor": 35
+          },
+          "id": "itm_muoopy56_g",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "bossOnly": true
+        },
+        {
+          "id": "itm_muoopy56_h",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "faith": 23,
+            "sta": 23,
+            "haste": 7,
+            "int": 7,
+            "crit": 7
+          },
+          "name": "Radiant Charm"
+        }
+      ],
       "equipped": {
         "head": {
           "id": "itm_mun7x74k_0",
@@ -1077,14 +1158,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589850
       },
       "pity": {
         "The Hollow King:Shroud of the Hollow King": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Orin",
@@ -1094,76 +1175,40 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9994997227342266,
-      "Flame Breath": 0.9965671090073465,
-      "Pyroclasm": 0.9260192409008393,
-      "Inferno Rift": 0.9879669957321691,
+      "Rain of Fire": 0.9995857744261577,
+      "Flame Breath": 0.9969790559264649,
+      "Pyroclasm": 0.9348969319927386,
+      "Inferno Rift": 0.9921785472259099,
       "Shadow Bolt": 0.49663999999999997,
-      "Soul Eruption": 0.9911548156063374,
+      "Soul Eruption": 0.9924497506015696,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8570343974454265,
       "Doom": 0.6758387420567338,
       "Cleave": 0.12,
-      "Safe Revive": 0.7482634964696547
+      "Safe Revive": 0.7838252989077443,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muomntj4_0",
-          "slotType": "head",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
-          "stats": {
-            "armor": 24,
-            "faith": 21,
-            "sta": 21,
-            "int": 18
-          },
-          "armorType": "cloth",
-          "name": "Reinforced Helm"
-        },
-        {
-          "id": "itm_muomqqgn_k",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 7,
-            "haste": 8,
-            "int": 7
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Gauntlets"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_mun9dny1_g",
@@ -1224,21 +1269,23 @@
           "bossOnly": true
         },
         "hands": {
-          "id": "itm_mun7x74n_g",
+          "id": "itm_muomqqgn_k",
           "slotType": "hands",
-          "rarity": "uncommon",
+          "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
             "armor": 18,
-            "faith": 16,
-            "sta": 16,
-            "crit": 13
+            "faith": 25,
+            "sta": 25,
+            "crit": 7,
+            "haste": 8,
+            "int": 7
           },
           "armorType": "cloth",
-          "name": "Sturdy Gauntlets"
+          "name": "Dreadforged Gauntlets"
         },
         "legs": {
           "id": "itm_muojufg6_p",
@@ -1372,14 +1419,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 2
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Ilya",
@@ -1389,39 +1436,59 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9997980628777834,
-      "Flame Breath": 0.981817737671615,
-      "Pyroclasm": 0.9260192409008393,
-      "Inferno Rift": 0.9846467544216717,
-      "Soul Eruption": 0.9816870383920696,
+      "Rain of Fire": 0.9998276264724759,
+      "Flame Breath": 0.9839996091510211,
+      "Pyroclasm": 0.9348969319927386,
+      "Inferno Rift": 0.9906101853029781,
+      "Soul Eruption": 0.9848370142923265,
       "Shadow Bolt": 0.318528,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.7379584316727537,
-      "Doom": 0.7747134512054178,
+      "Doom": 0.7814720476692553,
       "Cleave": 0.12,
-      "Safe Revive": 0.422048737456959
+      "Safe Revive": 0.422048737456959,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_muoopy57_j",
+          "slotType": "chest",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 24,
+            "faith": 34,
+            "sta": 34,
+            "haste": 9,
+            "crit": 19
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Chestguard"
+        }
+      ],
       "equipped": {
         "head": {
           "id": "itm_mun7ublr_9",
@@ -1441,20 +1508,21 @@
           "name": "Sturdy Helm"
         },
         "shoulders": {
-          "id": "itm_muoml2l0_1",
+          "id": "itm_muoop2ae_1",
           "slotType": "shoulders",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "rarity": "uncommon",
+          "itemLevel": 58,
+          "requiredLevel": 55,
           "sourceType": "mob",
-          "source": "Cinder Imp",
+          "source": "Bone Archer",
           "stats": {
-            "armor": 18,
-            "faith": 13,
-            "sta": 13
+            "armor": 17,
+            "faith": 15,
+            "sta": 15,
+            "haste": 14
           },
           "armorType": "cloth",
-          "name": "Plain Pauldrons"
+          "name": "Reinforced Pauldrons"
         },
         "chest": {
           "name": "Shroud of the Hollow King",
@@ -1631,14 +1699,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267319
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 2
+        "The Hollow King:Shroud of the Hollow King": 3
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Mira",
@@ -1648,34 +1716,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9995426598686006,
-      "Pyroclasm": 0.9653960654689652,
-      "Flame Breath": 0.9952086533330132,
-      "Inferno Rift": 0.9908370984371015,
-      "Shadow Bolt": 0.5271658585677169,
-      "Soul Eruption": 0.991927239023883,
+      "Rain of Fire": 0.999720297635738,
+      "Pyroclasm": 0.9704620814843087,
+      "Flame Breath": 0.9957836149330517,
+      "Inferno Rift": 0.9921785472259099,
+      "Shadow Bolt": 0.5413508828106854,
+      "Soul Eruption": 0.9933158184938629,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8004603802568999,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -1872,7 +1941,7 @@
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_muojufg6_r",
+          "id": "itm_muoopy57_l",
           "slotType": "mainHand",
           "rarity": "epic",
           "itemLevel": 60,
@@ -1882,18 +1951,19 @@
           "stats": {
             "str": 40,
             "sta": 40,
-            "haste": 12,
-            "crit": 23
+            "crit": 23,
+            "agi": 12
           },
-          "weaponType": "sword",
+          "weaponType": "mace",
           "allowedClasses": [
             "Knight",
             "Warrior",
-            "Rogue"
+            "Healer",
+            "Druid"
           ],
-          "weaponSpeed": 2.4,
-          "weaponDamage": 108,
-          "name": "Sanctified Longsword"
+          "weaponSpeed": 2.8,
+          "weaponDamage": 126,
+          "name": "Sanctified Warhammer"
         },
         "offHand": {
           "id": "itm_muolhcjd_o",
@@ -1919,14 +1989,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 2
+        "The Hollow King:Crown of the Hollow King": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Brakka",
@@ -1936,81 +2006,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9989953051044417,
-      "Flame Breath": 0.9906663232322204,
-      "Pyroclasm": 0.932590571658802,
-      "Inferno Rift": 0.9727032739063154,
-      "Soul Eruption": 0.9822072260590968,
+      "Rain of Fire": 0.9991930770441156,
+      "Flame Breath": 0.991786364444354,
+      "Pyroclasm": 0.9424593119679534,
+      "Inferno Rift": 0.9833057317719939,
+      "Soul Eruption": 0.9843423589320052,
       "Shadow Bolt": 0.48192381999655615,
       "Crushing Blow": 0.610198016,
       "Hunter's Grudge": 0.8526127808715738,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
-      "bag": [
-        {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Necromancer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_muomqqgo_n",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        {
-          "id": "itm_muomqqgo_o",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 19,
-            "haste": 9
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Greaves"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_mun7iz4z_n",
@@ -2070,7 +2098,22 @@
           "source": "The Hollow King",
           "bossOnly": true
         },
-        "hands": null,
+        "hands": {
+          "id": "itm_muoomfbq_9",
+          "slotType": "hands",
+          "rarity": "common",
+          "itemLevel": 60,
+          "requiredLevel": 57,
+          "sourceType": "mob",
+          "source": "Forge Guardian",
+          "stats": {
+            "armor": 18,
+            "int": 13,
+            "sta": 13
+          },
+          "armorType": "cloth",
+          "name": "Simple Gauntlets"
+        },
         "legs": {
           "id": "itm_muomj20p_r",
           "slotType": "legs",
@@ -2185,14 +2228,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Hask",
@@ -2202,34 +2245,35 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9996403832846349,
-      "Flame Breath": 0.9935132537431564,
-      "Pyroclasm": 0.9139904312687748,
-      "Inferno Rift": 0.98794721491764,
-      "Soul Eruption": 0.9856237438946815,
+      "Rain of Fire": 0.9996930311717643,
+      "Flame Breath": 0.9942916632939776,
+      "Pyroclasm": 0.9265822321310262,
+      "Inferno Rift": 0.992400719005572,
+      "Soul Eruption": 0.9873488946273198,
       "Shadow Bolt": 0.4493823148013138,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8526127808715738,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -2422,14 +2466,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Bonecarver": 2
+        "The Hollow King:Bonecarver": 3
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Elara",
@@ -2439,62 +2483,39 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9995419080563253,
-      "Flame Breath": 0.9931058069328902,
-      "Pyroclasm": 0.9437575291899767,
-      "Inferno Rift": 0.9913644534154227,
-      "Soul Eruption": 0.9945489354744622,
+      "Rain of Fire": 0.9996089727168792,
+      "Flame Breath": 0.9939331101009433,
+      "Pyroclasm": 0.9505066256871795,
+      "Inferno Rift": 0.9943868947200247,
+      "Soul Eruption": 0.9965631038166484,
       "Shadow Bolt": 0.39669773818368,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.7298540532708799,
       "Doom": 0.71207808,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muomqqgo_q",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.04,
-            "str": 27,
-            "sta": 27,
-            "crit": 16,
-            "agi": 7
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Sanctified Bulwark"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_mun9dny4_m",
@@ -2654,7 +2675,7 @@
           "name": "Dreadforged Ring"
         },
         "trinket": {
-          "id": "itm_muolu3xf_q",
+          "id": "itm_muoopy57_p",
           "slotType": "trinket",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2664,10 +2685,11 @@
           "stats": {
             "str": 23,
             "sta": 23,
-            "agi": 14,
+            "crit": 7,
+            "agi": 7,
             "haste": 7
           },
-          "name": "Radiant Charm"
+          "name": "Sanctified Charm"
         },
         "mainHand": {
           "id": "itm_muojufg7_v",
@@ -2693,7 +2715,7 @@
           "name": "Dreadforged Axe"
         },
         "offHand": {
-          "id": "itm_muomhgxe_s",
+          "id": "itm_muomqqgo_q",
           "slotType": "offHand",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2705,29 +2727,28 @@
             "blockChance": 0.04,
             "str": 27,
             "sta": 27,
-            "agi": 8,
-            "haste": 8,
-            "crit": 7
+            "crit": 16,
+            "agi": 7
           },
           "weaponType": "shield",
           "allowedClasses": [
             "Knight",
             "Warrior"
           ],
-          "name": "Dreadforged Bulwark"
+          "name": "Sanctified Bulwark"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 7
+        "The Hollow King:Crown of the Hollow King": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Corvin",
@@ -2737,34 +2758,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9990254459513084,
-      "Flame Breath": 0.9965671090073465,
-      "Pyroclasm": 0.9531515963272142,
-      "Inferno Rift": 0.9841719117749194,
+      "Rain of Fire": 0.9994218580412669,
+      "Flame Breath": 0.9969790559264649,
+      "Pyroclasm": 0.9587734047679486,
+      "Inferno Rift": 0.9864891438910712,
       "Shadow Bolt": 0.48192381999655615,
-      "Soul Eruption": 0.9864733806305058,
+      "Soul Eruption": 0.9884536777061997,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8004603802568999,
       "Doom": 0.610198016,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -2803,6 +2825,45 @@
           },
           "armorType": "cloth",
           "name": "Blessed Boots"
+        },
+        {
+          "name": "Shroud of the Hollow King",
+          "slotType": "chest",
+          "rarity": "epic",
+          "armorType": "cloth",
+          "allowedClasses": [
+            "Mage",
+            "Healer",
+            "Necromancer"
+          ],
+          "stats": {
+            "int": 30,
+            "faith": 30,
+            "sta": 34,
+            "haste": 18,
+            "armor": 35
+          },
+          "id": "itm_muoopy57_q",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "bossOnly": true
+        },
+        {
+          "id": "itm_muoopy57_r",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "int": 19,
+            "sta": 19,
+            "crit": 15
+          },
+          "name": "Sanctified Ring"
         }
       ],
       "equipped": {
@@ -2992,14 +3053,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Rook",
@@ -3009,34 +3070,35 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9984134338588012,
-      "Flame Breath": 0.9968668930790618,
-      "Pyroclasm": 0.9402248158039926,
-      "Inferno Rift": 0.9908220357268814,
+      "Rain of Fire": 0.9986457071418727,
+      "Flame Breath": 0.9972428659095744,
+      "Pyroclasm": 0.9489759027702881,
+      "Inferno Rift": 0.9942132935257987,
       "Crushing Blow": 0.610198016,
-      "Soul Eruption": 0.9893811744676625,
+      "Soul Eruption": 0.9909357705255967,
       "Shadow Bolt": 0.4147968060381696,
       "Hunter's Grudge": 0.721499023990598,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -3130,21 +3192,22 @@
           "name": "Plain Greaves"
         },
         "feet": {
-          "id": "itm_mun8thnj_d",
+          "id": "itm_muoopy57_t",
           "slotType": "feet",
-          "rarity": "uncommon",
-          "itemLevel": 63,
-          "requiredLevel": 60,
-          "sourceType": "mob",
-          "source": "Hollow Deathguard",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
-            "armor": 38,
-            "agi": 16,
-            "sta": 16,
-            "crit": 15
+            "armor": 36,
+            "agi": 25,
+            "sta": 25,
+            "crit": 14,
+            "haste": 8
           },
           "armorType": "leather",
-          "name": "Reinforced Boots"
+          "name": "Sanctified Boots"
         },
         "neck": {
           "id": "itm_muolnu7j_1g",
@@ -3240,14 +3303,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
         "The Hollow King:Bonecarver": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Ryn",
@@ -3257,38 +3320,58 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9993408587351982,
-      "Flame Breath": 0.9909463335352539,
-      "Pyroclasm": 0.9437575291899768,
-      "Inferno Rift": 0.9955670312594865,
+      "Rain of Fire": 0.9995844114325425,
+      "Flame Breath": 0.9920327735110234,
+      "Pyroclasm": 0.9505066256871796,
+      "Inferno Rift": 0.9962160178830977,
       "Shadow Bolt": 0.4323529018570245,
-      "Soul Eruption": 0.997735347129516,
+      "Soul Eruption": 0.9980668923097548,
       "Crushing Blow": 0.610198016,
       "Hunter's Grudge": 0.806446568849193,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_muoopy58_u",
+          "slotType": "feet",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "armor": 72,
+            "str": 25,
+            "sta": 25,
+            "agi": 7,
+            "crit": 15
+          },
+          "armorType": "plate",
+          "name": "Dreadforged Boots"
+        }
+      ],
       "equipped": {
         "head": {
           "id": "itm_muomhgxe_x",
@@ -3493,14 +3576,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589851
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 2
+        "The Hollow King:Crown of the Hollow King": 3
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Magnus",
@@ -3510,34 +3593,35 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40157103344225586,
-        0.8031420668845117
+        0.40127253708822724,
+        0.8025450741764545
       ],
-      "awareness": 0.7484289665577442,
-      "mistakeRate": 0.040314206688451155,
+      "awareness": 0.7487274629117727,
+      "mistakeRate": 0.040254507417645434,
       "inputDelay": [
-        0.20117827508169187,
-        0.5023565501633837
+        0.2009544028161704,
+        0.5019088056323407
       ],
-      "lapsePerSec": 0.020157103344225578,
-      "positioning": 0.5976434498366163,
-      "decisionNoise": 0.3011782750816918,
-      "healAccuracy": 0.6988217249183081
+      "lapsePerSec": 0.020127253708822717,
+      "positioning": 0.5980911943676592,
+      "decisionNoise": 0.30095440281617036,
+      "healAccuracy": 0.6990455971838295
     },
     "mastery": {
-      "Rain of Fire": 0.9997427656589255,
-      "Flame Breath": 0.981817737671615,
-      "Pyroclasm": 0.9283564370908725,
-      "Inferno Rift": 0.9765208389354532,
-      "Soul Eruption": 0.9842740367559324,
+      "Rain of Fire": 0.9997870120234651,
+      "Flame Breath": 0.9839996091510211,
+      "Pyroclasm": 0.954828733585795,
+      "Inferno Rift": 0.9793383382631988,
+      "Soul Eruption": 0.9869790282416181,
       "Shadow Bolt": 0.4147968060381696,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8526127808715738,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "average",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -3558,6 +3642,22 @@
           },
           "armorType": "cloth",
           "name": "Blessed Pauldrons"
+        },
+        {
+          "id": "itm_muoopy58_v",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "int": 19,
+            "sta": 19,
+            "haste": 10,
+            "crit": 5
+          },
+          "name": "Dreadforged Ring"
         }
       ],
       "equipped": {
@@ -3762,14 +3862,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589852
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Sera",
@@ -3779,34 +3879,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9981015415674487,
-      "Pyroclasm": 0.9728348130837342,
-      "Flame Breath": 0.9942573301785218,
-      "Inferno Rift": 0.9959541491206892,
-      "Soul Eruption": 0.9711758912752518,
-      "Shadow Bolt": 0.5932937552509704,
+      "Rain of Fire": 0.998838931299528,
+      "Pyroclasm": 0.9768117964482755,
+      "Flame Breath": 0.9949464505570992,
+      "Inferno Rift": 0.9965464616894204,
+      "Soul Eruption": 0.975395740792555,
+      "Shadow Bolt": 0.6054949425934413,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.7379584316727535,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -3849,7 +3950,7 @@
           "name": "Sanctified Pauldrons"
         },
         "chest": {
-          "id": "itm_muokskqs_r",
+          "id": "itm_muoopy58_w",
           "slotType": "chest",
           "rarity": "epic",
           "itemLevel": 60,
@@ -3860,11 +3961,11 @@
             "armor": 48,
             "agi": 34,
             "sta": 34,
-            "haste": 19,
-            "crit": 9
+            "crit": 19,
+            "haste": 9
           },
           "armorType": "leather",
-          "name": "Radiant Chestguard"
+          "name": "Sanctified Chestguard"
         },
         "hands": {
           "id": "itm_mun4dusj_e",
@@ -4013,14 +4114,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589852
       },
       "pity": {
-        "The Hollow King:Bonecarver": 1
+        "The Hollow King:Bonecarver": 2
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Talos",
@@ -4030,34 +4131,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9991868892974601,
-      "Flame Breath": 0.9953523937330228,
-      "Pyroclasm": 0.9420180713298729,
-      "Inferno Rift": 0.9941784890509195,
-      "Soul Eruption": 0.9787094651464929,
+      "Rain of Fire": 0.9994714780433491,
+      "Flame Breath": 0.9959101064850601,
+      "Pyroclasm": 0.9489759027702882,
+      "Inferno Rift": 0.9948770703648092,
+      "Soul Eruption": 0.982371607465575,
       "Shadow Bolt": 0.4147968060381696,
       "Crushing Blow": 0.610198016,
       "Hunter's Grudge": 0.745819678722571,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -4262,14 +4364,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589852
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 3
+        "The Hollow King:Crown of the Hollow King": 0
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Vera",
@@ -4279,34 +4381,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9994518548639291,
-      "Flame Breath": 0.9962386407917692,
-      "Pyroclasm": 0.9470814592148491,
-      "Inferno Rift": 0.9810292406499932,
-      "Soul Eruption": 0.9384772348075539,
+      "Rain of Fire": 0.9995321033118498,
+      "Flame Breath": 0.9966900038967569,
+      "Pyroclasm": 0.9534316841090672,
+      "Inferno Rift": 0.983305731771994,
+      "Soul Eruption": 0.9474841676317279,
       "Shadow Bolt": 0.4974661053966595,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.9266100829998447,
       "Doom": 0.4722680832,
-      "Cleave": 0.35
+      "Cleave": 0.35,
+      "Tyrant's Gaze": 0.35
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -4526,14 +4629,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589852
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Jax",
@@ -4543,34 +4646,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.9988300278485654,
-      "Flame Breath": 0.9938966204469357,
-      "Pyroclasm": 0.9609124414655137,
-      "Inferno Rift": 0.9893297560261115,
-      "Soul Eruption": 0.9903243901859624,
+      "Rain of Fire": 0.9990013117715355,
+      "Flame Breath": 0.9946290259933034,
+      "Pyroclasm": 0.9745930869525838,
+      "Inferno Rift": 0.9906101853029782,
+      "Soul Eruption": 0.9917408994627375,
       "Shadow Bolt": 0.5807152115989386,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8809136554042344,
       "Doom": 0.4722680832,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Necromancer",
       "bagSize": 30,
@@ -4780,15 +4884,15 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267320
+        "The Hollow King": 1791412589852
       },
       "pity": {
         "The Hollow King:Bonecarver": 0,
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Fenn",
@@ -4813,100 +4917,24 @@
       "healAccuracy": 0.55
     },
     "mastery": {
-      "Rain of Fire": 0.999831238548463,
-      "Flame Breath": 0.981817737671615,
-      "Pyroclasm": 0.9113303415142006,
-      "Inferno Rift": 0.9826574378500507,
-      "Soul Eruption": 0.9914060669294538,
+      "Rain of Fire": 0.9998514899226475,
+      "Flame Breath": 0.9839996091510211,
+      "Pyroclasm": 0.9219707005324965,
+      "Inferno Rift": 0.989065514564457,
+      "Soul Eruption": 0.9924373388979193,
       "Shadow Bolt": 0.39669773818368,
       "Crushing Blow": 0.4722680832,
       "Doom": 0.610198016,
       "Hunter's Grudge": 0.8004603802568999,
-      "Cleave": 0.12
+      "Cleave": 0.12,
+      "Tyrant's Gaze": 0.12
     },
     "potential": "casual",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun5sjbu_4",
-          "slotType": "legs",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 96,
-            "str": 21,
-            "sta": 21,
-            "agi": 18
-          },
-          "armorType": "plate",
-          "name": "Reinforced Greaves"
-        },
-        {
-          "id": "itm_muoml2l0_k",
-          "slotType": "hands",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 78,
-            "str": 21,
-            "sta": 21,
-            "haste": 9,
-            "agi": 8
-          },
-          "armorType": "plate",
-          "name": "Blessed Gauntlets"
-        },
-        {
-          "name": "Crown of the Hollow King",
-          "slotType": "head",
-          "rarity": "epic",
-          "armorType": "plate",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
-          },
-          "id": "itm_muomqqgp_13",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        {
-          "id": "itm_muomqqgp_14",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 14,
-            "crit": 8
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_mun9dnyb_x",
@@ -4964,22 +4992,22 @@
           "name": "Dreadforged Chestguard"
         },
         "hands": {
-          "id": "itm_muojza3q_8",
+          "id": "itm_muomqqgp_14",
           "slotType": "hands",
-          "rarity": "rare",
+          "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
             "armor": 72,
-            "str": 19,
-            "sta": 19,
-            "agi": 8,
-            "haste": 8
+            "str": 25,
+            "sta": 25,
+            "agi": 14,
+            "crit": 8
           },
           "armorType": "plate",
-          "name": "Runed Gauntlets"
+          "name": "Dreadforged Gauntlets"
         },
         "legs": {
           "id": "itm_muomj20q_16",
@@ -5051,7 +5079,23 @@
           "name": "Sanctified Ring"
         },
         "ring2": null,
-        "trinket": null,
+        "trinket": {
+          "id": "itm_muoopy58_11",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "str": 23,
+            "sta": 23,
+            "haste": 7,
+            "agi": 7,
+            "crit": 7
+          },
+          "name": "Sanctified Charm"
+        },
         "mainHand": {
           "id": "itm_muolnu7k_1p",
           "slotType": "mainHand",
@@ -5102,14 +5146,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267321
+        "The Hollow King": 1791412589852
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
+        "The Hollow King:Crown of the Hollow King": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   },
   {
     "name": "Courtney",
@@ -5119,35 +5163,35 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2527493085239476,
-        0.5054986170478952
+        0.25222693990439754,
+        0.5044538798087951
       ],
-      "awareness": 0.8972506914760524,
-      "mistakeRate": 0.01551058586873313,
+      "awareness": 0.8977730600956024,
+      "mistakeRate": 0.015413574553673834,
       "inputDelay": [
-        0.10196379180281973,
-        0.30392758360563943
+        0.10159067136028399,
+        0.3031813427205679
       ],
-      "lapsePerSec": 0.008251365350760927,
-      "positioning": 0.8456796580337965,
-      "decisionNoise": 0.15235655016338367,
-      "healAccuracy": 0.8476434498366163
+      "lapsePerSec": 0.008203605934116351,
+      "positioning": 0.8465005230073751,
+      "decisionNoise": 0.15190880563234077,
+      "healAccuracy": 0.8480911943676592
     },
     "mastery": {
-      "Rain of Fire": 0.998933950464098,
-      "Flame Breath": 0.9746226949262826,
-      "Pyroclasm": 0.9728348130837342,
-      "Inferno Rift": 0.9718590452642427,
-      "Soul Eruption": 0.9597035479025912,
+      "Rain of Fire": 0.9991173195126695,
+      "Flame Breath": 0.9835047517020837,
+      "Pyroclasm": 0.9760946355136861,
+      "Inferno Rift": 0.9752359598325336,
+      "Soul Eruption": 0.9645391221542802,
       "Shadow Bolt": 0.4323529018570245,
       "Crushing Blow": 0.4722680832,
       "Hunter's Grudge": 0.8613233655220638,
       "Doom": 0.48810004070400004,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.03
+      "Tyrant's Gaze": 0.14639999999999997
     },
     "potential": "skilled",
-    "experience": 46,
+    "experience": 48,
     "gear": {
       "className": "Druid",
       "bagSize": 30,
@@ -5356,14 +5400,14 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791409267321
+        "The Hollow King": 1791412589852
       },
       "pity": {
         "The Hollow King:Shroud of the Hollow King": 4,
-        "The Hollow King:Barrowroot Mantle": 0
+        "The Hollow King:Barrowroot Mantle": 1
       }
     },
-    "kills": 14,
-    "attempts": 46
+    "kills": 15,
+    "attempts": 48
   }
 ]

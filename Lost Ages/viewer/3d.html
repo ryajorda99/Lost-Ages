@@ -524,6 +524,7 @@ class Unit {
     this.oneShot = null; this.casting = null;
 
     this.root = new THREE.Group();
+    this.root.userData.unit = this;   // lets a mouse click find which unit was hit
     this.root.scale.setScalar(this.size);
     this.pose = new THREE.Group();
     this.root.add(this.pose);
@@ -867,8 +868,140 @@ function playAction([ak, ai, key, tk, ti]) {
 // ---------- The game interface (hud.js) ----------
 const hud = createHUD({
   classColors: CLASS_COLORS,
-  onFollow: (u) => { follow = follow === u ? null : u; },
+  // Clicking a raid frame: while playing it picks your friendly target (heals, buffs, revives), otherwise it follows them
+  onFollow: (u) => {
+    if (playing) setAllyTarget(u);
+    else follow = follow === u ? null : u;
+  },
+  onTake: (u) => takeControl(u ? u.name : null),
+  onSlot: (key, shown) => { if (playing && shown?.u === myUnit()) sendInput({ cast: key }); },
 });
+
+// =====================================================================
+//  PLAYING A CHARACTER YOURSELF
+// =====================================================================
+let playing = null;          // name of the raid member you control
+let playable = false;        // only during a live fight
+let enemyTarget = null, allyTarget = null;   // Units
+const held = new Set();      // movement keys being held
+const myUnit = () => (playing ? players.find(u => u.name === playing) : null);
+
+function post(path, body) {
+  return fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+    .then(r => (r.status === 204 ? {} : r.json())).catch(() => ({ ok: false, reason: "Can't reach the simulation" }));
+}
+const sendInput = (msg) => post("/api/input", msg);
+
+async function takeControl(name) {
+  const res = await post("/api/control", { name });
+  if (res && res.ok === false) hud.error(res.reason || "Can't take control right now");
+}
+function setControlled(name) {
+  const was = playing;
+  playing = name || null;
+  held.clear();
+  hud.setControl({ name: playing });
+  if (playing) {
+    const me = myUnit();
+    follow = me;
+    if (me && was !== playing) {   // swing the camera in a bit closer
+      const off = camera.position.clone().sub(controls.target).setLength(22);
+      camera.position.copy(controls.target).add(off);
+    }
+  } else { enemyTarget = allyTarget = null; }
+  hud.setTargets("", "");
+}
+function setEnemyTarget(u) {
+  enemyTarget = u;
+  sendInput({ enemyTarget: u ? { kind: "e", id: u.index } : null });
+}
+function setAllyTarget(u) {
+  allyTarget = allyTarget === u ? null : u;
+  sendInput({ allyTarget: allyTarget ? { kind: "p", index: allyTarget.index } : null });
+}
+// Tab: next enemy, nearest first
+function cycleTarget() {
+  const me = myUnit();
+  if (!me) return;
+  const foes = enemies.filter(u => u && !u.dead && u.root.visible)
+    .sort((a, b) => a.root.position.distanceTo(me.root.position) - b.root.position.distanceTo(me.root.position));
+  if (!foes.length) return;
+  const i = foes.indexOf(enemyTarget);
+  setEnemyTarget(foes[(i + 1) % foes.length]);
+}
+// WASD → a direction on the ground, relative to where the camera is looking
+function moveVector() {
+  const f = controls.target.clone().sub(camera.position); f.y = 0; f.normalize();
+  const r = new THREE.Vector3(-f.z, 0, f.x);
+  const fw = (held.has("f") ? 1 : 0) - (held.has("b") ? 1 : 0);
+  const rt = (held.has("r") ? 1 : 0) - (held.has("l") ? 1 : 0);
+  const v = f.multiplyScalar(fw).add(r.multiplyScalar(rt));
+  return { x: +v.x.toFixed(3), y: +v.z.toFixed(3) };
+}
+let lastMove = "", lastMoveSent = 0;
+function pushMove(force = false) {
+  const m = moveVector(), k = m.x + "," + m.y, now = performance.now();
+  if (force || (k !== lastMove && now - lastMoveSent > 80)) { lastMove = k; lastMoveSent = now; sendInput({ move: m }); }
+}
+const MOVE_KEYS = { KeyW: "f", ArrowUp: "f", KeyS: "b", ArrowDown: "b", KeyA: "l", ArrowLeft: "l", KeyD: "r", ArrowRight: "r" };
+const ABILITY_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="];
+addEventListener("keydown", (e) => {
+  if (!playing || e.target.tagName === "SELECT") return;
+  if (MOVE_KEYS[e.code]) { e.preventDefault(); if (!e.repeat) { held.add(MOVE_KEYS[e.code]); pushMove(true); } return; }
+  const n = ABILITY_KEYS.indexOf(e.key);
+  if (n !== -1 && !e.repeat) {
+    const me = data?.players.find(p => p.name === playing);
+    const ab = me?.abilities?.[n];
+    if (ab) sendInput({ cast: ab[0] });
+    return;
+  }
+  if (e.key === "Tab") { e.preventDefault(); cycleTarget(); }
+  if (e.key === "Escape") takeControl(null);
+}, true);
+addEventListener("keyup", (e) => { if (playing && MOVE_KEYS[e.code]) { held.delete(MOVE_KEYS[e.code]); pushMove(true); } });
+addEventListener("blur", () => { if (playing && held.size) { held.clear(); pushMove(true); } });
+
+// Click an enemy (or a raid member) in the 3D world to target them
+const raycaster = new THREE.Raycaster();
+let downAt = null;
+renderer.domElement.addEventListener("pointerdown", (e) => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener("pointerup", (e) => {
+  if (!playing || !downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;   // that was a camera drag
+  raycaster.setFromCamera(new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1), camera);
+  const roots = [...enemies, ...players].filter(u => u && u.root.visible).map(u => u.root);
+  const hit = raycaster.intersectObjects(roots, true)[0];
+  let o = hit?.object;
+  while (o && !o.userData.unit) o = o.parent;
+  const u = o?.userData.unit;
+  if (!u) return;
+  if (u.kind === "e" && !u.dead) setEnemyTarget(u);
+  else if (u.kind === "p") setAllyTarget(u);
+});
+
+// Rings on the ground under your targets: red = enemy, green = friendly
+const targetRing = (color) => {
+  const m = new THREE.Mesh(new THREE.RingGeometry(0.85, 1.05, 40), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2;
+  m.visible = false;
+  scene.add(m);
+  return m;
+};
+const enemyRing = targetRing(0xff3a2a), allyRing = targetRing(0x4cff6a);
+function updateTargetRings(t) {
+  const show = (ring, u) => {
+    ring.visible = !!(playing && u && u.root.visible && !(u.kind === "e" && u.dead));
+    if (!ring.visible) return;
+    ring.position.set(u.root.position.x, 0.05, u.root.position.z);
+    ring.scale.setScalar(u.size * (1.05 + Math.sin(t * 6) * 0.06));
+  };
+  const en = enemyTarget && !enemyTarget.dead ? enemyTarget : bossUnit;   // no target picked = the boss
+  show(enemyRing, en);
+  show(allyRing, allyTarget);
+  if (playing && data) {
+    hud.setTargets(en ? `${en.name} ${Math.round(en.hp * 100)}%` : "",
+      allyTarget ? `${allyTarget.name} ${allyTarget.dead ? "(dead)" : Math.round(allyTarget.hp * 100) + "%"}` : "");
+  }
+}
 const addLog = (t, text, cls) => hud.log(t, text, cls);
 const showResult = (r) => hud.result(r);
 
@@ -897,8 +1030,18 @@ function startLive() {
   hud.status("waiting for a fight… (run node scripts/simulate.js)");
   source.onmessage = (ev) => {
     const msg = JSON.parse(ev.data);
+    // Who you're playing (can arrive before the first fight starts)
+    if (msg.type === "control") {
+      if (msg.playable !== undefined) playable = msg.playable;
+      hud.setControl({ playable });
+      setControlled(msg.name);
+      return;
+    }
     if (msg.type === "start") {
       resetFight(msg.data);
+      // New fight: new enemies, so old targets are gone. Keep playing the same character.
+      enemyTarget = allyTarget = null;
+      if (playing) { follow = myUnit(); sendInput({ enemyTarget: null, allyTarget: null }); hud.setControl({ name: playing }); }
       msg.data.events.slice(-40).forEach(([t, text]) => addLog(t, text));
       const last = msg.data.frames[msg.data.frames.length - 1];
       if (last) applyFrame({ ...last, a: [] });
@@ -909,6 +1052,8 @@ function startLive() {
       if (msg.enemies) data.enemies = msg.enemies;
       if (msg.zoneNames) data.zoneNames = msg.zoneNames;
       if (!paused) applyFrame(msg.frame);
+    } else if (msg.type === "castResult") {
+      if (!msg.ok && msg.reason) hud.error(msg.reason);
     } else if (msg.type === "event") addLog(msg.e[0], msg.e[1]);
     else if (msg.type === "end") showResult(msg.result);
     else if (msg.type === "info") addLog(null, msg.text, "info");
@@ -928,6 +1073,9 @@ async function startReplay(file) {
   source?.close(); source = null;
   mode = "replay";
   hud.el("live").classList.remove("on");
+  playable = false;
+  setControlled(null);
+  hud.setControl({ playable: false });
   const d = await (await fetch("/replays/" + encodeURIComponent(file))).json();
   resetFight(d);
   replay = d; replayClock = 0; frameIdx = 0; eventIdx = 0; paused = false;
@@ -953,8 +1101,8 @@ hud.el("gfx").onclick = () => setFancy(!fancy);
 setFancy(true);
 addEventListener("keydown", (e) => {
   if (e.target.tagName === "SELECT") return;
-  if (e.code === "Space") { e.preventDefault(); hud.el("pause").click(); }
-  if (e.key === "b" || e.key === "B") follow = null;
+  if (e.code === "Space") { e.preventDefault(); if (!playing) hud.el("pause").click(); }
+  if ((e.key === "b" || e.key === "B") && !playing) follow = null;
   if (e.key === "n" || e.key === "N") document.body.classList.toggle("nonames");
   if (e.key === "m" || e.key === "M") hud.toggleModels();
   if (e.key === "g" || e.key === "G") setFancy(!fancy);
@@ -1024,6 +1172,14 @@ function frame() {
     bossLight.intensity = 60 + Math.sin(t * 7) * 10;
     bossLight.position.set(bossUnit.root.position.x, 6, bossUnit.root.position.z);
   } else bossLight.intensity = 0;
+
+  // Playing: the camera stays on you, and turning the camera while walking changes direction
+  if (playing) {
+    const me = myUnit();
+    if (me) follow = me;
+    if (held.size) pushMove();
+  }
+  updateTargetRings(t);
 
   // Camera follows the boss (or whoever you clicked), keeping your chosen angle
   const focus = follow || bossUnit || enemies.find(u => u && !u.dead) || players[0];
