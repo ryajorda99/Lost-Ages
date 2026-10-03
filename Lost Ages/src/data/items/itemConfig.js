@@ -39,7 +39,7 @@ const HP_PER_GEAR_STAMINA = 5;
 
 const CLASS_ARMOR = {
   Knight: "plate", Warrior: "plate", Rogue: "leather", Mage: "cloth", Healer: "cloth",
-  Druid: "leather", Necromancer: "cloth",
+  Druid: "leather", Necromancer: "cloth", Valkyrie: "plate",
 };
 const ARMOR_VALUE = { cloth: 1, leather: 2, mail: 3, plate: 4 };
 
@@ -52,6 +52,7 @@ const CLASS_STATS = {
   Healer:  { primary: ["faith", "sta"],        secondary: ["haste", "crit", "int"] },
   Druid:       { primary: ["int", "faith", "sta"], secondary: ["haste", "crit"] },   // damage (int) + healing (faith)
   Necromancer: { primary: ["int", "sta"],          secondary: ["crit", "haste"] },
+  Valkyrie:    { primary: ["str", "sta"],          secondary: ["crit", "haste", "armor", "agi"] },   // tank + damage
 };
 
 // How much each stat is "worth" to each class — used to decide if an item is an upgrade
@@ -63,6 +64,7 @@ const STAT_WEIGHTS = {
   Healer:  { faith: 1.3, sta: 0.6, haste: 0.9, crit: 0.6, int: 0.4, armor: 0.02, weaponDamage: 0.1 },
   Druid:       { int: 1.1, faith: 0.8, sta: 0.6, haste: 0.9, crit: 0.7, armor: 0.03, weaponDamage: 0.1 },
   Necromancer: { int: 1.3, sta: 0.7, crit: 0.8, haste: 0.8, armor: 0.03, weaponDamage: 0.6 },   // weapon matters in Reaper stance
+  Valkyrie:    { str: 1.1, sta: 1.0, crit: 0.6, haste: 0.5, agi: 0.4, armor: 0.1, weaponDamage: 2.0 },
 };
 
 const CLASS_WEAPONS = {
@@ -73,10 +75,11 @@ const CLASS_WEAPONS = {
   Healer:  { mainHand: ["mace", "staff"], offHand: ["relic"] },
   Druid:       { mainHand: ["staff", "mace"], offHand: ["relic"] },
   Necromancer: { mainHand: ["scythe", "staff"], offHand: ["orb"] },
+  Valkyrie:    { mainHand: ["spear", "sword"], offHand: ["shield"] },
 };
 
 // Seconds per swing for each weapon type
-const WEAPON_SPEED = { dagger: 1.6, sword: 2.4, axe: 2.8, mace: 2.8, staff: 3.0, wand: 2.0, scythe: 3.2 };
+const WEAPON_SPEED = { dagger: 1.6, sword: 2.4, axe: 2.8, mace: 2.8, staff: 3.0, wand: 2.0, scythe: 3.2, spear: 2.6 };
 
 const NAME_PARTS = {
   prefix: {
@@ -90,7 +93,7 @@ const NAME_PARTS = {
     head: "Helm", shoulders: "Pauldrons", chest: "Chestguard", hands: "Gauntlets", legs: "Greaves",
     feet: "Boots", neck: "Amulet", ring: "Ring", trinket: "Charm",
     sword: "Longsword", mace: "Warhammer", shield: "Bulwark", axe: "Axe", dagger: "Dagger",
-    staff: "Staff", wand: "Wand", orb: "Orb", relic: "Relic", scythe: "Scythe",
+    staff: "Staff", wand: "Wand", orb: "Orb", relic: "Relic", scythe: "Scythe", spear: "Spear",
   },
 };
 

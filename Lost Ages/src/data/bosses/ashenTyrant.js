@@ -333,7 +333,7 @@ const ashenTyrant = {
         chance: 0.2,
         item: {
           name: "Crown of the Ashen Tyrant", slotType: "head", rarity: "epic", armorType: "plate",
-          allowedClasses: ["Knight", "Warrior"], stats: { str: 45, sta: 55, faith: 20, armor: 170, blockChance: 0.03 },
+          allowedClasses: ["Knight", "Warrior", "Valkyrie"], stats: { str: 45, sta: 55, faith: 20, armor: 170, blockChance: 0.03 },
         },
       },
       {
@@ -348,6 +348,13 @@ const ashenTyrant = {
         item: {
           name: "Ashbark Vestments", slotType: "chest", rarity: "epic", armorType: "leather",
           allowedClasses: ["Druid"], stats: { int: 38, faith: 32, sta: 45, haste: 22, armor: 90 },
+        },
+      },
+      {
+        chance: 0.2,
+        item: {
+          name: "Emberwing Lance", slotType: "mainHand", rarity: "epic", weaponType: "spear",
+          allowedClasses: ["Valkyrie"], weaponDamage: 105, weaponSpeed: 2.6, stats: { str: 42, sta: 48, crit: 20 },
         },
       },
       {
@@ -369,7 +376,7 @@ const ashenTyrant = {
         chance: 0.02,
         item: {
           name: "Tyrantsbane, Greatblade of Cinders", slotType: "mainHand", rarity: "legendary",
-          weaponType: "sword", allowedClasses: ["Warrior", "Knight"], weaponDamage: 150, weaponSpeed: 2.4,
+          weaponType: "sword", allowedClasses: ["Warrior", "Knight", "Valkyrie"], weaponDamage: 150, weaponSpeed: 2.4,
           stats: { str: 70, sta: 60, crit: 30 },
           effect: "Attacks have a chance to engulf the target in flames.",
         },

@@ -25,14 +25,29 @@ const SAFE_REVIVE = "Safe Revive";
 const HUMAN_ERROR = 0.02; // even a master still fails a mechanic at least 2% of the time
 const TIRED_CHANCE = 0.1; // 10% of attempts a player is "off" (tired, distracted, lag)
 
+// MECHANIC FAMILIES: experienced raiders recognise a new mechanic that works like one they
+// already know. Meeting a new mechanic, a bot starts with FAMILY_HEAD_START x what it knows
+// about the best-known mechanic in the same family (e.g. Rain of Fire veterans adapt to Thunderstorm fast).
+const FAMILY_HEAD_START = 0.6;
+const MECHANIC_FAMILIES = [
+  ["Rain of Fire", "Thunderstorm"],                                  // something lands under EVERYONE — move
+  ["Inferno Rift", "Cyclone", "Soul Eruption", "Sky Strike"],        // the ground under you glows — move
+  ["Flame Breath", "Lightning Breath", "Cleave"],                     // frontal attack — get behind
+  ["Pyroclasm", "Storm Call", "Shadow Bolt"],                        // big cast — interrupt it
+  ["Doom", "Ion Surge"],                                             // deadly debuff — cleanse it
+  ["Immolation", "Overload"],                                        // tank stacks — swap tanks
+  ["Tyrant's Gaze", "Lightning Rod", "Hunter's Grudge"],             // you're being hunted — keep moving
+];
+
 // Deaths that can't be avoided by knowing the fight — nothing to learn from them
-const UNLEARNABLE = ["melee hit", "Worldfire", "Heat Wave", "Cataclysm", "Meteor Swarm", "Molten Brand", "Shadow Nova", "Soul Drain"];
+const UNLEARNABLE = ["melee hit", "Worldfire", "Heat Wave", "Cataclysm", "Meteor Swarm", "Molten Brand", "Shadow Nova", "Soul Drain",
+  "Eye of the Hurricane", "Chain Lightning", "Tempest", "Static Field", "Thunderclaw"];
 
 // "Inferno Rift (didn't move)" -> "Inferno Rift"
 function mechanicName(cause) {
   if (!cause) return null;
   const name = cause.split(" (")[0];
-  if (UNLEARNABLE.includes(name) || /^Hollow Skeleton|^Ash Elemental|^Crypt|^Bone|^Forge|^Cinder|^Magma|^Flameweaver|^Molten Giant/.test(name)) return null;
+  if (UNLEARNABLE.includes(name) || /^Hollow Skeleton|^Ash Elemental|^Crypt|^Bone|^Forge|^Cinder|^Magma|^Flameweaver|^Molten Giant|^Stormling|^Spire|^Gale Wisp|^Thunderhawk|^Tempest Caller|^Storm Drake/.test(name)) return null;
   return name;
 }
 
@@ -65,6 +80,8 @@ const CHAT = {
   revived: ["ty for the rez!", "back up", "ty!!", "I'm back"],
   waitRez: ["waiting for the fire to clear before I rez", "can't rez yet, they're in the fire", "rez once the fire's gone"],
   rezCancel: ["cancelling rez, fire's on the body", "stopped the rez — fire", "fire on them, cancelling"],
+  pegasusDown: ["my Pegasus!! 😭", "she's down — wings out!", "lost my mount, still fighting", "Pegasus down, I'm on foot"],
+  offTank: ["got the add", "I'll take it", "on the add"],
   goMelee: ["going in with the scythe", "Reaper stance, moving in", "melee time 💀"],
   goRanged: ["backing off", "too hot, going ranged", "Deathcaller stance, back to range"],
   servants: ["servants up", "rise, my minions", "pets out 🧟"],
@@ -175,7 +192,12 @@ class PlayerBot {
   //  MECHANIC MEMORY
   // ------------------------------------------------------------
   masteryOf(mechanic) {
-    return this.mastery[mechanic] || 0;
+    if (this.mastery[mechanic] != null) return this.mastery[mechanic];
+    // Never seen it — but maybe it's like something you know
+    const family = MECHANIC_FAMILIES.find(f => f.includes(mechanic));
+    if (!family) return 0;
+    const best = Math.max(0, ...family.filter(m => m !== mechanic).map(m => this.mastery[m] || 0));
+    return best * FAMILY_HEAD_START;
   }
 
   /**
@@ -219,7 +241,8 @@ class PlayerBot {
     }
 
     // Get out of fire first (if they notice it), otherwise normal movement
-    this._zones = (world.boss?.zones || []).filter(z => z.hostile);
+    // Flying (Valkyrie on her Pegasus)? Ground fire can't reach you, so there's nothing to dodge
+    this._zones = c.airborne ? [] : (world.boss?.zones || []).filter(z => z.hostile);
     if (!this.dodgeZones(dt, now)) this.playbook.move?.(this, world, dt, now);
 
     if (now < this.nextActionAt) return;

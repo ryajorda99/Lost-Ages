@@ -72,7 +72,8 @@ const HEALER_ABILITIES = {
     cost: 15, cooldown: 8, range: 40, target: "ally",
     execute(h, t) {
       // Removes one harmful effect
-      const bad = t.buffs.find(b => b.dispellable);
+      // Deadly effects first (Doom, Ion Surge), then anything else harmful
+      const bad = t.buffs.find(b => b.dispellable && (b.mustDispel || b.id === "doom")) || t.buffs.find(b => b.dispellable);
       if (bad) t.removeBuff(bad.id);
       return { removed: bad ? bad.id : null };
     },

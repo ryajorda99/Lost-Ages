@@ -7,6 +7,8 @@
 // Each class file (Knight.js, Mage.js...) only has to describe its own
 // stats, resource and abilities.
 
+const { ALL_STATS_BONUS, GEAR_SURGE } = require("../config/playerTuning");
+
 const GCD = 1.5;         // global cooldown in seconds
 const MELEE_RANGE = 5;   // meters
 
@@ -52,7 +54,21 @@ class Character {
     this.hpBase = config.hp.base;
     this.hpPerLevel = config.hp.perLevel;
     this.maxHp = this.hpBase + this.hpPerLevel * (level - 1);
+
+    // Every PLAYER class gets a small boost to every stat and to health (src/config/playerTuning.js)
+    const isPlayer = config.role !== "enemy" && config.role !== "pet";
+    if (isPlayer && ALL_STATS_BONUS) {
+      for (const k of ["str", "sta", "agi", "int", "faith", "armor", "crit", "haste"]) {
+        this[k] = Math.round(this[k] * (1 + ALL_STATS_BONUS) * 100) / 100;
+      }
+      this.maxHp = Math.round(this.maxHp * (1 + ALL_STATS_BONUS));
+    }
     this.hp = this.maxHp;
+
+    // Gear "Surge" (set by Gear.applyTo): resource back on every hit/heal, plus extra regen per second
+    this.resourceOnHit = 0;
+    this.resourceRegenBonus = 0;
+    this.surgeTimer = 0;
 
     // Resource
     const r = config.resource;
@@ -108,8 +124,9 @@ class Character {
     if (!this.inCombat && res.decayOutOfCombat) {
       res.current = Math.max(0, res.current - res.decayOutOfCombat * dt);
     } else {
-      res.current = Math.min(res.max, res.current + res.regen * dt);
+      res.current = Math.min(res.max, res.current + (res.regen + this.resourceRegenBonus) * dt);
     }
+    this.surgeTimer = Math.max(0, this.surgeTimer - dt);
 
     this.tickBuffs(dt, ctx);
     this.tickZones(dt, ctx);
@@ -260,6 +277,7 @@ class Character {
     if (crit) dmg *= 2;
 
     const dealt = target.takeDamage(dmg, this, school);
+    if (dealt > 0) this.surge();
     target.addThreat?.(this, dealt * this.threatMultiplier);
     this.enterCombat();
     this.onDealDamage?.(target, dealt, crit);
@@ -296,7 +314,15 @@ class Character {
     if (Math.random() < this.critChance()) value *= 1.5;
     const before = target.hp;
     target.hp = Math.min(target.maxHp, target.hp + value);
+    this.surge();   // healing counts as a "hit" for gear Surge
     return target.hp - before;
+  }
+
+  // Gear Surge: get some resource back on a hit or heal (limited to once every 0.3s)
+  surge() {
+    if (!this.resourceOnHit || this.surgeTimer > 0) return;
+    this.surgeTimer = GEAR_SURGE.hitCooldown;
+    this.resource.current = Math.min(this.resource.max, this.resource.current + this.resourceOnHit);
   }
 
   addAbsorb(amount) {
@@ -379,7 +405,8 @@ class Character {
       z.remaining -= dt;
       z.tickTimer -= dt;
       if (z.tickTimer <= 0) {
-        const inside = enemies.filter(e => !e.isDead && distance({ position: z.position }, e) <= z.radius);
+        // Anyone flying (a Valkyrie on her Pegasus) is above ground effects
+        const inside = enemies.filter(e => !e.isDead && !e.airborne && distance({ position: z.position }, e) <= z.radius);
         z.onTick(this, inside, ctx);
         z.tickTimer += z.tickEvery;
       }

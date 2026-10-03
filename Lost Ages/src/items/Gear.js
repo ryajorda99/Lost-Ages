@@ -4,6 +4,7 @@
 
 const { SLOTS, SLOT_GROUPS, CLASS_ARMOR, HP_PER_GEAR_STAMINA } = require("../data/items/itemConfig");
 const { itemScore } = require("./itemGenerator");
+const { GEAR_SURGE } = require("../config/playerTuning");
 
 const STAT_KEYS = ["str", "sta", "agi", "int", "faith", "armor", "crit", "haste", "blockChance"];
 
@@ -128,6 +129,22 @@ class Gear {
       c.weaponSpeed = mh.weaponSpeed;
     }
     c._gearBonus = { stats, hp, weapon };
+
+    // Surge: gear refills your resource on hit and over time (see src/config/playerTuning.js)
+    const power = this.surgePower();
+    const mult = GEAR_SURGE.resourceMult?.[c.resource.name] ?? 1;
+    c.resourceOnHit = +(power * GEAR_SURGE.onHitPctPerPiece * mult * c.resource.max).toFixed(2);
+    c.resourceRegenBonus = +(power * GEAR_SURGE.regenPctPerPiece * mult * c.resource.max).toFixed(2);
+  }
+
+  // How strong this gear's Surge is: 1 per epic piece at the reference item level
+  surgePower() {
+    let power = 0;
+    for (const item of Object.values(this.equipped)) {
+      if (!item) continue;
+      power += (item.itemLevel / GEAR_SURGE.referenceItemLevel) * (GEAR_SURGE.rarityMult[item.rarity] ?? 1);
+    }
+    return power;
   }
 
   // Average item level of equipped gear (for dungeon requirements / matchmaking)

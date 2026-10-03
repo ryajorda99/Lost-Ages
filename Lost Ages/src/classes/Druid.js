@@ -78,7 +78,7 @@ const DRUID_ABILITIES = {
     cost: 15, cooldown: 8, range: 40, target: "ally",
     execute(d, t) {
       // Cleanses one curse / poison / magic effect (Doom counts!)
-      const bad = t.buffs.find(b => b.dispellable);
+      const bad = t.buffs.find(b => b.dispellable && (b.mustDispel || b.id === "doom")) || t.buffs.find(b => b.dispellable);
       if (bad) t.removeBuff(bad.id);
       return { removed: bad ? bad.id : null };
     },

@@ -34,9 +34,12 @@ const ICONS = {
   // Necromancer
   reaperForm: "💀", deathcallerForm: "🔮", deathBolt: "👻", plague: "🦠", reap: "⚰️", soulCleave: "🌀",
   raiseCorrupted: "🧟", boneShield: "🦴",
+  // Valkyrie
+  valkyriesCall: "📯", aegisOfValhalla: "🛡️", skyLance: "🔱", divingStrike: "🦅", stormGallop: "🌪️",
+  thunderLance: "⚡", wingedSlash: "🪽", heavensFall: "☄️", soulspear: "✨", wingGuard: "🪶",
 };
 const ROLE_ICON = { tank: "🛡", healer: "✚", dps: "⚔" };
-const RESOURCE_COLOR = { Mana: "#3a7bff", Rage: "#d63a3a", Energy: "#f2d23c", "Holy Power": "#f5c542" };
+const RESOURCE_COLOR = { Mana: "#3a7bff", Rage: "#d63a3a", Energy: "#f2d23c", "Holy Power": "#f5c542", Valor: "#7fd6ff" };
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="];
 const hex = (n) => "#" + n.toString(16).padStart(6, "0");
 const esc = (s) => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -112,6 +115,8 @@ body { font-family: var(--ui); }
 .rf.dead .gbar > .f { width:0 !important; }
 .rf.dead .nm { color:#888 !important; }
 .rf.dead .pc::before { content:"💀 "; }
+.rf.blessed .gbar { box-shadow: inset 0 0 6px rgba(255,217,102,.85); }
+.rf.blessed .role { color:#ffe08a; }
 .rf.aggro { box-shadow: 0 0 0 1px #ff4a3a, 0 0 8px rgba(255,60,40,.7); }
 .rf.follow { box-shadow: 0 0 0 2px var(--gold-hi), 0 0 10px rgba(243,220,154,.5); }
 .rf:hover { filter:brightness(1.2); }
@@ -215,6 +220,7 @@ const HTML = `
   <button class="hbtn" id="hud-pause" title="Pause (Space)">❚❚</button>
   <button class="hbtn" id="hud-speed" title="Replay speed">1×</button>
   <button class="hbtn" id="hud-gfx" title="Glow + particles (G)">✨</button>
+  <button class="hbtn" id="hud-real" title="Realistic mode: shadows, lighting, textures (R)">🎥</button>
   <button class="hbtn" id="hud-modelsbtn" title="3D model files (M)">Models</button>
   <a href="/2d" title="Old top-down view">2D</a>
 </div>
@@ -241,7 +247,7 @@ const HTML = `
   <div class="tabs"><span class="tab on" data-f="all">All</span><span class="tab" data-f="combat">Combat</span><span class="tab" data-f="chat">Chat</span></div>
   <div class="lines"></div>
 </div>
-<div id="hud-help" class="hud-frame"><b>Drag</b> rotate · <b>Right-drag</b> pan · <b>Scroll</b> zoom · <b>Click a name</b> follow · <b>B</b> boss · <b>N</b> names · <b>G</b> graphics · <b>M</b> models · <b>Space</b> pause</div>
+<div id="hud-help" class="hud-frame"><b>Drag</b> rotate · <b>Right-drag</b> pan · <b>Scroll</b> zoom · <b>Click a name</b> follow · <b>B</b> boss · <b>N</b> names · <b>G</b> glow · <b>R</b> realistic · <b>M</b> models · <b>Space</b> pause</div>
 <div id="hud-models" class="hud-frame"></div>
 <div id="hud-banner"><div class="big"></div><div class="small"></div></div>
 `;
@@ -305,7 +311,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
     shown = { u, i };
     const info = data.players[i];
     const c = classColors[u.className] || "#ccc";
-    player.querySelector(".medal").textContent = { Knight: "🛡️", Warrior: "🪓", Rogue: "🗡️", Mage: "🔮", Healer: "✚", Druid: "🌿", Necromancer: "💀" }[u.className] || "⚔";
+    player.querySelector(".medal").textContent = { Knight: "🛡️", Warrior: "🪓", Rogue: "🗡️", Mage: "🔮", Healer: "✚", Druid: "🌿", Necromancer: "💀", Valkyrie: u.mounted === false ? "🪽" : "🐎" }[u.className] || "⚔";
     player.querySelector(".medal").style.background = `radial-gradient(circle at 35% 30%, ${c}66, #0c0d12 72%)`;
     player.querySelector(".pname").textContent = u.name;
     player.querySelector(".pname").style.color = c;
@@ -352,7 +358,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
       // Boss
       if (s.bossUnit) {
         boss.style.display = "block";
-        boss.querySelector(".medal").textContent = /Azgaroth|Tyrant/i.test(s.bossUnit.name) ? "🔥" : /Hollow/i.test(s.bossUnit.name) ? "👑" : "💀";
+        boss.querySelector(".medal").textContent = /Azgaroth|Tyrant/i.test(s.bossUnit.name) ? "🔥" : /Hollow/i.test(s.bossUnit.name) ? "👑" : /Vorathyx|Storm/i.test(s.bossUnit.name) ? "🐉" : "💀";
         boss.querySelector(".name").textContent = s.bossUnit.name;
         boss.querySelector(".phase").textContent = f.ph ? `PHASE ${f.ph}` : "";
         boss.querySelector(".phase").style.display = f.ph ? "" : "none";
@@ -371,6 +377,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
         fr.res.style.width = ((u.resourcePct ?? 0) * 100) + "%";
         fr.el.classList.toggle("dead", u.dead);
         fr.el.classList.toggle("aggro", s.bossTarget === u);
+        fr.el.classList.toggle("blessed", !!u.blessed && !u.dead);   // standing in a Knight's aura
         fr.el.classList.toggle("follow", s.follow === u);
       });
       // Player frame: whoever you're following, otherwise the first tank
@@ -379,6 +386,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
       if (watched && (!shown || shown.u !== watched)) showPlayer(watched, wi);
       if (shown) {
         const u = shown.u, info = data.players[shown.i];
+        if (u.className === "Valkyrie") player.querySelector(".medal").textContent = u.mounted === false ? "🪽" : "🐎";
         setBar(player.querySelector(".hp"), u.hp, u.dead ? "DEAD" : `${Math.round(u.hp * 100)}%`);
         setBar(player.querySelector(".res"), u.resourcePct ?? 0, `${info.resource} ${Math.round((u.resourcePct ?? 0) * 100)}%`);
         const cast = player.querySelector(".cast");
@@ -458,7 +466,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
       mctx.save();
       mctx.beginPath(); mctx.arc(R, R, R, 0, Math.PI * 2); mctx.clip();
       const bg = mctx.createRadialGradient(R, R, 10, R, R, R);
-      bg.addColorStop(0, s.theme === "fire" ? "#3a1a12" : s.theme === "shadow" ? "#1a1a30" : "#262830");
+      bg.addColorStop(0, s.theme === "fire" ? "#3a1a12" : s.theme === "shadow" ? "#1a1a30" : s.theme === "storm" ? "#122038" : "#262830");
       bg.addColorStop(1, "#08090c");
       mctx.fillStyle = bg; mctx.fillRect(0, 0, W, W);
       // Arena ring + pillars

@@ -112,11 +112,15 @@ class Recorder {
     if (time < this.nextFrameAt) return;
     this.nextFrameAt = time + 1 / this.fps;
 
-    // Players: [x, y, hp%, dead, casting, facing angle, cast ability key, cast progress 0-1, resource % (mana/rage...)]
+    // Players: [x, y, hp%, dead, casting, facing angle, cast ability key, cast progress 0-1, resource % (mana/rage...),
+    //           mounted (1 = Valkyrie still on her Pegasus), Knight aura up, blessed by an aura]
     const players = this.party.map(p => [
       r1(p.position.x), r1(p.position.y), r2(Math.max(0, p.hp / p.maxHp)), p.isDead ? 1 : 0, p.cast ? 1 : 0,
       facing(p, p.cast?.target || p.target), p.cast ? p.cast.key : 0, castProgress(p),
       r2(p.resource.max ? p.resource.current / p.resource.max : 0),
+      p.mounted ? 1 : 0,
+      p.hasBuff?.("sanctifiedAura") ? 1 : 0,        // Knight's aura is up
+      p.hasBuff?.("sanctifiedBlessing") ? 1 : 0,    // standing in a Knight's aura
     ]);
 
     const list = [];
@@ -125,10 +129,11 @@ class Recorder {
       for (const m of e.minions || []) list.push(m);
     }
     list.forEach(e => this.watch(e));
-    // Enemies: [id, x, y, hp%, dead, facing angle, cast ability key, cast progress 0-1]
+    // Enemies: [id, x, y, hp%, dead, facing angle, cast ability key, cast progress 0-1, flying (1 = in the air)]
     const foes = list.map(e => [
       this.enemyId(e), r1(e.position.x), r1(e.position.y), r2(Math.max(0, e.hp / e.maxHp)), e.isDead ? 1 : 0,
       facing(e, e.cast?.target && e.cast.target !== e ? e.cast.target : e.pickTarget?.()), e.cast ? e.cast.key : 0, castProgress(e),
+      e.flying ? 1 : 0,
     ]);
 
     // Ground effects: [x, y, radius, age in seconds, hostile (1) or friendly (0), name id, warning seconds]

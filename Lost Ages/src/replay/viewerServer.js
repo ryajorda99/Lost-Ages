@@ -8,6 +8,7 @@
 //   /<file>         any other file in the viewer/ folder (effects.js, models/knight.glb...)
 //   /api/replays    list of saved replays, newest first
 //   /api/models     list of 3D model files in viewer/models/
+//   /api/assets     list of texture / HDR sky files in viewer/assets/ (realistic mode)
 //   /replays/<file> one saved replay
 //   /live           live fight stream (Server-Sent Events)
 //   POST /api/control  { name }  take control of a raid member (name: null to hand it back to the bot)
@@ -28,6 +29,7 @@ const TYPES = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css",
   ".json": "application/json", ".glb": "model/gltf-binary", ".gltf": "model/gltf+json", ".bin": "application/octet-stream",
   ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".ktx2": "image/ktx2",
+  ".hdr": "application/octet-stream", ".exr": "application/octet-stream",
 };
 const REPLAYS = path.join(ROOT, "replays");
 
@@ -92,6 +94,22 @@ function startViewerServer({ port = 3000 } = {}) {
         send(res, 204, "text/plain", "");
       });
       return;
+    }
+
+    // Realistic-mode files in viewer/assets/ (HDR sky, floor and pillar textures), including sub-folders
+    if (url === "/api/assets") {
+      const base = path.join(VIEWER_DIR, "assets");
+      const out = [];
+      const walk = (dir) => {
+        if (!fs.existsSync(dir)) return;
+        for (const f of fs.readdirSync(dir)) {
+          const full = path.join(dir, f);
+          if (fs.statSync(full).isDirectory()) walk(full);
+          else out.push(path.relative(VIEWER_DIR, full).split(path.sep).join("/"));
+        }
+      };
+      walk(base);
+      return send(res, 200, "application/json", JSON.stringify(out));
     }
 
     // Live stream: the browser keeps this connection open and receives fight updates

@@ -9,8 +9,9 @@ const { Rogue } = require("./Rogue");
 const { Healer } = require("./Healer");
 const { Druid } = require("./Druid");
 const { Necromancer } = require("./Necromancer");
+const { Valkyrie } = require("./Valkyrie");
 
-const CLASSES = { Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer };
+const CLASSES = { Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer, Valkyrie };
 
 // Use this at character creation / when loading a save from the database:
 //   createCharacter("Mage", "Ryn", 5)
@@ -25,7 +26,7 @@ function loadCharacter(saved) {
 }
 
 module.exports = {
-  Character, Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer,
+  Character, Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer, Valkyrie,
   CLASSES, createCharacter, loadCharacter,
   distance, GCD, MELEE_RANGE,
 };

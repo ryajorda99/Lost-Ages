@@ -33,7 +33,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer } = require("../src/classes");
+const { Knight, Mage, Warrior, Rogue, Healer, Druid, Necromancer, Valkyrie } = require("../src/classes");
 const { Enemy } = require("../src/entities/Enemy");
 const { Boss } = require("../src/entities/Boss");
 const BOSSES = require("../src/data/bosses");
@@ -94,7 +94,7 @@ const { MOBS, TRASH_PACKS } = require(`../src/data/mobs/${BOSS_DEF.trash || "hol
 const SAVE_FILE = path.join(__dirname, "..", "saves", RAID_SIZE === 5 ? "party.json" : `raid-${RAID_SIZE}.json`);
 const IS_RAID = RAID_SIZE > 5;
 
-const CLASSES = { Knight, Warrior, Rogue, Mage, Healer, Druid, Necromancer };
+const CLASSES = { Knight, Warrior, Rogue, Mage, Healer, Druid, Necromancer, Valkyrie };
 
 let time = 0;
 let currentRecorder = null;   // set while a fight is being recorded
@@ -125,6 +125,7 @@ function raidComposition(size) {
   const swap = (from, to) => { const i = list.lastIndexOf(from); if (i !== -1) list[i] = to; };
   swap("Rogue", "Druid");
   swap("Mage", "Necromancer");
+  swap("Warrior", "Valkyrie");
   return list;
 }
 
@@ -132,6 +133,12 @@ const NAMES = ["Aldric", "Brakka", "Vex", "Ryn", "Sera", "Thorne", "Kael", "Mira
   "Grom", "Nyx", "Bram", "Isolde", "Fenn", "Zara", "Corvin", "Elara", "Hask", "Tamsin",
   "Orin", "Kira", "Doran", "Selene", "Rook", "Ilya", "Garrick", "Wren", "Talos", "Ember",
   "Jax", "Nadia", "Silas", "Freya", "Magnus", "Quinn", "Vera", "Otto", "Luna", "Brom"];
+
+// These players are always in the raid, even in a brand new (--fresh) group.
+// Change the class next to a name to move them to a different class.
+const CORE_MEMBERS = { Courtney: "Druid", Valk: "Valkyrie", Maddy: "Necromancer", Ryan: "Knight" };
+// Old names that were renamed (an older save with these names gets the new ones)
+const RENAMED = { Jax: "Maddy", Vex: "Ryan" };
 
 // ================= LOAD OR CREATE THE GROUP =================
 function makeBot(name, className, skill, personality) {
@@ -165,8 +172,16 @@ function loadGroup() {
   }
   // New players start as beginners ("casual") and each has a hidden POTENTIAL — how good
   // they can become with practice. Most people top out at average or skilled; few become pros.
-  return raidComposition(RAID_SIZE).map((cls, i) => {
-    const bot = makeBot(names[i] || `Player${i + 1}`, cls, forcedSkill || "casual", randomPersonality());
+  // Core members take the first slot of their class; everyone else gets a random name
+  const comp = raidComposition(RAID_SIZE);
+  const slotNames = new Array(comp.length).fill(null);
+  for (const [name, cls] of Object.entries(CORE_MEMBERS)) {
+    const i = comp.findIndex((c, j) => c === cls && !slotNames[j]);
+    if (i !== -1) slotNames[i] = name;
+  }
+  const pool = names.filter(n => !(n in CORE_MEMBERS) && !(n in RENAMED) && n !== "Wren" && n !== "Bram");
+  return comp.map((cls, i) => {
+    const bot = makeBot(slotNames[i] || pool.shift() || `Player${i + 1}`, cls, forcedSkill || "casual", randomPersonality());
     bot.potential = forcedSkill || option("potential") || randomPotential();
     return bot;
   });
@@ -177,12 +192,11 @@ function loadGroup() {
 // and one player of the other class becomes a Necromancer. They keep their skill and what
 // they've learned about the fights. Their gear is re-made for the new class at the same
 // item level and rarity (a Rogue's daggers are no use to a Druid).
+//
+// Second change: Bram becomes Valk the Valkyrie (or a Warrior does, if there's no Bram).
 function migrateRoster(list) {
-  if (list.length <= 5 || list.some(b => b.className === "Druid" || b.className === "Necromancer")) return list;
+  if (list.length <= 5) return list;
   const lastOf = (cls, not) => list.filter(b => b.className === cls && b !== not).pop();
-  const druidFrom = list.find(b => b.name === "Wren" && b.className !== "Knight" && b.className !== "Healer") || lastOf("Rogue");
-  const necroClass = druidFrom?.className === "Mage" ? "Rogue" : "Mage";
-  const necroFrom = lastOf(necroClass, druidFrom) || lastOf(necroClass === "Mage" ? "Rogue" : "Mage", druidFrom);
   const changes = [];
   const convert = (old, newClass, newName) => {
     const bot = makeBot(newName, newClass, old.skillKey, old.personalityKey);
@@ -208,8 +222,24 @@ function migrateRoster(list) {
     list[list.indexOf(old)] = bot;
     changes.push(`${old.name} (${old.className}) → ${newName} the ${newClass}`);
   };
-  if (druidFrom) convert(druidFrom, "Druid", "Courtney");
-  if (necroFrom) convert(necroFrom, "Necromancer", necroFrom.name);
+  // 1) Druid + Necromancer
+  if (!list.some(b => b.className === "Druid" || b.className === "Necromancer")) {
+    const druidFrom = list.find(b => b.name === "Wren" && b.className !== "Knight" && b.className !== "Healer") || lastOf("Rogue");
+    const necroClass = druidFrom?.className === "Mage" ? "Rogue" : "Mage";
+    const necroFrom = lastOf(necroClass, druidFrom) || lastOf(necroClass === "Mage" ? "Rogue" : "Mage", druidFrom);
+    if (druidFrom) convert(druidFrom, "Druid", "Courtney");
+    if (necroFrom) convert(necroFrom, "Necromancer", necroFrom.name);
+  }
+  // 2) Valkyrie
+  if (!list.some(b => b.className === "Valkyrie")) {
+    const valkFrom = list.find(b => b.name === "Bram") || lastOf("Warrior");
+    if (valkFrom) convert(valkFrom, "Valkyrie", "Valk");
+  }
+  // 3) Renamed players (Jax → Maddy, Vex → Ryan)
+  for (const b of list) if (RENAMED[b.name] && !list.some(o => o.name === RENAMED[b.name])) {
+    changes.push(`${b.name} is now ${RENAMED[b.name]}`);
+    b.name = RENAMED[b.name];
+  }
   if (changes.length) {
     console.log(`\n🔁 Roster change: ${changes.join(", ")}`);
     console.log(`   They keep their skill and fight knowledge. Their gear was re-made for the new class (same item level).`);
@@ -245,7 +275,7 @@ function discoveredMechanics() {
 // How well a player knows the mechanics the raid has discovered (0–100%).
 // Role mechanics (Immolation = tank swaps, Safe Revive = healers/knights) only count for those classes.
 // Safe Revive (not reviving people into fire) only counts for Healers and Knights.
-const ROLE_MECHANICS = { Immolation: ["Knight"], [SAFE_REVIVE]: ["Knight", "Healer"] };
+const ROLE_MECHANICS = { Immolation: ["Knight"], Overload: ["Knight"], [SAFE_REVIVE]: ["Knight", "Healer"] };
 const appliesTo = (m, bot) => !ROLE_MECHANICS[m] || ROLE_MECHANICS[m].includes(bot.className);
 function knowledge(bot) {
   const mechs = discoveredMechanics().filter(m => appliesTo(m, bot));
@@ -346,6 +376,7 @@ function startSpot(bot, index) {
     case "Healer":  return { x: -18, y: 6 - n * 3 };
     case "Druid":   return { x: -22, y: 12 + n * 3 };
     case "Necromancer": return { x: -22, y: -14 - n * 3 };   // starts at range; walks in for Reaper stance
+    case "Valkyrie": return { x: 3, y: -7 - n * 3 };          // on her Pegasus near the tanks
   }
 }
 
@@ -376,7 +407,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
     const orig = boss.finishAbility.bind(boss);
     boss.finishAbility = (key, t, ctx) => { executing = boss.abilities[key].name; const r = orig(key, t, ctx); executing = null; return r; };
     boss.onAnnounce = (msg) => {
-      if (/^PHASE|ADAPTS|fixates|glares|BERSERK|WORLDFIRE|rekindles|IMMOLATED|incinerated|consumes/.test(msg)) log(`>>> ${msg}`);
+      if (/^PHASE|ADAPTS|fixates|glares|BERSERK|WORLDFIRE|HURRICANE|rekindles|recharges|IMMOLATED|OVERLOADED|incinerated|struck down|consumes|absorbs|takes to the skies|lands!/.test(msg)) log(`>>> ${msg}`);
       if (msg.startsWith("PHASE") && boss.phaseIndex > 0) bots.find(b => !b.character.isDead)?.say("phase", time, 5);
     };
   }
@@ -397,6 +428,11 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
       if (!cause && p.hasBuff("heatWave")) cause = "Heat Wave";
       p._lastHitBy = cause || "melee hit";
       return td(amount, source, school);
+    };
+    // Valkyrie: the first "death" only kills her Pegasus
+    p.onDismount = () => {
+      log(`🪽 ${p.name}'s Pegasus has been slain! ${p.name} lands, wings unfurled, and fights on (second life)`);
+      bot.say("pegasusDown", time, 0);
     };
     p.onDeath = () => {
       if (p._deathCause) p._lastHitBy = p._deathCause;   // killed by a failed mechanic

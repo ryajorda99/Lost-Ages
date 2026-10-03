@@ -7,6 +7,17 @@ const { makeRevive } = require("./reviveAbility");
 // How long Guardian's Oath holds an enemy after the Knight's last hit (seconds)
 const OATH_DURATION = 8;
 
+// SANCTIFIED AURA (passive): the Knight's hits can make a golden aura flare up around him.
+// Everyone standing in it (the Knight too) deals more damage and takes less.
+const AURA = {
+  procChance: 0.3,      // each time the Knight deals damage: 30% chance to flare up...
+  cooldown: 14,         // ...but at most once every 14 seconds
+  duration: 8,          // lasts 8 seconds
+  radius: 10,           // covers everyone within 10 metres of the Knight
+  damageBonus: 0.08,    // allies inside deal +8% damage
+  mitigation: 0.08,     // and take 8% less damage
+};
+
 const KNIGHT_ABILITIES = {
   righteousStrike: {
     name: "Righteous Strike",
@@ -129,16 +140,21 @@ class Knight extends Character {
       baseStats: { str: 14, sta: 16, faith: 12, agi: 6, armor: 25, blockChance: 0.15 },
       statsPerLevel: { str: 1.5, sta: 2, faith: 1.5, agi: 0.5, armor: 4 },
       hp: { base: 180, perLevel: 18 },
-      resource: { name: "Holy Power", max: 100, regen: 5, startsFull: true },
+      resource: { name: "Holy Power", max: 100, regen: 7, startsFull: true },
       weapon: { damage: 10, speed: 2.4 },
       threatMultiplier: 3,
       abilities: KNIGHT_ABILITIES,
     });
   }
 
+  // Holy Power comes from fighting: auto-attacks build it, and so does getting hit (tanks get hit a lot)
+  onTakeDamage(amount) {
+    this.resource.current = Math.min(this.resource.max, this.resource.current + amount * 0.08);
+  }
+
   // Auto-attacks build Holy Power so the Knight isn't starved
   onAutoAttackHit() {
-    this.resource.current = Math.min(this.resource.max, this.resource.current + 8);
+    this.resource.current = Math.min(this.resource.max, this.resource.current + 12);
   }
 
   // GUARDIAN'S OATH (passive): every hit the Knight lands locks that enemy onto the Knight.
@@ -147,16 +163,38 @@ class Knight extends Character {
   // Son of Light: every hit the Knight lands also heals the most injured nearby ally.
   onDealDamage(target, dealt) {
     target.bindOath?.(this, OATH_DURATION);
+    this.tryAura();
     if (!this.hasBuff("sonOfLight") || !this._lastCtx) return;
     const hurt = this.alliesInRange(this._lastCtx, 30).filter(a => a.hp < a.maxHp);
     hurt.sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp);
     if (hurt[0]) this.heal(hurt[0], dealt * 0.5);
   }
 
+  // Sanctified Aura flaring up
+  tryAura() {
+    if (this.isDead || (this.auraCooldown || 0) > 0 || Math.random() >= AURA.procChance) return;
+    this.auraCooldown = AURA.cooldown;
+    this.addBuff({
+      id: "sanctifiedAura", duration: AURA.duration, tickEvery: 0.5,
+      // Every half second, bless everyone inside (the blessing fades quickly once you step out)
+      onTick: (k, ctx) => {
+        for (const a of k.alliesInRange(ctx || k._lastCtx || {}, AURA.radius)) {
+          a.addBuff({
+            id: "sanctifiedBlessing", duration: 0.75,
+            mods: { damageDealt: 1 + AURA.damageBonus, damageTaken: 1 - AURA.mitigation },
+          });
+        }
+      },
+    });
+    this.buffs.find(b => b.id === "sanctifiedAura").tickTimer = 0;   // bless right away
+    this.onAbilityUsed?.("sanctifiedAura", this);                    // lets the 3D viewer play the flare
+  }
+
   update(dt, ctx = {}) {
     this._lastCtx = ctx;
+    this.auraCooldown = Math.max(0, (this.auraCooldown || 0) - dt);
     super.update(dt, ctx);
   }
 }
 
-module.exports = { Knight, KNIGHT_ABILITIES };
+module.exports = { Knight, KNIGHT_ABILITIES, AURA };

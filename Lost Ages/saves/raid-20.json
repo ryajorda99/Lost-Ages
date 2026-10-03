@@ -1,1498 +1,181 @@
 [
   {
-    "name": "Vex",
+    "name": "Ryan",
     "className": "Knight",
     "skill": "casual",
-    "personality": "cautious",
+    "personality": "aggressive",
     "profile": {
-      "label": "Average",
+      "label": "Casual",
       "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
+        0.58,
+        1.16
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
       "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
+        0.33499999999999996,
+        0.77
       ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9996096144638373,
-      "Flame Breath": 0.9776679715351287,
-      "Pyroclasm": 0.9118604617747846,
-      "Inferno Rift": 0.9817083794217578,
-      "Crushing Blow": 0.8809703864860643,
-      "Soul Eruption": 0.9473978379075136,
-      "Shadow Bolt": 0.318528,
-      "Hunter's Grudge": 0.8004603802568999,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.12,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 48,
+    "experience": 1,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
       "bag": [
         {
-          "id": "itm_mun4br5i_e",
-          "slotType": "chest",
-          "rarity": "uncommon",
-          "itemLevel": 65,
-          "requiredLevel": 62,
+          "id": "itm_musq5r24_6",
+          "slotType": "hands",
+          "rarity": "rare",
+          "itemLevel": 63,
+          "requiredLevel": 60,
           "sourceType": "mob",
-          "source": "Molten Giant",
+          "source": "Hollow Deathguard",
           "stats": {
-            "armor": 104,
-            "str": 15,
-            "sta": 15,
-            "faith": 15,
-            "crit": 20
-          },
-          "armorType": "plate",
-          "name": "Polished Chestguard"
-        },
-        {
-          "id": "itm_muoomfbq_4",
-          "slotType": "head",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 96,
-            "str": 14,
-            "sta": 14,
-            "faith": 14,
+            "armor": 85,
+            "str": 13,
+            "sta": 13,
+            "faith": 13,
             "blockChance": 0.01
           },
           "armorType": "plate",
-          "name": "Reinforced Helm"
-        },
-        {
-          "id": "itm_muoopy56_d",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 12,
-            "sta": 12,
-            "faith": 12,
-            "crit": 6,
-            "blockChance": 0.01,
-            "armor": 8
-          },
-          "name": "Sanctified Amulet"
+          "name": "Blessed Gauntlets"
         }
       ],
       "equipped": {
-        "head": {
-          "name": "Crown of the Hollow King",
-          "slotType": "head",
-          "rarity": "epic",
-          "armorType": "plate",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
-          },
-          "id": "itm_mun8usby_g",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "shoulders": {
-          "id": "itm_mun9dnxy_b",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "crit": 21
-          },
-          "armorType": "plate",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun4cx74_0",
-          "slotType": "chest",
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": {
+          "id": "itm_musq5r23_2",
+          "slotType": "legs",
           "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "itemLevel": 58,
+          "requiredLevel": 55,
           "sourceType": "mob",
-          "source": "Cinder Imp",
+          "source": "Bone Archer",
           "stats": {
-            "armor": 96,
+            "armor": 93,
             "str": 11,
             "sta": 11,
             "faith": 11
           },
           "armorType": "plate",
-          "name": "Worn Chestguard"
+          "name": "Plain Greaves"
         },
-        "hands": {
-          "id": "itm_mun8usbz_h",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "crit": 21
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muolnu7i_14",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "blockChance": 0.02,
-            "crit": 24
-          },
-          "armorType": "plate",
-          "name": "Radiant Greaves"
-        },
-        "feet": {
-          "id": "itm_muomhgxd_f",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 81,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "blockChance": 0.01,
-            "crit": 9
-          },
-          "armorType": "plate",
-          "name": "Radiant Boots"
-        },
+        "feet": null,
         "neck": null,
-        "ring1": {
-          "id": "itm_mun7tri4_d",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 12,
-            "sta": 12,
-            "faith": 12,
-            "armor": 12,
-            "blockChance": 0.01
-          },
-          "name": "Sanctified Ring"
-        },
+        "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muokskqq_c",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 16,
-            "sta": 16,
-            "faith": 16,
-            "blockChance": 0.01,
-            "crit": 16
-          },
-          "name": "Radiant Charm"
-        },
-        "mainHand": {
-          "name": "Dawnbreaker, Blade of the Oathsworn",
-          "slotType": "mainHand",
-          "rarity": "legendary",
-          "weaponType": "sword",
-          "allowedClasses": [
-            "Knight"
-          ],
-          "weaponDamage": 110,
-          "weaponSpeed": 2.4,
-          "stats": {
-            "str": 55,
-            "sta": 48,
-            "faith": 38
-          },
-          "effect": "Righteous Strike has a 10% chance to reset Judgment's cooldown.",
-          "id": "itm_mun7vqaa_e",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "offHand": {
-          "id": "itm_muolhcjc_g",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.06,
-            "str": 18,
-            "sta": 18,
-            "faith": 18,
-            "crit": 8
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Sanctified Bulwark"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589850
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 2,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 2
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Bram",
+    "name": "Corvin",
     "className": "Knight",
     "skill": "casual",
-    "personality": "steady",
+    "personality": "greedy",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.565,
+        1.13
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9991158684919088,
-      "Flame Breath": 0.9910004617692799,
-      "Pyroclasm": 0.9118604617747846,
-      "Inferno Rift": 0.9744700616830243,
-      "Soul Eruption": 0.968606739806896,
-      "Shadow Bolt": 0.318528,
-      "Crushing Blow": 0.5183533282983936,
-      "Hunter's Grudge": 0.806446568849193,
-      "Doom": 0.4722680832,
+      "Safe Revive": 0.03,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Immolation": 0.11470719,
-      "Safe Revive": 0.5206743175182966,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 48,
+    "experience": 1,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "name": "Crown of the Hollow King",
-          "slotType": "head",
-          "rarity": "epic",
-          "armorType": "plate",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
-          },
-          "id": "itm_muojufg6_i",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "shoulders": {
-          "id": "itm_muok1reo_k",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "blockChance": 0.02,
-            "crit": 15
-          },
-          "armorType": "plate",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun8usc0_i",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "blockChance": 0.01,
-            "crit": 27
-          },
-          "armorType": "plate",
-          "name": "Sanctified Chestguard"
-        },
-        "hands": {
-          "id": "itm_mun7iz4x_h",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 79,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "crit": 7,
-            "blockChance": 0.01
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun7tri4_e",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "crit": 30
-          },
-          "armorType": "plate",
-          "name": "Radiant Greaves"
-        },
-        "feet": {
-          "id": "itm_muolu3xd_e",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 86,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "blockChance": 0.01
-          },
-          "armorType": "plate",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_muolnu7j_15",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 12,
-            "sta": 12,
-            "faith": 12,
-            "armor": 14,
-            "blockChance": 0.01
-          },
-          "name": "Sanctified Amulet"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
         "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muolhcjc_i",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 16,
-            "sta": 16,
-            "faith": 16,
-            "blockChance": 0.01,
-            "armor": 8,
-            "crit": 8
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "name": "Dawnbreaker, Blade of the Oathsworn",
-          "slotType": "mainHand",
-          "rarity": "legendary",
-          "weaponType": "sword",
-          "allowedClasses": [
-            "Knight"
-          ],
-          "weaponDamage": 110,
-          "weaponSpeed": 2.4,
-          "stats": {
-            "str": 55,
-            "sta": 48,
-            "faith": 38
-          },
-          "effect": "Righteous Strike has a 10% chance to reset Judgment's cooldown.",
-          "id": "itm_muomhgxd_g",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "offHand": {
-          "id": "itm_muojufg6_j",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.06,
-            "str": 18,
-            "sta": 18,
-            "faith": 18,
-            "crit": 10
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Sanctified Bulwark"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589850
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 4,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 3
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Kira",
-    "className": "Healer",
-    "skill": "casual",
-    "personality": "cautious",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.9998564176771816,
-      "Flame Breath": 0.9942916632939774,
-      "Pyroclasm": 0.9118604617747846,
-      "Inferno Rift": 0.9876690064224956,
-      "Soul Eruption": 0.9788367526998369,
-      "Shadow Bolt": 0.318528,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.6855635797950318,
-      "Cleave": 0.12,
-      "Safe Revive": 0.6465336770976142,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Healer",
-      "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun9af2v_6",
-          "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "faith": 27,
-            "sta": 27,
-            "crit": 24
-          },
-          "weaponType": "mace",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Healer"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 85,
-          "name": "Reinforced Warhammer"
-        }
-      ],
-      "equipped": {
-        "head": {
-          "id": "itm_muojufg6_l",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_muomqqgn_h",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 15,
-            "int": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_muojufg6_k",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_muojza3q_4",
-          "slotType": "hands",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
-          "stats": {
-            "armor": 18,
-            "faith": 16,
-            "sta": 16,
-            "haste": 13
-          },
-          "armorType": "cloth",
-          "name": "Reinforced Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muokskqq_f",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "haste": 9,
-            "int": 10,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Greaves"
-        },
-        "feet": {
-          "id": "itm_muok1reo_l",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 15,
-            "int": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_muoopy56_f",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "haste": 10,
-            "int": 5
-          },
-          "name": "Radiant Amulet"
-        },
-        "ring1": {
-          "id": "itm_mun7iz4x_i",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 10
-          },
-          "name": "Radiant Ring"
-        },
-        "ring2": {
-          "id": "itm_mun7tri5_f",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Radiant Ring"
-        },
-        "trinket": {
-          "id": "itm_muolhcjc_j",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 23,
-            "sta": 23,
-            "int": 21
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_mun7kdwn_2",
-          "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "faith": 25,
-            "sta": 25,
-            "int": 22
-          },
-          "weaponType": "staff",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "weaponSpeed": 3,
-          "weaponDamage": 84,
-          "name": "Reinforced Staff"
-        },
-        "offHand": {
-          "id": "itm_mun7vqad_h",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
-          },
-          "weaponType": "relic",
-          "allowedClasses": [
-            "Healer"
-          ],
-          "name": "Dreadforged Relic"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589850
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 4
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Quinn",
+    "name": "Dusk",
     "className": "Healer",
     "skill": "casual",
     "personality": "aggressive",
     "profile": {
-      "label": "Average",
+      "label": "Casual",
       "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
+        0.565,
+        1.13
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.999759415219316,
-      "Flame Breath": 0.9888800010938946,
-      "Pyroclasm": 0.9519125065855456,
-      "Inferno Rift": 0.992400719005572,
-      "Soul Eruption": 0.9964568080584004,
-      "Shadow Bolt": 0.49663999999999997,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.5736016645821373,
+      "Soul Eruption": 0.12,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Safe Revive": 0.5883867270610869,
-      "Tyrant's Gaze": 0.14639999999999997
+      "Hunter's Grudge": 0.12
     },
-    "potential": "average",
-    "experience": 48,
+    "potential": "skilled",
+    "experience": 1,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
       "bag": [
         {
-          "name": "Shroud of the Hollow King",
+          "id": "itm_musq5r24_7",
           "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Necromancer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_muoopy56_g",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        {
-          "id": "itm_muoopy56_h",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 23,
-            "sta": 23,
-            "haste": 7,
-            "int": 7,
-            "crit": 7
-          },
-          "name": "Radiant Charm"
-        }
-      ],
-      "equipped": {
-        "head": {
-          "id": "itm_mun7x74k_0",
-          "slotType": "head",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "armor": 24,
-            "faith": 21,
-            "sta": 21,
-            "haste": 18
-          },
-          "armorType": "cloth",
-          "name": "Polished Helm"
-        },
-        "shoulders": {
-          "id": "itm_muomqqgn_j",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "int": 7,
-            "haste": 8,
-            "crit": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_mun8usc1_k",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_muolhcjc_k",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "haste": 14,
-            "int": 8
-          },
-          "armorType": "cloth",
-          "name": "Radiant Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun9dny0_f",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "haste": 19,
-            "int": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Greaves"
-        },
-        "feet": {
-          "id": "itm_muomj20o_m",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 8,
-            "int": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_mun8usc1_l",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "crit": 5,
-            "int": 5,
-            "haste": 5
-          },
-          "name": "Radiant Amulet"
-        },
-        "ring1": {
-          "id": "itm_muokskqq_g",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "int": 15
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_mun7vqad_i",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 23,
-            "sta": 23,
-            "haste": 14,
-            "crit": 7
-          },
-          "name": "Radiant Charm"
-        },
-        "mainHand": {
-          "id": "itm_mun7tri6_g",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 40,
-            "sta": 40,
-            "crit": 24,
-            "int": 11
-          },
-          "weaponType": "mace",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Healer"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Dreadforged Warhammer"
-        },
-        "offHand": {
-          "id": "itm_mun7iz4y_j",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 27,
-            "sta": 27,
-            "int": 8,
-            "crit": 8,
-            "haste": 7
-          },
-          "weaponType": "relic",
-          "allowedClasses": [
-            "Healer"
-          ],
-          "name": "Sanctified Relic"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589850
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Orin",
-    "className": "Healer",
-    "skill": "casual",
-    "personality": "greedy",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.9995857744261577,
-      "Flame Breath": 0.9969790559264649,
-      "Pyroclasm": 0.9348969319927386,
-      "Inferno Rift": 0.9921785472259099,
-      "Shadow Bolt": 0.49663999999999997,
-      "Soul Eruption": 0.9924497506015696,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8570343974454265,
-      "Doom": 0.6758387420567338,
-      "Cleave": 0.12,
-      "Safe Revive": 0.7838252989077443,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Healer",
-      "bagSize": 30,
-      "bag": [],
-      "equipped": {
-        "head": {
-          "id": "itm_mun9dny1_g",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "int": 18,
-            "haste": 10
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7tri6_h",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 22
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_mun7vqae_j",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_muomqqgn_k",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 7,
-            "haste": 8,
-            "int": 7
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muojufg6_p",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
-          "armorType": "cloth",
-          "name": "Radiant Greaves"
-        },
-        "feet": {
-          "id": "itm_mun7vqae_k",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 7,
-            "haste": 15
-          },
-          "armorType": "cloth",
-          "name": "Radiant Boots"
-        },
-        "neck": {
-          "id": "itm_muomj20o_o",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "int": 10,
-            "haste": 5
-          },
-          "name": "Radiant Amulet"
-        },
-        "ring1": {
-          "id": "itm_muolnu7j_18",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "crit": 10,
-            "haste": 5
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muomhgxd_k",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 23,
-            "sta": 23,
-            "int": 7,
-            "crit": 14
-          },
-          "name": "Radiant Charm"
-        },
-        "mainHand": {
-          "id": "itm_muok1reo_o",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 40,
-            "sta": 40,
-            "haste": 24,
-            "int": 11
-          },
-          "weaponType": "mace",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Healer"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Radiant Warhammer"
-        },
-        "offHand": {
-          "id": "itm_muokskqr_h",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 27,
-            "sta": 27,
-            "haste": 23
-          },
-          "weaponType": "relic",
-          "allowedClasses": [
-            "Healer"
-          ],
-          "name": "Radiant Relic"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 2
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Ilya",
-    "className": "Healer",
-    "skill": "casual",
-    "personality": "cautious",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.9998276264724759,
-      "Flame Breath": 0.9839996091510211,
-      "Pyroclasm": 0.9348969319927386,
-      "Inferno Rift": 0.9906101853029781,
-      "Soul Eruption": 0.9848370142923265,
-      "Shadow Bolt": 0.318528,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7379584316727537,
-      "Doom": 0.7814720476692553,
-      "Cleave": 0.12,
-      "Safe Revive": 0.422048737456959,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Healer",
-      "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muoopy57_j",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "haste": 9,
-            "crit": 19
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Chestguard"
-        }
-      ],
-      "equipped": {
-        "head": {
-          "id": "itm_mun7ublr_9",
-          "slotType": "head",
           "rarity": "uncommon",
           "itemLevel": 63,
           "requiredLevel": 60,
@@ -1502,639 +185,171 @@
             "armor": 25,
             "faith": 22,
             "sta": 22,
-            "haste": 19
+            "int": 19
           },
           "armorType": "cloth",
-          "name": "Sturdy Helm"
-        },
+          "name": "Reinforced Chestguard"
+        }
+      ],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Magnus",
+    "className": "Healer",
+    "skill": "casual",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Safe Revive": 0.087327,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "average",
+    "experience": 1,
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
         "shoulders": {
-          "id": "itm_muoop2ae_1",
+          "id": "itm_musq5r23_0",
           "slotType": "shoulders",
-          "rarity": "uncommon",
+          "rarity": "common",
           "itemLevel": 58,
           "requiredLevel": 55,
           "sourceType": "mob",
           "source": "Bone Archer",
           "stats": {
             "armor": 17,
-            "faith": 15,
-            "sta": 15,
-            "haste": 14
+            "faith": 12,
+            "sta": 12
           },
           "armorType": "cloth",
-          "name": "Reinforced Pauldrons"
+          "name": "Simple Pauldrons"
         },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_mun8usc2_n",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_mun9dny2_h",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "crit": 22
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun8usc3_o",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "faith": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_muomhgxe_m",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "haste": 15,
-            "crit": 7
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Boots"
-        },
-        "neck": {
-          "id": "itm_muokskqr_i",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Dreadforged Amulet"
-        },
-        "ring1": {
-          "id": "itm_muojufg6_q",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 5,
-            "int": 5
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": {
-          "id": "itm_muolu3xe_k",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 19,
-            "sta": 19,
-            "int": 5,
-            "crit": 5,
-            "haste": 5
-          },
-          "name": "Dreadforged Ring"
-        },
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
         "trinket": null,
-        "mainHand": {
-          "id": "itm_muomj20p_p",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "faith": 40,
-            "sta": 40,
-            "haste": 12,
-            "int": 12,
-            "crit": 11
-          },
-          "weaponType": "mace",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Healer",
-            "Druid"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Sanctified Warhammer"
-        },
+        "mainHand": null,
         "offHand": {
-          "id": "itm_mun4dusg_4",
+          "id": "itm_musq5r24_8",
           "slotType": "offHand",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Forge Guardian",
-          "stats": {
-            "faith": 13,
-            "sta": 13
-          },
-          "weaponType": "relic",
-          "allowedClasses": [
-            "Healer"
-          ],
-          "name": "Simple Relic"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 3
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Mira",
-    "className": "Warrior",
-    "skill": "casual",
-    "personality": "steady",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.999720297635738,
-      "Pyroclasm": 0.9704620814843087,
-      "Flame Breath": 0.9957836149330517,
-      "Inferno Rift": 0.9921785472259099,
-      "Shadow Bolt": 0.5413508828106854,
-      "Soul Eruption": 0.9933158184938629,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8004603802568999,
-      "Doom": 0.4722680832,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Warrior",
-      "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muoml2l0_f",
-          "slotType": "shoulders",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 78,
-            "str": 21,
-            "sta": 21,
-            "haste": 9,
-            "crit": 8
-          },
-          "armorType": "plate",
-          "name": "Valiant Pauldrons"
-        }
-      ],
-      "equipped": {
-        "head": {
-          "id": "itm_mun9dny3_i",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "haste": 19,
-            "agi": 9
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun5u6j3_7",
-          "slotType": "shoulders",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "armor": 72,
-            "str": 16,
-            "sta": 16,
-            "crit": 13
-          },
-          "armorType": "plate",
-          "name": "Polished Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun7vqag_m",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 9,
-            "haste": 10,
-            "crit": 9
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muokskqr_j",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "crit": 7,
-            "haste": 15
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun8thni_b",
-          "slotType": "legs",
           "rarity": "rare",
           "itemLevel": 63,
           "requiredLevel": 60,
           "sourceType": "mob",
           "source": "Hollow Deathguard",
           "stats": {
-            "armor": 101,
-            "str": 27,
-            "sta": 27,
-            "haste": 22
+            "faith": 21,
+            "sta": 21,
+            "crit": 9,
+            "haste": 9
           },
-          "armorType": "plate",
-          "name": "Valiant Greaves"
-        },
-        "feet": {
-          "id": "itm_muomj20p_q",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "crit": 15,
-            "agi": 7
-          },
-          "armorType": "plate",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_mun7tri8_j",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "agi": 10,
-            "crit": 5
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_mun8usc3_q",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 10,
-            "agi": 5
-          },
-          "name": "Dreadforged Ring"
-        },
-        "ring2": {
-          "id": "itm_muolu3xe_m",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 10,
-            "agi": 5
-          },
-          "name": "Radiant Ring"
-        },
-        "trinket": {
-          "id": "itm_muomhgxe_o",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_muoopy57_l",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 40,
-            "sta": 40,
-            "crit": 23,
-            "agi": 12
-          },
-          "weaponType": "mace",
+          "weaponType": "relic",
           "allowedClasses": [
-            "Knight",
-            "Warrior",
             "Healer",
             "Druid"
           ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Sanctified Warhammer"
-        },
-        "offHand": {
-          "id": "itm_muolhcjd_o",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "name": "Dreadforged Axe"
+          "name": "Valiant Relic"
         }
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Brakka",
-    "className": "Mage",
+    "name": "Garrick",
+    "className": "Healer",
     "skill": "casual",
-    "personality": "greedy",
+    "personality": "aggressive",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.6,
+        1.2
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.55,
+      "mistakeRate": 0.08,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.35,
+        0.8
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.04,
+      "positioning": 0.3,
+      "decisionNoise": 0.45,
+      "healAccuracy": 0.55
     },
     "mastery": {
-      "Rain of Fire": 0.9991930770441156,
-      "Flame Breath": 0.991786364444354,
-      "Pyroclasm": 0.9424593119679534,
-      "Inferno Rift": 0.9833057317719939,
-      "Soul Eruption": 0.9843423589320052,
-      "Shadow Bolt": 0.48192381999655615,
-      "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.14639999999999997,
+      "Shadow Bolt": 0.35,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
-    "potential": "skilled",
-    "experience": 48,
+    "potential": "casual",
+    "experience": 1,
     "gear": {
-      "className": "Mage",
+      "className": "Healer",
       "bagSize": 30,
-      "bag": [],
-      "equipped": {
-        "head": {
-          "id": "itm_mun7iz4z_n",
+      "bag": [
+        {
+          "id": "itm_musq5r23_4",
           "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 18,
-            "haste": 10
-          },
-          "armorType": "cloth",
-          "name": "Radiant Helm"
-        },
-        "shoulders": {
-          "id": "itm_muolhcjd_p",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Pauldrons"
-        },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_mun8usc4_r",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_muoomfbq_9",
-          "slotType": "hands",
           "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "itemLevel": 58,
+          "requiredLevel": 55,
           "sourceType": "mob",
-          "source": "Forge Guardian",
+          "source": "Bone Archer",
           "stats": {
-            "armor": 18,
-            "int": 13,
-            "sta": 13
+            "armor": 23,
+            "faith": 16,
+            "sta": 16
           },
           "armorType": "cloth",
-          "name": "Simple Gauntlets"
+          "name": "Plain Helm"
         },
-        "legs": {
-          "id": "itm_muomj20p_r",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Greaves"
-        },
-        "feet": {
-          "id": "itm_muomgqal_a",
-          "slotType": "feet",
+        {
+          "id": "itm_musq5r24_9",
+          "slotType": "hands",
           "rarity": "rare",
           "itemLevel": 63,
           "requiredLevel": 60,
@@ -2142,403 +357,159 @@
           "source": "Hollow Deathguard",
           "stats": {
             "armor": 19,
-            "int": 20,
+            "faith": 20,
             "sta": 20,
-            "crit": 9,
-            "haste": 8
+            "int": 17
           },
           "armorType": "cloth",
-          "name": "Valiant Boots"
-        },
-        "neck": {
-          "id": "itm_muomhgxe_p",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_muokskqr_k",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Dreadforged Ring"
-        },
-        "ring2": null,
-        "trinket": null,
-        "mainHand": {
-          "id": "itm_muojufg7_t",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 40,
-            "sta": 40,
-            "crit": 12,
-            "haste": 23
-          },
-          "weaponType": "wand",
-          "allowedClasses": [
-            "Mage"
-          ],
-          "weaponSpeed": 2,
-          "weaponDamage": 90,
-          "name": "Radiant Wand"
-        },
-        "offHand": {
-          "id": "itm_mun7tri8_k",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 27,
-            "sta": 27,
-            "haste": 23
-          },
-          "weaponType": "orb",
-          "allowedClasses": [
-            "Mage"
-          ],
-          "name": "Dreadforged Orb"
+          "name": "Blessed Gauntlets"
         }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Hask",
-    "className": "Rogue",
-    "skill": "casual",
-    "personality": "steady",
-    "profile": {
-      "label": "Average",
-      "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
-      "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
-      ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
-    },
-    "mastery": {
-      "Rain of Fire": 0.9996930311717643,
-      "Flame Breath": 0.9942916632939776,
-      "Pyroclasm": 0.9265822321310262,
-      "Inferno Rift": 0.992400719005572,
-      "Soul Eruption": 0.9873488946273198,
-      "Shadow Bolt": 0.4493823148013138,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.4722680832,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "average",
-    "experience": 48,
-    "gear": {
-      "className": "Rogue",
-      "bagSize": 30,
-      "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun9dny4_l",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "crit": 19,
-            "haste": 9
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_muolu3xf_p",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "haste": 14,
-            "crit": 8
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun7tri9_l",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "haste": 9,
-            "crit": 19
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muolnu7j_1d",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "haste": 14,
-            "crit": 8
-          },
-          "armorType": "leather",
-          "name": "Sanctified Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun4dbzc_8",
-          "slotType": "legs",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "armor": 48,
-            "agi": 21,
-            "sta": 21,
-            "crit": 18
-          },
-          "armorType": "leather",
-          "name": "Polished Greaves"
-        },
-        "feet": {
-          "id": "itm_mun7vqah_p",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "crit": 15,
-            "haste": 7
-          },
-          "armorType": "leather",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_muokskqr_l",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Sanctified Amulet"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
         "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muomj20p_s",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 23,
-            "sta": 23,
-            "haste": 7,
-            "crit": 14
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_muomhgxe_r",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 40,
-            "sta": 40,
-            "crit": 35
-          },
-          "weaponType": "sword",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Rogue"
-          ],
-          "weaponSpeed": 2.4,
-          "weaponDamage": 108,
-          "name": "Radiant Longsword"
-        },
-        "offHand": {
-          "id": "itm_muok1rep_t",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 27,
-            "sta": 27,
-            "crit": 15,
-            "haste": 8
-          },
-          "weaponType": "dagger",
-          "allowedClasses": [
-            "Rogue"
-          ],
-          "name": "Dreadforged Dagger"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Bonecarver": 3
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
     "name": "Elara",
-    "className": "Warrior",
+    "className": "Healer",
     "skill": "casual",
-    "personality": "aggressive",
+    "personality": "greedy",
     "profile": {
-      "label": "Average",
+      "label": "Casual",
       "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
+        0.565,
+        1.13
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9996089727168792,
-      "Flame Breath": 0.9939331101009433,
-      "Pyroclasm": 0.9505066256871795,
-      "Inferno Rift": 0.9943868947200247,
-      "Soul Eruption": 0.9965631038166484,
-      "Shadow Bolt": 0.39669773818368,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7298540532708799,
-      "Doom": 0.71207808,
+      "Safe Revive": 0.03,
+      "Soul Eruption": 0.38841499999999995,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "skilled",
+    "experience": 1,
+    "gear": {
+      "className": "Healer",
+      "bagSize": 30,
+      "bag": [
+        {
+          "id": "itm_musq5r24_a",
+          "slotType": "legs",
+          "rarity": "uncommon",
+          "itemLevel": 63,
+          "requiredLevel": 60,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 25,
+            "faith": 22,
+            "sta": 22,
+            "int": 19
+          },
+          "armorType": "cloth",
+          "name": "Polished Greaves"
+        }
+      ],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Ryn",
+    "className": "Warrior",
+    "skill": "casual",
+    "personality": "greedy",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Shadow Bolt": 0.14639999999999997,
+      "Soul Eruption": 0.35,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 48,
+    "experience": 1,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun9dny4_m",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
+        "head": null,
+        "shoulders": null,
+        "chest": {
+          "id": "itm_musq5r23_1",
+          "slotType": "chest",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Bone Archer",
           "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 9,
-            "crit": 10,
-            "haste": 9
+            "armor": 93,
+            "str": 16,
+            "sta": 16
           },
           "armorType": "plate",
-          "name": "Sanctified Helm"
+          "name": "Simple Chestguard"
         },
-        "shoulders": {
-          "id": "itm_muojt47n_b",
-          "slotType": "shoulders",
+        "hands": {
+          "id": "itm_musq5r24_b",
+          "slotType": "hands",
           "rarity": "uncommon",
           "itemLevel": 63,
           "requiredLevel": 60,
@@ -2551,1890 +522,409 @@
             "haste": 15
           },
           "armorType": "plate",
-          "name": "Polished Pauldrons"
+          "name": "Reinforced Gauntlets"
         },
-        "chest": {
-          "id": "itm_muolhcjd_r",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 9,
-            "agi": 10,
-            "haste": 9
-          },
-          "armorType": "plate",
-          "name": "Sanctified Chestguard"
-        },
-        "hands": {
-          "id": "itm_muok1rep_v",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "crit": 15,
-            "haste": 7
-          },
-          "armorType": "plate",
-          "name": "Radiant Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun7tri9_m",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 9,
-            "crit": 19
-          },
-          "armorType": "plate",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_mun4cx78_4",
-          "slotType": "feet",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 72,
-            "str": 16,
-            "sta": 16,
-            "haste": 13
-          },
-          "armorType": "plate",
-          "name": "Reinforced Boots"
-        },
-        "neck": {
-          "id": "itm_mun8usc5_u",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "agi": 5,
-            "crit": 5,
-            "haste": 5
-          },
-          "name": "Dreadforged Amulet"
-        },
-        "ring1": {
-          "id": "itm_muokskqr_m",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": {
-          "id": "itm_mun7vqai_q",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "crit": 5,
-            "haste": 10
-          },
-          "name": "Dreadforged Ring"
-        },
-        "trinket": {
-          "id": "itm_muoopy57_p",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 23,
-            "sta": 23,
-            "crit": 7,
-            "agi": 7,
-            "haste": 7
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_muojufg7_v",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 40,
-            "sta": 40,
-            "agi": 12,
-            "haste": 12,
-            "crit": 11
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Dreadforged Axe"
-        },
-        "offHand": {
-          "id": "itm_muomqqgo_q",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.04,
-            "str": 27,
-            "sta": 27,
-            "crit": 16,
-            "agi": 7
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Sanctified Bulwark"
-        }
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Corvin",
+    "name": "Zara",
     "className": "Mage",
     "skill": "casual",
-    "personality": "aggressive",
+    "personality": "greedy",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.58,
+        1.16
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.33499999999999996,
+        0.77
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9994218580412669,
-      "Flame Breath": 0.9969790559264649,
-      "Pyroclasm": 0.9587734047679486,
-      "Inferno Rift": 0.9864891438910712,
-      "Shadow Bolt": 0.48192381999655615,
-      "Soul Eruption": 0.9884536777061997,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8004603802568999,
-      "Doom": 0.610198016,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
-    "potential": "skilled",
-    "experience": 48,
+    "potential": "average",
+    "experience": 1,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun5sjbv_c",
-          "slotType": "feet",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 20,
-            "int": 21,
-            "sta": 21,
-            "haste": 9,
-            "crit": 8
-          },
-          "armorType": "cloth",
-          "name": "Blessed Boots"
-        },
-        {
-          "id": "itm_mun9af2v_a",
-          "slotType": "feet",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 20,
-            "int": 21,
-            "sta": 21,
-            "crit": 17
-          },
-          "armorType": "cloth",
-          "name": "Blessed Boots"
-        },
-        {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Necromancer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_muoopy57_q",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        {
-          "id": "itm_muoopy57_r",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Sanctified Ring"
-        }
-      ],
-      "equipped": {
-        "head": {
-          "id": "itm_mun4qv58_2",
-          "slotType": "head",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 24,
-            "int": 17,
-            "sta": 17
-          },
-          "armorType": "cloth",
-          "name": "Simple Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7iz50_q",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "id": "itm_muomqqgo_r",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muolhcjd_s",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "crit": 14,
-            "haste": 8
-          },
-          "armorType": "cloth",
-          "name": "Radiant Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muok1rep_w",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Greaves"
-        },
-        "feet": {
-          "id": "itm_muok0x3s_9",
-          "slotType": "feet",
-          "rarity": "uncommon",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Crypt Ghoul",
-          "stats": {
-            "armor": 17,
-            "int": 15,
-            "sta": 15,
-            "haste": 14
-          },
-          "armorType": "cloth",
-          "name": "Sturdy Boots"
-        },
-        "neck": {
-          "id": "itm_mun9dny5_n",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 15
-          },
-          "name": "Dreadforged Amulet"
-        },
-        "ring1": null,
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muomj20p_v",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_muolnu7j_1f",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 40,
-            "sta": 40,
-            "crit": 23,
-            "haste": 12
-          },
-          "weaponType": "staff",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Druid",
-            "Necromancer"
-          ],
-          "weaponSpeed": 3,
-          "weaponDamage": 135,
-          "name": "Dreadforged Staff"
-        },
-        "offHand": {
-          "id": "itm_mun7vqai_r",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
-          },
-          "weaponType": "orb",
-          "allowedClasses": [
-            "Mage"
-          ],
-          "name": "Radiant Orb"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Rook",
-    "className": "Rogue",
-    "skill": "casual",
-    "personality": "cautious",
-    "profile": {
-      "label": "Average",
-      "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
-      ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
-      "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
-      ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
-    },
-    "mastery": {
-      "Rain of Fire": 0.9986457071418727,
-      "Flame Breath": 0.9972428659095744,
-      "Pyroclasm": 0.9489759027702881,
-      "Inferno Rift": 0.9942132935257987,
-      "Crushing Blow": 0.610198016,
-      "Soul Eruption": 0.9909357705255967,
-      "Shadow Bolt": 0.4147968060381696,
-      "Hunter's Grudge": 0.721499023990598,
-      "Doom": 0.4722680832,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "average",
-    "experience": 48,
-    "gear": {
-      "className": "Rogue",
-      "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun8usc6_x",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "crit": 28
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_muomhgxe_v",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "haste": 15,
-            "crit": 7
-          },
-          "armorType": "leather",
-          "name": "Radiant Pauldrons"
-        },
-        "chest": {
-          "id": "itm_muomj20p_x",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "haste": 9,
-            "crit": 19
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muolhcjd_t",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "crit": 15,
-            "haste": 7
-          },
-          "armorType": "leather",
-          "name": "Radiant Gauntlets"
-        },
-        "legs": {
-          "id": "itm_mun4br5g_3",
-          "slotType": "legs",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 48,
-            "agi": 17,
-            "sta": 17
-          },
-          "armorType": "leather",
-          "name": "Plain Greaves"
-        },
-        "feet": {
-          "id": "itm_muoopy57_t",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "crit": 14,
-            "haste": 8
-          },
-          "armorType": "leather",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_muolnu7j_1g",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 19,
-            "sta": 19,
-            "crit": 10,
-            "haste": 5
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_muokskqr_o",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 19,
-            "sta": 19,
-            "crit": 10,
-            "haste": 5
-          },
-          "name": "Dreadforged Ring"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muok1rep_y",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 23,
-            "sta": 23,
-            "crit": 7,
-            "haste": 14
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "name": "Bonecarver",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "weaponType": "dagger",
-          "allowedClasses": [
-            "Rogue"
-          ],
-          "weaponDamage": 72,
-          "weaponSpeed": 1.6,
-          "stats": {
-            "agi": 38,
-            "sta": 22,
-            "crit": 18
-          },
-          "id": "itm_mun9dny6_o",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "offHand": {
-          "id": "itm_muolu3xf_t",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 27,
-            "sta": 27,
-            "crit": 23
-          },
-          "weaponType": "dagger",
-          "allowedClasses": [
-            "Rogue"
-          ],
-          "name": "Sanctified Dagger"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Bonecarver": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Ryn",
-    "className": "Warrior",
+    "name": "Lyra",
+    "className": "Rogue",
     "skill": "casual",
     "personality": "aggressive",
     "profile": {
-      "label": "Average",
+      "label": "Casual",
       "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
+        0.565,
+        1.13
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9995844114325425,
-      "Flame Breath": 0.9920327735110234,
-      "Pyroclasm": 0.9505066256871796,
-      "Inferno Rift": 0.9962160178830977,
-      "Shadow Bolt": 0.4323529018570245,
-      "Soul Eruption": 0.9980668923097548,
-      "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.806446568849193,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
-    "potential": "average",
-    "experience": 48,
+    "potential": "skilled",
+    "experience": 1,
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [
+        {
+          "id": "itm_musq5r24_c",
+          "slotType": "shoulders",
+          "rarity": "uncommon",
+          "itemLevel": 63,
+          "requiredLevel": 60,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 38,
+            "agi": 16,
+            "sta": 16,
+            "crit": 15
+          },
+          "armorType": "leather",
+          "name": "Reinforced Pauldrons"
+        }
+      ],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Thorne",
+    "className": "Warrior",
+    "skill": "casual",
+    "personality": "steady",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.6,
+        1.2
+      ],
+      "awareness": 0.55,
+      "mistakeRate": 0.08,
+      "inputDelay": [
+        0.35,
+        0.8
+      ],
+      "lapsePerSec": 0.04,
+      "positioning": 0.3,
+      "decisionNoise": 0.45,
+      "healAccuracy": 0.55
+    },
+    "mastery": {
+      "Shadow Bolt": 0.14639999999999997,
+      "Soul Eruption": 0.35,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "casual",
+    "experience": 1,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muoopy58_u",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 7,
-            "crit": 15
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Boots"
-        }
-      ],
+      "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_muomhgxe_x",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 9,
-            "haste": 10,
-            "crit": 9
-          },
-          "armorType": "plate",
-          "name": "Radiant Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7iz52_s",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 15
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun8usc7_z",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 9,
-            "crit": 19
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_mun7kdwr_5",
-          "slotType": "hands",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 72,
-            "str": 13,
-            "sta": 13
-          },
-          "armorType": "plate",
-          "name": "Plain Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muolhcjd_v",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 28
-          },
-          "armorType": "plate",
-          "name": "Radiant Greaves"
-        },
-        "feet": {
-          "id": "itm_muokskqs_p",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 15
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Boots"
-        },
-        "neck": {
-          "id": "itm_muomqqgo_u",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Dreadforged Amulet"
-        },
-        "ring1": {
-          "id": "itm_mun9dny6_q",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 10
-          },
-          "name": "Radiant Ring"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muojufg7_z",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 23,
-            "sta": 23,
-            "agi": 7,
-            "crit": 7,
-            "haste": 7
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_mun71s4p_a",
-          "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 63,
-          "requiredLevel": 60,
-          "sourceType": "mob",
-          "source": "Hollow Deathguard",
-          "stats": {
-            "str": 27,
-            "sta": 27,
-            "crit": 22
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 83,
-          "name": "Sturdy Axe"
-        },
-        "offHand": {
-          "id": "itm_mun6k1e8_1",
-          "slotType": "offHand",
-          "rarity": "uncommon",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Bone Archer",
-          "stats": {
-            "armor": 109,
-            "blockChance": 0.02,
-            "str": 16,
-            "sta": 16,
-            "haste": 14
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Polished Bulwark"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589851
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 3
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Magnus",
+    "name": "Silas",
     "className": "Mage",
     "skill": "casual",
-    "personality": "cautious",
+    "personality": "aggressive",
     "profile": {
-      "label": "Average",
+      "label": "Casual",
       "reaction": [
-        0.40127253708822724,
-        0.8025450741764545
+        0.565,
+        1.13
       ],
-      "awareness": 0.7487274629117727,
-      "mistakeRate": 0.040254507417645434,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.2009544028161704,
-        0.5019088056323407
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.020127253708822717,
-      "positioning": 0.5980911943676592,
-      "decisionNoise": 0.30095440281617036,
-      "healAccuracy": 0.6990455971838295
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9997870120234651,
-      "Flame Breath": 0.9839996091510211,
-      "Pyroclasm": 0.954828733585795,
-      "Inferno Rift": 0.9793383382631988,
-      "Soul Eruption": 0.9869790282416181,
-      "Shadow Bolt": 0.4147968060381696,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
-    "potential": "average",
-    "experience": 48,
+    "potential": "skilled",
+    "experience": 1,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun5sjbv_d",
-          "slotType": "shoulders",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 20,
-            "int": 21,
-            "sta": 21,
-            "crit": 17
-          },
-          "armorType": "cloth",
-          "name": "Blessed Pauldrons"
-        },
-        {
-          "id": "itm_muoopy58_v",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Dreadforged Ring"
-        }
-      ],
+      "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_muojufg7_10",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 18,
-            "haste": 10
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Helm"
-        },
-        "shoulders": {
-          "id": "itm_muojt47n_e",
-          "slotType": "shoulders",
-          "rarity": "uncommon",
-          "itemLevel": 63,
-          "requiredLevel": 60,
-          "sourceType": "mob",
-          "source": "Hollow Deathguard",
-          "stats": {
-            "armor": 19,
-            "int": 16,
-            "sta": 16,
-            "crit": 15
-          },
-          "armorType": "cloth",
-          "name": "Sturdy Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun7tric_r",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Radiant Chestguard"
-        },
-        "hands": {
-          "id": "itm_muojxtcb_2",
-          "slotType": "hands",
-          "rarity": "rare",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
-          "stats": {
-            "armor": 18,
-            "int": 19,
-            "sta": 19,
-            "crit": 8,
-            "haste": 8
-          },
-          "armorType": "cloth",
-          "name": "Valiant Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muokskqs_q",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 18,
-            "crit": 10
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_muomqqgo_w",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Boots"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
         "neck": null,
-        "ring1": {
-          "id": "itm_muomhgxf_z",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 10,
-            "haste": 5
-          },
-          "name": "Radiant Ring"
-        },
-        "ring2": {
-          "id": "itm_mun9dny7_s",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Sanctified Ring"
-        },
-        "trinket": {
-          "id": "itm_mun7iz52_t",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 23,
-            "sta": 23,
-            "haste": 14,
-            "crit": 7
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_mun7kdws_6",
-          "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "int": 25,
-            "sta": 25,
-            "crit": 22
-          },
-          "weaponType": "staff",
-          "allowedClasses": [
-            "Mage",
-            "Healer"
-          ],
-          "weaponSpeed": 3,
-          "weaponDamage": 84,
-          "name": "Polished Staff"
-        },
-        "offHand": {
-          "id": "itm_muomj20p_10",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
-          },
-          "weaponType": "orb",
-          "allowedClasses": [
-            "Mage",
-            "Necromancer"
-          ],
-          "name": "Radiant Orb"
-        }
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Sera",
+    "name": "Doran",
     "className": "Rogue",
     "skill": "casual",
-    "personality": "cautious",
+    "personality": "aggressive",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.565,
+        1.13
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.32499999999999996,
+        0.75
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.998838931299528,
-      "Pyroclasm": 0.9768117964482755,
-      "Flame Breath": 0.9949464505570992,
-      "Inferno Rift": 0.9965464616894204,
-      "Soul Eruption": 0.975395740792555,
-      "Shadow Bolt": 0.6054949425934413,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7379584316727535,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 48,
+    "experience": 1,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun9dny8_t",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "crit": 19,
-            "haste": 9
-          },
-          "armorType": "leather",
-          "name": "Sanctified Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7trid_s",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 15
-          },
-          "armorType": "leather",
-          "name": "Sanctified Pauldrons"
-        },
+        "head": null,
+        "shoulders": null,
         "chest": {
-          "id": "itm_muoopy58_w",
+          "id": "itm_musq5r25_d",
           "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "crit": 19,
-            "haste": 9
-          },
-          "armorType": "leather",
-          "name": "Sanctified Chestguard"
-        },
-        "hands": {
-          "id": "itm_mun4dusj_e",
-          "slotType": "hands",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "rarity": "rare",
+          "itemLevel": 63,
+          "requiredLevel": 60,
           "sourceType": "mob",
-          "source": "Forge Guardian",
+          "source": "Hollow Deathguard",
           "stats": {
-            "armor": 36,
-            "agi": 16,
-            "sta": 16,
-            "haste": 13
+            "armor": 50,
+            "agi": 27,
+            "sta": 27,
+            "crit": 11,
+            "haste": 11
           },
           "armorType": "leather",
-          "name": "Reinforced Gauntlets"
+          "name": "Blessed Chestguard"
         },
-        "legs": {
-          "id": "itm_muolhcjd_y",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 48,
-            "agi": 34,
-            "sta": 34,
-            "haste": 18,
-            "crit": 10
-          },
-          "armorType": "leather",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_mun8usc7_11",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "haste": 14,
-            "crit": 8
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Boots"
-        },
-        "neck": {
-          "id": "itm_mun7vqak_x",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 10
-          },
-          "name": "Radiant Amulet"
-        },
-        "ring1": {
-          "id": "itm_muok1req_13",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 19,
-            "sta": 19,
-            "haste": 15
-          },
-          "name": "Radiant Ring"
-        },
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muojufg7_12",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 23,
-            "sta": 23,
-            "crit": 7,
-            "haste": 14
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_muomhgxf_10",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "agi": 40,
-            "sta": 40,
-            "haste": 12,
-            "crit": 23
-          },
-          "weaponType": "sword",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Rogue"
-          ],
-          "weaponSpeed": 2.4,
-          "weaponDamage": 108,
-          "name": "Sanctified Longsword"
-        },
-        "offHand": {
-          "id": "itm_mun7nvpo_6",
-          "slotType": "offHand",
-          "rarity": "common",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Crypt Ghoul",
-          "stats": {
-            "agi": 13,
-            "sta": 13
-          },
-          "weaponType": "dagger",
-          "allowedClasses": [
-            "Rogue"
-          ],
-          "name": "Simple Dagger"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Bonecarver": 2
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Talos",
+    "name": "Ember",
     "className": "Warrior",
     "skill": "casual",
     "personality": "greedy",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.58,
+        1.16
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.33499999999999996,
+        0.77
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9994714780433491,
-      "Flame Breath": 0.9959101064850601,
-      "Pyroclasm": 0.9489759027702882,
-      "Inferno Rift": 0.9948770703648092,
-      "Soul Eruption": 0.982371607465575,
-      "Shadow Bolt": 0.4147968060381696,
-      "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.745819678722571,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
+      "Hunter's Grudge": 0.12
     },
-    "potential": "skilled",
-    "experience": 48,
+    "potential": "average",
+    "experience": 1,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "name": "Crown of the Hollow King",
-          "slotType": "head",
-          "rarity": "epic",
-          "armorType": "plate",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
-          },
-          "id": "itm_mun7trid_t",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "shoulders": {
-          "id": "itm_muolu3xf_z",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 7,
-            "crit": 8,
-            "haste": 7
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Pauldrons"
-        },
-        "chest": {
-          "id": "itm_mun7kdwl_1",
-          "slotType": "chest",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 96,
-            "str": 21,
-            "sta": 21,
-            "haste": 18
-          },
-          "armorType": "plate",
-          "name": "Polished Chestguard"
-        },
-        "hands": {
-          "id": "itm_mun8usc8_12",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "haste": 7,
-            "agi": 8,
-            "crit": 7
-          },
-          "armorType": "plate",
-          "name": "Sanctified Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muok1req_14",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "agi": 19,
-            "crit": 9
-          },
-          "armorType": "plate",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_mun9dny9_u",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 8,
-            "agi": 7
-          },
-          "armorType": "plate",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_mun7trid_u",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 5,
-            "agi": 5
-          },
-          "name": "Radiant Amulet"
-        },
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
         "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muolhcje_z",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_muokskqs_t",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 40,
-            "sta": 40,
-            "agi": 24,
-            "crit": 11
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Sanctified Axe"
-        },
-        "offHand": {
-          "id": "itm_muojufg7_13",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.04,
-            "str": 27,
-            "sta": 27,
-            "agi": 16,
-            "haste": 7
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Radiant Bulwark"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
-    "name": "Vera",
+    "name": "Luna",
     "className": "Mage",
     "skill": "casual",
-    "personality": "aggressive",
+    "personality": "greedy",
     "profile": {
-      "label": "Skilled",
+      "label": "Casual",
       "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
+        0.58,
+        1.16
       ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
       "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
+        0.33499999999999996,
+        0.77
       ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
     },
     "mastery": {
-      "Rain of Fire": 0.9995321033118498,
-      "Flame Breath": 0.9966900038967569,
-      "Pyroclasm": 0.9534316841090672,
-      "Inferno Rift": 0.983305731771994,
-      "Soul Eruption": 0.9474841676317279,
-      "Shadow Bolt": 0.4974661053966595,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.9266100829998447,
-      "Doom": 0.4722680832,
+      "Soul Eruption": 0.172008,
       "Cleave": 0.35,
-      "Tyrant's Gaze": 0.35
+      "Shadow Bolt": 0.12,
+      "Hunter's Grudge": 0.12
     },
-    "potential": "skilled",
-    "experience": 48,
+    "potential": "average",
+    "experience": 1,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun4cx79_7",
-          "slotType": "head",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "armor": 24,
-            "int": 21,
-            "sta": 21,
-            "haste": 18
-          },
-          "armorType": "cloth",
-          "name": "Reinforced Helm"
-        },
-        "shoulders": {
-          "id": "itm_muomgqal_e",
-          "slotType": "shoulders",
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": {
+          "id": "itm_musq5r25_e",
+          "slotType": "hands",
           "rarity": "uncommon",
           "itemLevel": 63,
           "requiredLevel": 60,
@@ -4447,456 +937,302 @@
             "crit": 15
           },
           "armorType": "cloth",
-          "name": "Reinforced Pauldrons"
+          "name": "Polished Gauntlets"
         },
-        "chest": {
-          "id": "itm_mun9dny9_v",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muok1req_15",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 15,
-            "crit": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muojufg8_14",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_muomhgxf_13",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Boots"
-        },
-        "neck": {
-          "id": "itm_muolnu7k_1m",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 10,
-            "crit": 5
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_mun7trie_v",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": {
-          "id": "itm_muolhcje_10",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 10
-          },
-          "name": "Sanctified Ring"
-        },
-        "trinket": {
-          "id": "itm_muomqqgo_10",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 23,
-            "sta": 23,
-            "crit": 21
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_muolu3xf_10",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 40,
-            "sta": 40,
-            "haste": 35
-          },
-          "weaponType": "staff",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Druid",
-            "Necromancer"
-          ],
-          "weaponSpeed": 3,
-          "weaponDamage": 135,
-          "name": "Radiant Staff"
-        },
-        "offHand": {
-          "id": "itm_mun7iz53_w",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 27,
-            "sta": 27,
-            "haste": 23
-          },
-          "weaponType": "orb",
-          "allowedClasses": [
-            "Mage"
-          ],
-          "name": "Dreadforged Orb"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Jax",
-    "className": "Necromancer",
-    "skill": "casual",
-    "personality": "aggressive",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.9990013117715355,
-      "Flame Breath": 0.9946290259933034,
-      "Pyroclasm": 0.9745930869525838,
-      "Inferno Rift": 0.9906101853029782,
-      "Soul Eruption": 0.9917408994627375,
-      "Shadow Bolt": 0.5807152115989386,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8809136554042344,
-      "Doom": 0.4722680832,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Necromancer",
-      "bagSize": 30,
-      "bag": [],
-      "equipped": {
-        "head": {
-          "id": "itm_muomj20q_15",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 28
-          },
-          "armorType": "cloth",
-          "name": "Dreadforged Helm"
-        },
-        "shoulders": {
-          "id": "itm_muolmq0a_a",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "crit": 22
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
-        },
-        "chest": {
-          "name": "Shroud of the Hollow King",
-          "slotType": "chest",
-          "rarity": "epic",
-          "armorType": "cloth",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Necromancer"
-          ],
-          "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
-          },
-          "id": "itm_muomqqgo_11",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "hands": {
-          "id": "itm_muolmq0a_c",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "crit": 15,
-            "haste": 7
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muolu3xg_11",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 18,
-            "crit": 10
-          },
-          "armorType": "cloth",
-          "name": "Radiant Greaves"
-        },
-        "feet": {
-          "id": "itm_muolmq0a_e",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 15
-          },
-          "armorType": "cloth",
-          "name": "Sanctified Boots"
-        },
+        "legs": null,
+        "feet": null,
         "neck": null,
-        "ring1": {
-          "id": "itm_muolmq0a_f",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": {
-          "id": "itm_muolmq0a_g",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "haste": 5,
-            "crit": 10
-          },
-          "name": "Radiant Ring"
-        },
-        "trinket": {
-          "id": "itm_muolmq0a_h",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "int": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_muomqqgo_12",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 40,
-            "sta": 40,
-            "crit": 35
-          },
-          "weaponType": "scythe",
-          "allowedClasses": [
-            "Necromancer"
-          ],
-          "weaponSpeed": 3.2,
-          "weaponDamage": 144,
-          "name": "Radiant Scythe"
-        },
-        "offHand": {
-          "id": "itm_muolmq0a_j",
-          "slotType": "offHand",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "class change",
-          "stats": {
-            "int": 13,
-            "sta": 13
-          },
-          "weaponType": "orb",
-          "allowedClasses": [
-            "Mage",
-            "Necromancer"
-          ],
-          "name": "Plain Orb"
-        }
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Bonecarver": 0,
-        "The Hollow King:Shroud of the Hollow King": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 1
   },
   {
     "name": "Fenn",
+    "className": "Rogue",
+    "skill": "casual",
+    "personality": "steady",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "average",
+    "experience": 1,
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Quinn",
     "className": "Warrior",
+    "skill": "casual",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Shadow Bolt": 0.14639999999999997,
+      "Soul Eruption": 0.14639999999999997,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "average",
+    "experience": 1,
+    "gear": {
+      "className": "Warrior",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Kira",
+    "className": "Mage",
+    "skill": "casual",
+    "personality": "cautious",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.565,
+        1.13
+      ],
+      "awareness": 0.5850000000000001,
+      "mistakeRate": 0.0735,
+      "inputDelay": [
+        0.32499999999999996,
+        0.75
+      ],
+      "lapsePerSec": 0.0368,
+      "positioning": 0.355,
+      "decisionNoise": 0.42,
+      "healAccuracy": 0.5800000000000001
+    },
+    "mastery": {
+      "Soul Eruption": 0.35,
+      "Shadow Bolt": 0.12,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "skilled",
+    "experience": 1,
+    "gear": {
+      "className": "Mage",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Courtney",
+    "className": "Druid",
+    "skill": "casual",
+    "personality": "steady",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Hunter's Grudge": 0.36949999999999994,
+      "Soul Eruption": 0.12,
+      "Shadow Bolt": 0.12,
+      "Cleave": 0.12
+    },
+    "potential": "average",
+    "experience": 1,
+    "gear": {
+      "className": "Druid",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": {
+          "id": "itm_musq5r25_f",
+          "slotType": "hands",
+          "rarity": "rare",
+          "itemLevel": 63,
+          "requiredLevel": 60,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 38,
+            "int": 13,
+            "faith": 13,
+            "sta": 13,
+            "haste": 9,
+            "crit": 9
+          },
+          "armorType": "leather",
+          "name": "Valiant Gauntlets"
+        },
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Valk",
+    "className": "Valkyrie",
+    "skill": "casual",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.58,
+        1.16
+      ],
+      "awareness": 0.5700000000000001,
+      "mistakeRate": 0.076,
+      "inputDelay": [
+        0.33499999999999996,
+        0.77
+      ],
+      "lapsePerSec": 0.038,
+      "positioning": 0.32999999999999996,
+      "decisionNoise": 0.435,
+      "healAccuracy": 0.5650000000000001
+    },
+    "mastery": {
+      "Soul Eruption": 0.12,
+      "Shadow Bolt": 0.12,
+      "Cleave": 0.12,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "average",
+    "experience": 1,
+    "gear": {
+      "className": "Valkyrie",
+      "bagSize": 30,
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 1
+  },
+  {
+    "name": "Maddy",
+    "className": "Necromancer",
     "skill": "casual",
     "personality": "greedy",
     "profile": {
@@ -4916,498 +1252,45 @@
       "decisionNoise": 0.45,
       "healAccuracy": 0.55
     },
-    "mastery": {
-      "Rain of Fire": 0.9998514899226475,
-      "Flame Breath": 0.9839996091510211,
-      "Pyroclasm": 0.9219707005324965,
-      "Inferno Rift": 0.989065514564457,
-      "Soul Eruption": 0.9924373388979193,
-      "Shadow Bolt": 0.39669773818368,
-      "Crushing Blow": 0.4722680832,
-      "Doom": 0.610198016,
-      "Hunter's Grudge": 0.8004603802568999,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12
-    },
+    "mastery": {},
     "potential": "casual",
-    "experience": 48,
+    "experience": 0,
     "gear": {
-      "className": "Warrior",
+      "className": "Necromancer",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": {
-          "id": "itm_mun9dnyb_x",
-          "slotType": "head",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
-          "armorType": "plate",
-          "name": "Radiant Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7vqam_13",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 7,
-            "crit": 15
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Pauldrons"
-        },
+        "head": null,
+        "shoulders": null,
         "chest": {
-          "id": "itm_muomhgxf_15",
+          "id": "itm_musq5r24_5",
           "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 9,
-            "agi": 10,
-            "haste": 9
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Chestguard"
-        },
-        "hands": {
-          "id": "itm_muomqqgp_14",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 14,
-            "crit": 8
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muomj20q_16",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 9,
-            "agi": 19
-          },
-          "armorType": "plate",
-          "name": "Dreadforged Greaves"
-        },
-        "feet": {
-          "id": "itm_mun8uscf_17",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "haste": 7,
-            "agi": 8,
-            "crit": 7
-          },
-          "armorType": "plate",
-          "name": "Sanctified Boots"
-        },
-        "neck": {
-          "id": "itm_muok1req_17",
-          "slotType": "neck",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "agi": 5,
-            "haste": 10
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_muokskqs_x",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 19,
-            "sta": 19,
-            "haste": 5,
-            "agi": 10
-          },
-          "name": "Sanctified Ring"
-        },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muoopy58_11",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 23,
-            "sta": 23,
-            "haste": 7,
-            "agi": 7,
-            "crit": 7
-          },
-          "name": "Sanctified Charm"
-        },
-        "mainHand": {
-          "id": "itm_muolnu7k_1p",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "str": 40,
-            "sta": 40,
-            "agi": 12,
-            "haste": 23
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Dreadforged Axe"
-        },
-        "offHand": {
-          "id": "itm_muojufg8_16",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 180,
-            "blockChance": 0.04,
-            "str": 27,
-            "sta": 27,
-            "agi": 8,
-            "haste": 8,
-            "crit": 7
-          },
-          "weaponType": "shield",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "name": "Dreadforged Bulwark"
-        }
-      }
-    },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Crown of the Hollow King": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
-  },
-  {
-    "name": "Courtney",
-    "className": "Druid",
-    "skill": "casual",
-    "personality": "cautious",
-    "profile": {
-      "label": "Skilled",
-      "reaction": [
-        0.25222693990439754,
-        0.5044538798087951
-      ],
-      "awareness": 0.8977730600956024,
-      "mistakeRate": 0.015413574553673834,
-      "inputDelay": [
-        0.10159067136028399,
-        0.3031813427205679
-      ],
-      "lapsePerSec": 0.008203605934116351,
-      "positioning": 0.8465005230073751,
-      "decisionNoise": 0.15190880563234077,
-      "healAccuracy": 0.8480911943676592
-    },
-    "mastery": {
-      "Rain of Fire": 0.9991173195126695,
-      "Flame Breath": 0.9835047517020837,
-      "Pyroclasm": 0.9760946355136861,
-      "Inferno Rift": 0.9752359598325336,
-      "Soul Eruption": 0.9645391221542802,
-      "Shadow Bolt": 0.4323529018570245,
-      "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8613233655220638,
-      "Doom": 0.48810004070400004,
-      "Cleave": 0.12,
-      "Tyrant's Gaze": 0.14639999999999997
-    },
-    "potential": "skilled",
-    "experience": 48,
-    "gear": {
-      "className": "Druid",
-      "bagSize": 30,
-      "bag": [],
-      "equipped": {
-        "head": {
-          "id": "itm_muolmq0a_0",
-          "slotType": "head",
-          "rarity": "rare",
-          "itemLevel": 63,
-          "requiredLevel": 60,
+          "rarity": "uncommon",
+          "itemLevel": 58,
+          "requiredLevel": 55,
           "sourceType": "mob",
-          "source": "class change",
+          "source": "Bone Archer",
           "stats": {
-            "armor": 50,
-            "int": 18,
-            "faith": 18,
-            "sta": 18,
-            "haste": 22
+            "armor": 23,
+            "int": 20,
+            "sta": 20,
+            "haste": 18
           },
-          "armorType": "leather",
-          "name": "Blessed Helm"
+          "armorType": "cloth",
+          "name": "Reinforced Chestguard"
         },
-        "shoulders": {
-          "name": "Barrowroot Mantle",
-          "slotType": "shoulders",
-          "rarity": "epic",
-          "armorType": "leather",
-          "allowedClasses": [
-            "Druid"
-          ],
-          "stats": {
-            "int": 26,
-            "faith": 22,
-            "sta": 28,
-            "haste": 14,
-            "armor": 60
-          },
-          "id": "itm_muolu3xg_13",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "chest": {
-          "id": "itm_muolmq0a_2",
-          "slotType": "chest",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 48,
-            "int": 22,
-            "faith": 22,
-            "sta": 22,
-            "haste": 20,
-            "crit": 10
-          },
-          "armorType": "leather",
-          "name": "Radiant Chestguard"
-        },
-        "hands": {
-          "id": "itm_muolmq0a_3",
-          "slotType": "hands",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 36,
-            "int": 17,
-            "faith": 17,
-            "sta": 17,
-            "haste": 7,
-            "crit": 14
-          },
-          "armorType": "leather",
-          "name": "Sanctified Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muolmq0a_4",
-          "slotType": "legs",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 48,
-            "int": 22,
-            "faith": 22,
-            "sta": 22,
-            "haste": 20,
-            "crit": 10
-          },
-          "armorType": "leather",
-          "name": "Sanctified Greaves"
-        },
-        "feet": {
-          "id": "itm_muolmq0a_5",
-          "slotType": "feet",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "armor": 36,
-            "int": 17,
-            "faith": 17,
-            "sta": 17,
-            "haste": 14,
-            "crit": 7
-          },
-          "armorType": "leather",
-          "name": "Dreadforged Boots"
-        },
+        "hands": null,
+        "legs": null,
+        "feet": null,
         "neck": null,
-        "ring1": {
-          "id": "itm_muomhgxf_16",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 12,
-            "faith": 12,
-            "sta": 12,
-            "crit": 6,
-            "haste": 11
-          },
-          "name": "Dreadforged Ring"
-        },
+        "ring1": null,
         "ring2": null,
-        "trinket": {
-          "id": "itm_muolmq0a_6",
-          "slotType": "trinket",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "boss",
-          "source": "class change",
-          "stats": {
-            "int": 16,
-            "faith": 16,
-            "sta": 16,
-            "haste": 13,
-            "crit": 6
-          },
-          "name": "Dreadforged Charm"
-        },
-        "mainHand": {
-          "id": "itm_muolu3xg_14",
-          "slotType": "mainHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 27,
-            "faith": 27,
-            "sta": 27,
-            "haste": 34
-          },
-          "weaponType": "staff",
-          "allowedClasses": [
-            "Mage",
-            "Healer",
-            "Druid",
-            "Necromancer"
-          ],
-          "weaponSpeed": 3,
-          "weaponDamage": 135,
-          "name": "Radiant Staff"
-        },
-        "offHand": {
-          "id": "itm_muolnu7k_1q",
-          "slotType": "offHand",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 18,
-            "faith": 18,
-            "sta": 18,
-            "crit": 16,
-            "haste": 7
-          },
-          "weaponType": "relic",
-          "allowedClasses": [
-            "Healer",
-            "Druid"
-          ],
-          "name": "Sanctified Relic"
-        }
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
       }
     },
-    "lootState": {
-      "lockouts": {
-        "The Hollow King": 1791412589852
-      },
-      "pity": {
-        "The Hollow King:Shroud of the Hollow King": 4,
-        "The Hollow King:Barrowroot Mantle": 1
-      }
-    },
-    "kills": 15,
-    "attempts": 48
+    "kills": 0,
+    "attempts": 0
   }
 ]

@@ -61,7 +61,7 @@ const hollowKing = {
         chance: 0.25,
         item: {
           name: "Crown of the Hollow King", slotType: "head", rarity: "epic", armorType: "plate",
-          allowedClasses: ["Knight", "Warrior"], stats: { str: 34, sta: 42, faith: 16, armor: 130, blockChance: 0.02 },
+          allowedClasses: ["Knight", "Warrior", "Valkyrie"], stats: { str: 34, sta: 42, faith: 16, armor: 130, blockChance: 0.02 },
         },
       },
       {
@@ -76,6 +76,13 @@ const hollowKing = {
         item: {
           name: "Barrowroot Mantle", slotType: "shoulders", rarity: "epic", armorType: "leather",
           allowedClasses: ["Druid"], stats: { int: 26, faith: 22, sta: 28, haste: 14, armor: 60 },
+        },
+      },
+      {
+        chance: 0.25,
+        item: {
+          name: "Gravewing Spear", slotType: "mainHand", rarity: "epic", weaponType: "spear",
+          allowedClasses: ["Valkyrie"], weaponDamage: 80, weaponSpeed: 2.6, stats: { str: 32, sta: 36, crit: 14 },
         },
       },
       {

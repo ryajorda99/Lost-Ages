@@ -127,7 +127,9 @@ const PLAYBOOKS = {
       cancelUnsafeRevive(bot, now);
       const bossTarget = b.pickTarget();
       const iAmTanking = bossTarget === k;
-      const stacks = (u) => u?.buffs.find(x => x.id === "moltenBrand")?.stacks || 0;
+      // Tank-swap debuffs: Molten Brand (Azgaroth), Static Charge (Vorathyx) — anything marked swapStacks
+      const swapBuff = (u) => u?.buffs.find(x => x.swapStacks || x.id === "moltenBrand");
+      const stacks = (u) => swapBuff(u)?.stacks || 0;
 
       // Pull: the main tank grabs the boss at the start
       const pull = bot.mainTank && now < 0.3;
@@ -136,7 +138,8 @@ const PLAYBOOKS = {
       // Tank swap: the other tank has 3+ Molten Brand stacks and mine have worn off
       const swap = bossTarget && !iAmTanking && bossTarget.role === "tank" && stacks(bossTarget) >= 3 && stacks(k) === 0;
       // Tank swaps are a learned skill (Immolation is what happens when you get it wrong)
-      const tauntBoss = bot.sees("tauntBoss", !!(pull || dpsHasAggro || swap), now, swap ? "Immolation" : null);
+      const swapMechanic = swapBuff(bossTarget)?.swapMechanic || "Immolation";   // what you die to if you don't swap
+      const tauntBoss = bot.sees("tauntBoss", !!(pull || dpsHasAggro || swap), now, swap ? swapMechanic : null);
 
       // Off-tank: pick up adds that are chewing on non-tanks
       const looseAdd = !iAmTanking && (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank");
@@ -267,10 +270,11 @@ const PLAYBOOKS = {
       const low = roll < bot.p.healAccuracy ? sorted[0] : sorted[Math.min(sorted.length - 1, roll < 0.9 ? 1 : 2)];
       const lp = pct(low);
 
-      const doomed = alive.find(a => a.hasBuff("doom"));
-      const seesDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, "Doom");
+      const lethalDebuff = (a) => a.buffs.find(x => x.id === "doom" || x.mustDispel);   // Doom, Ion Surge...
+      const doomed = alive.find(a => lethalDebuff(a));
+      const seesDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, lethalDebuff(doomed).mechanic || "Doom");
       const novaComing = bot.sees("bossCast:shadowNova", bossCastIs(b, "shadowNova"), now);
-      const dispel = alive.find(a => a.buffs.some(x => x.dispellable && x.id !== "doom"));
+      const dispel = alive.find(a => a.buffs.some(x => x.dispellable && x.id !== "doom" && !x.mustDispel));
       const manaPct = h.resource.current / h.resource.max;
       const hurtCount = sorted.filter(a => pct(a) < 0.5).length;
       const bored = sorted[0] && pct(sorted[0]) > 0.95 && manaPct > 0.7;
@@ -314,7 +318,8 @@ const PLAYBOOKS = {
       const tank = b.pickTarget?.();
       const oomHealer = alive.filter(a => a.role === "healer" && a.resource.current / a.resource.max < 0.35)
         .sort((a, c) => a.resource.current - c.resource.current)[0];
-      const doomed = alive.find(a => a.hasBuff("doom"));
+      const lethalDebuff = (a) => a.buffs.find(x => x.id === "doom" || x.mustDispel);   // Doom, Ion Surge...
+      const doomed = alive.find(a => lethalDebuff(a));
       const moving = !!bot.movePlan;
       const sup = bot.style.supportBias;
 
@@ -322,7 +327,7 @@ const PLAYBOOKS = {
       const saveLow = low && lp < 0.35 && bot.sees(`low:${low.name}`, true, now);
       const raidHurt = bot.sees("raidHurt", hurt >= 4, now);
       const giveMana = oomHealer && bot.sees(`oom:${oomHealer.name}`, true, now);
-      const cleanseDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, "Doom");
+      const cleanseDoom = doomed && bot.sees(`doom:${doomed.name}`, true, now, lethalDebuff(doomed).mechanic || "Doom");
       const threatened = bot.sees("targeted", b.pickTarget() === d, now) || pct(d) < bot.personality.panicHp;
 
       return [
@@ -387,6 +392,60 @@ const PLAYBOOKS = {
     move(bot, w, dt, now) {
       if (bot.character.stance === "melee") meleeMove(bot, w, dt, now);
       else rangedMove(bot, w, dt, now);
+    },
+  },
+
+  // ======================= VALKYRIE (tank + damage, two lives) =======================
+  // Plays as an off-tank who does real damage: hits the boss, but grabs adds that are chasing
+  // healers/DPS, taunts the boss back if a damage dealer pulls it, and takes over the boss
+  // completely if the Knights die. Mounted she ignores fire (she's flying); on foot she dodges.
+  Valkyrie: {
+    pickStyle: (bot) => ({ swapsToAdds: true }),
+    options(bot, w, now) {
+      const v = bot.character, b = w.boss;
+      const knightsUp = w.party.some(p => p.className === "Knight" && !p.isDead);
+      const bossTarget = b.pickTarget?.();
+
+      // Off-tank duty: an add attacking a healer/DPS
+      const looseAdd = (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank");
+      const grabAdd = looseAdd && bot.sees(`looseAdd:${looseAdd.name}`, true, now);
+      // The boss is on a healer/DPS: taunt it back (the Knights get first chance while they're alive)
+      const loose = !!(bossTarget && bossTarget.role !== "tank");
+      if (loose && bot.bossLooseSince == null) bot.bossLooseSince = now;
+      if (!loose) bot.bossLooseSince = null;
+      const waited = loose && (!knightsUp || now - bot.bossLooseSince > 1.5);   // give the Knights 1.5s to fix it first
+      const tauntBoss = bot.sees("bossLoose", waited, now);
+
+      const target = grabAdd ? looseAdd : (!knightsUp ? b : dpsTarget(bot, w));
+      v.setTarget(target);
+      const valor = v.resource.current;
+      const hpPct = pct(v);
+      const tanking = b.pickTarget?.() === v;
+      const addsNear = (w.adds || []).filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
+      const m = v.mounted;
+      return [
+        { key: "valkyriesCall", target: looseAdd, score: grabAdd ? 92 : 0, onUse: () => bot.say("offTank", now, 15) },
+        { key: "valkyriesCall", target: b, score: tauntBoss ? 94 : 0 },
+        { key: "aegisOfValhalla", target: v, score: hpPct < 0.35 || (tanking && hpPct < 0.6) ? 90 : 0 },
+        { key: "wingGuard", target: v, score: !m && hpPct < 0.6 ? 80 : 0 },
+        // Mounted
+        { key: "divingStrike", target, score: m && bot.distanceTo(target) > 9 ? 75 : m ? 52 : 0 },
+        { key: "stormGallop", target: v, score: m && addsNear >= 2 ? 62 : 0 },
+        { key: "thunderLance", target, score: m && valor >= 60 ? 58 : 0 },
+        { key: "skyLance", target, score: m ? 45 : 0 },
+        // Winged, on foot
+        { key: "heavensFall", target, score: !m ? 60 : 0 },
+        { key: "soulspear", target, score: !m && valor >= 60 ? 58 : 0 },
+        { key: "wingedSlash", target, score: !m ? 45 : 0 },
+      ];
+    },
+    move(bot, w, dt, now) {
+      const v = bot.character;
+      const t = v.target || w.boss;
+      if (t.isDead) return;
+      // Mounted: circle above the fight at lance range. On foot: normal melee positioning.
+      if (v.mounted) { if (bot.distanceTo(t) > 6.5) bot.moveToward(t.position, dt, 6, 9); }
+      else meleeMove(bot, w, dt, now);
     },
   },
 };

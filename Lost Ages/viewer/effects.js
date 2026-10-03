@@ -36,6 +36,7 @@ export const EFFECTS = {
   judgment:        { type: "projectile", color: C.holy, size: 0.35, speed: 35 },
   sonOfLight:      { type: "shield", color: 0xfff2b0, onSelf: true, big: true },
   redemption:      { type: "pillar", color: C.holy },
+  sanctifiedAura:  { type: "nova", color: C.holy, radius: 10, pillar: true },   // the aura flaring up
 
   // ---------- Healer ----------
   flashHeal:       { type: "heal", color: C.holy },
@@ -99,6 +100,32 @@ export const EFFECTS = {
   soulCleave:      { type: "nova", color: C.shadow, radius: 8 },
   raiseCorrupted:  { type: "nova", color: C.nature, radius: 5 },
   boneShield:      { type: "shield", color: 0xe8e0c8, onSelf: true },
+
+  // ---------- Valkyrie ----------
+  valkyriesCall:   { type: "beam", color: 0x9fe7ff },
+  aegisOfValhalla: { type: "shield", color: 0xbfe9ff, onSelf: true, big: true },
+  skyLance:        { type: "slash", color: 0xdff6ff },
+  divingStrike:    { type: "strike", color: 0x9fe7ff, big: true },
+  stormGallop:     { type: "nova", color: 0x9fe7ff, radius: 8 },
+  thunderLance:    { type: "strike", color: 0x7fd4ff, big: true },
+  wingedSlash:     { type: "slash", color: 0xfff2c8 },
+  heavensFall:     { type: "nova", color: C.holy, radius: 6 },
+  soulspear:       { type: "projectile", color: C.holy, size: 0.4, speed: 40 },
+  wingGuard:       { type: "shield", color: 0xfff6dc, onSelf: true },
+
+  // ---------- Vorathyx, the Storm Sovereign ----------
+  thunderclaw:     { type: "slash", color: 0x7fd4ff, big: true },
+  lightningBreath: { type: "cone", color: 0x8fdcff, length: 14, angle: 1.1 },
+  cyclone:         { type: "poof", color: 0x9fc8ff, onSelf: true },
+  thunderstorm:    { type: "nova", color: 0x7fb4ff, radius: 12 },
+  stormCall:       { type: "strike", color: 0xbfe8ff, big: true },
+  chainLightning:  { type: "beam", color: 0xcff4ff },
+  ionSurge:        { type: "strike", color: 0x9f8cff },
+  recharge:        { type: "pillar", color: 0x7fd4ff, onSelf: true },
+  tempest:         { type: "nova", color: 0x9fd8ff, radius: 60 },
+  staticField:     { type: "nova", color: 0x7fe0ff, radius: 60 },
+  summonStormlings:{ type: "nova", color: 0x7fd4ff, radius: 15 },
+  skyborne:        { type: "nova", color: 0xffffff, radius: 14 },
 
   // ---------- The Hollow King ----------
   soulEruption:    { type: "poof", color: C.shadow, onSelf: true },   // the eruption itself is the purple circle on the ground
