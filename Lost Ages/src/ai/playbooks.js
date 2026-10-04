@@ -414,19 +414,25 @@ const PLAYBOOKS = {
       if (loose && bot.bossLooseSince == null) bot.bossLooseSince = now;
       if (!loose) bot.bossLooseSince = null;
       const waited = loose && (!knightsUp || now - bot.bossLooseSince > 1.5);   // give the Knights 1.5s to fix it first
-      const tauntBoss = bot.sees("bossLoose", waited, now);
+      // Co-tank with the Knight: take the boss when the other tank has 3+ swap stacks
+      // (Molten Brand, Static Charge…) and hers have worn off. A learned skill, like for Knights.
+      const swapBuff = (u) => u?.buffs.find(x => x.swapStacks || x.id === "moltenBrand");
+      const stacks = (u) => swapBuff(u)?.stacks || 0;
+      const tanking = bossTarget === v;
+      const swap = !!(bossTarget && !tanking && bossTarget.role === "tank" && stacks(bossTarget) >= 3 && stacks(v) === 0);
+      const swapMechanic = swapBuff(bossTarget)?.swapMechanic || "Immolation";
+      const tauntBoss = bot.sees("bossLoose", waited, now) || bot.sees("tauntBoss", swap, now, swap ? swapMechanic : null);
 
-      const target = grabAdd ? looseAdd : (!knightsUp ? b : dpsTarget(bot, w));
+      const target = grabAdd && !tanking ? looseAdd : (!knightsUp || tanking ? b : dpsTarget(bot, w));
       v.setTarget(target);
       const valor = v.resource.current;
       const hpPct = pct(v);
-      const tanking = b.pickTarget?.() === v;
       const addsNear = (w.adds || []).filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
       const m = v.mounted;
       return [
         { key: "valkyriesCall", target: looseAdd, score: grabAdd ? 92 : 0, onUse: () => bot.say("offTank", now, 15) },
-        { key: "valkyriesCall", target: b, score: tauntBoss ? 94 : 0 },
-        { key: "aegisOfValhalla", target: v, score: hpPct < 0.35 || (tanking && hpPct < 0.6) ? 90 : 0 },
+        { key: "valkyriesCall", target: b, score: tauntBoss ? 94 : 0, onUse: () => swap && bot.say("taunt", now, 10) },
+        { key: "aegisOfValhalla", target: v, score: hpPct < 0.35 || (tanking && (hpPct < 0.6 || stacks(v) >= 3)) ? 90 : 0 },
         { key: "wingGuard", target: v, score: !m && hpPct < 0.6 ? 80 : 0 },
         // Mounted
         { key: "divingStrike", target, score: m && bot.distanceTo(target) > 9 ? 75 : m ? 52 : 0 },

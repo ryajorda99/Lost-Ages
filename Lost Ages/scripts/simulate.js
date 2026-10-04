@@ -119,13 +119,14 @@ function raidComposition(size) {
   const tanks = size >= 10 ? 2 : 1;
   const healers = Math.max(1, Math.round(size / 5));
   const dpsClasses = ["Warrior", "Mage", "Rogue"];
-  const list = [...Array(tanks).fill("Knight"), ...Array(healers).fill("Healer")];
+  // Two tanks: a Knight and a Valkyrie (Ryan and Valk). One tank: just the Knight.
+  const list = [...(tanks === 2 ? ["Knight", "Valkyrie"] : ["Knight"]), ...Array(healers).fill("Healer")];
   for (let i = 0; list.length < size; i++) list.push(dpsClasses[i % dpsClasses.length]);
   // Raids bring one Druid (in place of a Rogue) and one Necromancer (in place of a Mage)
   const swap = (from, to) => { const i = list.lastIndexOf(from); if (i !== -1) list[i] = to; };
   swap("Rogue", "Druid");
   swap("Mage", "Necromancer");
-  swap("Warrior", "Valkyrie");
+  if (!list.includes("Valkyrie")) swap("Warrior", "Valkyrie");   // small raids: she comes as damage
   return list;
 }
 
@@ -235,7 +236,14 @@ function migrateRoster(list) {
     const valkFrom = list.find(b => b.name === "Bram") || lastOf("Warrior");
     if (valkFrom) convert(valkFrom, "Valkyrie", "Valk");
   }
-  // 3) Renamed players (Jax → Maddy, Vex → Ryan)
+  // 3) Valk is the second tank: if there are still two Knights, the one that isn't Ryan
+  //    (or the second one) becomes a Warrior and goes to damage
+  const knights = list.filter(b => b.className === "Knight");
+  if (knights.length >= 2 && list.some(b => b.className === "Valkyrie")) {
+    const keep = knights.find(b => b.name === "Ryan" || b.name === "Vex") || knights[0];
+    for (const k of knights) if (k !== keep) convert(k, "Warrior", k.name);
+  }
+  // 4) Renamed players (Jax → Maddy, Vex → Ryan)
   for (const b of list) if (RENAMED[b.name] && !list.some(o => o.name === RENAMED[b.name])) {
     changes.push(`${b.name} is now ${RENAMED[b.name]}`);
     b.name = RENAMED[b.name];
@@ -275,7 +283,7 @@ function discoveredMechanics() {
 // How well a player knows the mechanics the raid has discovered (0–100%).
 // Role mechanics (Immolation = tank swaps, Safe Revive = healers/knights) only count for those classes.
 // Safe Revive (not reviving people into fire) only counts for Healers and Knights.
-const ROLE_MECHANICS = { Immolation: ["Knight"], Overload: ["Knight"], [SAFE_REVIVE]: ["Knight", "Healer"] };
+const ROLE_MECHANICS = { Immolation: ["Knight", "Valkyrie"], Overload: ["Knight", "Valkyrie"], [SAFE_REVIVE]: ["Knight", "Healer"] };
 const appliesTo = (m, bot) => !ROLE_MECHANICS[m] || ROLE_MECHANICS[m].includes(bot.className);
 function knowledge(bot) {
   const mechs = discoveredMechanics().filter(m => appliesTo(m, bot));

@@ -7,33 +7,56 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Soul Eruption": 0.12,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.428,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
       "bag": [
         {
+          "id": "itm_mutawo23_2",
+          "slotType": "hands",
+          "rarity": "uncommon",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 70,
+            "str": 10,
+            "sta": 10,
+            "faith": 10,
+            "crit": 14
+          },
+          "armorType": "plate",
+          "name": "Sturdy Gauntlets"
+        }
+      ],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": {
           "id": "itm_musq5r24_6",
           "slotType": "hands",
           "rarity": "rare",
@@ -50,13 +73,7 @@
           },
           "armorType": "plate",
           "name": "Blessed Gauntlets"
-        }
-      ],
-      "equipped": {
-        "head": null,
-        "shoulders": null,
-        "chest": null,
-        "hands": null,
+        },
         "legs": {
           "id": "itm_musq5r23_2",
           "slotType": "legs",
@@ -84,7 +101,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Corvin",
@@ -94,35 +111,51 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Safe Revive": 0.03,
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Safe Revive": 0.0591,
+      "Soul Eruption": 0.5774999999999999,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
       "bag": [],
       "equipped": {
-        "head": null,
+        "head": {
+          "id": "itm_mutawo24_8",
+          "slotType": "head",
+          "rarity": "uncommon",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Skeleton",
+          "stats": {
+            "armor": 109,
+            "str": 14,
+            "sta": 14,
+            "faith": 14
+          },
+          "armorType": "plate",
+          "name": "Reinforced Helm"
+        },
         "shoulders": null,
         "chest": null,
         "hands": null,
@@ -137,7 +170,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Dusk",
@@ -147,33 +180,51 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Soul Eruption": 0.12,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.46180519999999997,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [
-        {
+      "bag": [],
+      "equipped": {
+        "head": {
+          "id": "itm_mutawo23_1",
+          "slotType": "head",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Bone Archer",
+          "stats": {
+            "armor": 23,
+            "faith": 16,
+            "sta": 16
+          },
+          "armorType": "cloth",
+          "name": "Worn Helm"
+        },
+        "shoulders": null,
+        "chest": {
           "id": "itm_musq5r24_7",
           "slotType": "chest",
           "rarity": "uncommon",
@@ -189,12 +240,7 @@
           },
           "armorType": "cloth",
           "name": "Reinforced Chestguard"
-        }
-      ],
-      "equipped": {
-        "head": null,
-        "shoulders": null,
-        "chest": null,
+        },
         "hands": null,
         "legs": null,
         "feet": null,
@@ -207,7 +253,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Magnus",
@@ -217,29 +263,29 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
       "Safe Revive": 0.087327,
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.44516,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -295,7 +341,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Garrick",
@@ -320,18 +366,44 @@
       "healAccuracy": 0.55
     },
     "mastery": {
-      "Soul Eruption": 0.14639999999999997,
-      "Shadow Bolt": 0.35,
-      "Cleave": 0.12,
-      "Hunter's Grudge": 0.12
+      "Soul Eruption": 0.44515999999999994,
+      "Shadow Bolt": 0.428,
+      "Cleave": 0.2256,
+      "Hunter's Grudge": 0.12,
+      "Safe Revive": 0.03
     },
     "potential": "casual",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
       "bag": [
         {
+          "id": "itm_mutawo23_3",
+          "slotType": "mainHand",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "faith": 20,
+            "sta": 20
+          },
+          "weaponType": "staff",
+          "allowedClasses": [
+            "Mage",
+            "Healer",
+            "Druid",
+            "Necromancer"
+          ],
+          "weaponSpeed": 3,
+          "weaponDamage": 65,
+          "name": "Simple Staff"
+        }
+      ],
+      "equipped": {
+        "head": {
           "id": "itm_musq5r23_4",
           "slotType": "head",
           "rarity": "common",
@@ -347,7 +419,9 @@
           "armorType": "cloth",
           "name": "Plain Helm"
         },
-        {
+        "shoulders": null,
+        "chest": null,
+        "hands": {
           "id": "itm_musq5r24_9",
           "slotType": "hands",
           "rarity": "rare",
@@ -363,13 +437,7 @@
           },
           "armorType": "cloth",
           "name": "Blessed Gauntlets"
-        }
-      ],
-      "equipped": {
-        "head": null,
-        "shoulders": null,
-        "chest": null,
-        "hands": null,
+        },
         "legs": null,
         "feet": null,
         "neck": null,
@@ -381,7 +449,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Elara",
@@ -391,34 +459,39 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Safe Revive": 0.03,
-      "Soul Eruption": 0.38841499999999995,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Safe Revive": 0.0591,
+      "Soul Eruption": 0.60246975,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [
-        {
+      "bag": [],
+      "equipped": {
+        "head": null,
+        "shoulders": null,
+        "chest": null,
+        "hands": null,
+        "legs": {
           "id": "itm_musq5r24_a",
           "slotType": "legs",
           "rarity": "uncommon",
@@ -434,14 +507,7 @@
           },
           "armorType": "cloth",
           "name": "Polished Greaves"
-        }
-      ],
-      "equipped": {
-        "head": null,
-        "shoulders": null,
-        "chest": null,
-        "hands": null,
-        "legs": null,
+        },
         "feet": null,
         "neck": null,
         "ring1": null,
@@ -452,7 +518,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Ryn",
@@ -462,32 +528,49 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Shadow Bolt": 0.14639999999999997,
-      "Soul Eruption": 0.35,
-      "Cleave": 0.12,
+      "Shadow Bolt": 0.24883199999999997,
+      "Soul Eruption": 0.5774999999999999,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_mutawo23_6",
+          "slotType": "feet",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 70,
+            "str": 12,
+            "sta": 12
+          },
+          "armorType": "plate",
+          "name": "Plain Boots"
+        }
+      ],
       "equipped": {
         "head": null,
         "shoulders": null,
@@ -535,7 +618,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Zara",
@@ -545,100 +628,50 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.428,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.428,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
-      "bag": [],
-      "equipped": {
-        "head": null,
-        "shoulders": null,
-        "chest": null,
-        "hands": null,
-        "legs": null,
-        "feet": null,
-        "neck": null,
-        "ring1": null,
-        "ring2": null,
-        "trinket": null,
-        "mainHand": null,
-        "offHand": null
-      }
-    },
-    "kills": 0,
-    "attempts": 1
-  },
-  {
-    "name": "Lyra",
-    "className": "Rogue",
-    "skill": "casual",
-    "personality": "aggressive",
-    "profile": {
-      "label": "Casual",
-      "reaction": [
-        0.565,
-        1.13
-      ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
-      "inputDelay": [
-        0.32499999999999996,
-        0.75
-      ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
-    },
-    "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
-      "Hunter's Grudge": 0.12
-    },
-    "potential": "skilled",
-    "experience": 1,
-    "gear": {
-      "className": "Rogue",
-      "bagSize": 30,
       "bag": [
         {
-          "id": "itm_musq5r24_c",
-          "slotType": "shoulders",
-          "rarity": "uncommon",
-          "itemLevel": 63,
-          "requiredLevel": 60,
+          "id": "itm_mutawo24_9",
+          "slotType": "offHand",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
           "sourceType": "mob",
-          "source": "Hollow Deathguard",
+          "source": "Crypt Skeleton",
           "stats": {
-            "armor": 38,
-            "agi": 16,
-            "sta": 16,
-            "crit": 15
+            "int": 13,
+            "sta": 13
           },
-          "armorType": "leather",
-          "name": "Reinforced Pauldrons"
+          "weaponType": "orb",
+          "allowedClasses": [
+            "Mage",
+            "Necromancer"
+          ],
+          "name": "Simple Orb"
         }
       ],
       "equipped": {
@@ -657,7 +690,92 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
+  },
+  {
+    "name": "Lyra",
+    "className": "Rogue",
+    "skill": "casual",
+    "personality": "aggressive",
+    "profile": {
+      "label": "Casual",
+      "reaction": [
+        0.5335,
+        1.067
+      ],
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
+      "inputDelay": [
+        0.30249999999999994,
+        0.705
+      ],
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
+    },
+    "mastery": {
+      "Soul Eruption": 0.5774999999999999,
+      "Shadow Bolt": 0.248832,
+      "Cleave": 0.2256,
+      "Hunter's Grudge": 0.12
+    },
+    "potential": "skilled",
+    "experience": 2,
+    "gear": {
+      "className": "Rogue",
+      "bagSize": 30,
+      "bag": [
+        {
+          "id": "itm_mutawo23_4",
+          "slotType": "legs",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 46,
+            "agi": 16,
+            "sta": 16
+          },
+          "armorType": "leather",
+          "name": "Worn Greaves"
+        }
+      ],
+      "equipped": {
+        "head": null,
+        "shoulders": {
+          "id": "itm_musq5r24_c",
+          "slotType": "shoulders",
+          "rarity": "uncommon",
+          "itemLevel": 63,
+          "requiredLevel": 60,
+          "sourceType": "mob",
+          "source": "Hollow Deathguard",
+          "stats": {
+            "armor": 38,
+            "agi": 16,
+            "sta": 16,
+            "crit": 15
+          },
+          "armorType": "leather",
+          "name": "Reinforced Pauldrons"
+        },
+        "chest": null,
+        "hands": null,
+        "legs": null,
+        "feet": null,
+        "neck": null,
+        "ring1": null,
+        "ring2": null,
+        "trinket": null,
+        "mainHand": null,
+        "offHand": null
+      }
+    },
+    "kills": 0,
+    "attempts": 2
   },
   {
     "name": "Thorne",
@@ -682,17 +800,34 @@
       "healAccuracy": 0.55
     },
     "mastery": {
-      "Shadow Bolt": 0.14639999999999997,
-      "Soul Eruption": 0.35,
-      "Cleave": 0.12,
+      "Shadow Bolt": 0.24883199999999997,
+      "Soul Eruption": 0.5774999999999999,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "casual",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_mutawo24_7",
+          "slotType": "feet",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 70,
+            "str": 12,
+            "sta": 12
+          },
+          "armorType": "plate",
+          "name": "Plain Boots"
+        }
+      ],
       "equipped": {
         "head": null,
         "shoulders": null,
@@ -709,7 +844,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Silas",
@@ -719,28 +854,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.590175,
+      "Shadow Bolt": 0.248832,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -761,7 +896,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Doran",
@@ -771,28 +906,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.5774999999999999,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -830,7 +965,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Ember",
@@ -840,28 +975,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.5774999999999999,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -882,7 +1017,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Luna",
@@ -892,28 +1027,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Soul Eruption": 0.172008,
-      "Cleave": 0.35,
-      "Shadow Bolt": 0.12,
+      "Soul Eruption": 0.46180519999999997,
+      "Cleave": 0.428,
+      "Shadow Bolt": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -950,7 +1085,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Fenn",
@@ -960,32 +1095,49 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.5774999999999999,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_mutawo24_a",
+          "slotType": "head",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Skeleton",
+          "stats": {
+            "armor": 46,
+            "agi": 16,
+            "sta": 16
+          },
+          "armorType": "leather",
+          "name": "Simple Helm"
+        }
+      ],
       "equipped": {
         "head": null,
         "shoulders": null,
@@ -1002,7 +1154,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Quinn",
@@ -1012,28 +1164,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
-      "Shadow Bolt": 0.14639999999999997,
-      "Soul Eruption": 0.14639999999999997,
-      "Cleave": 0.12,
+      "Shadow Bolt": 0.27136704,
+      "Soul Eruption": 0.44515999999999994,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -1044,7 +1196,22 @@
         "chest": null,
         "hands": null,
         "legs": null,
-        "feet": null,
+        "feet": {
+          "id": "itm_mutawo23_5",
+          "slotType": "feet",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 70,
+            "str": 12,
+            "sta": 12
+          },
+          "armorType": "plate",
+          "name": "Worn Boots"
+        },
         "neck": null,
         "ring1": null,
         "ring2": null,
@@ -1054,7 +1221,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Kira",
@@ -1064,28 +1231,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.565,
-        1.13
+        0.5335,
+        1.067
       ],
-      "awareness": 0.5850000000000001,
-      "mistakeRate": 0.0735,
+      "awareness": 0.6165,
+      "mistakeRate": 0.06765,
       "inputDelay": [
-        0.32499999999999996,
-        0.75
+        0.30249999999999994,
+        0.705
       ],
-      "lapsePerSec": 0.0368,
-      "positioning": 0.355,
-      "decisionNoise": 0.42,
-      "healAccuracy": 0.5800000000000001
+      "lapsePerSec": 0.03392,
+      "positioning": 0.40449999999999997,
+      "decisionNoise": 0.39299999999999996,
+      "healAccuracy": 0.6070000000000001
     },
     "mastery": {
-      "Soul Eruption": 0.35,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12,
+      "Soul Eruption": 0.428,
+      "Shadow Bolt": 0.428,
+      "Cleave": 0.2256,
       "Hunter's Grudge": 0.12
     },
     "potential": "skilled",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -1106,7 +1273,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Courtney",
@@ -1116,28 +1283,28 @@
     "profile": {
       "label": "Casual",
       "reaction": [
-        0.58,
-        1.16
+        0.5619999999999999,
+        1.1239999999999999
       ],
-      "awareness": 0.5700000000000001,
-      "mistakeRate": 0.076,
+      "awareness": 0.5880000000000001,
+      "mistakeRate": 0.07239999999999999,
       "inputDelay": [
-        0.33499999999999996,
-        0.77
+        0.32149999999999995,
+        0.743
       ],
-      "lapsePerSec": 0.038,
-      "positioning": 0.32999999999999996,
-      "decisionNoise": 0.435,
-      "healAccuracy": 0.5650000000000001
+      "lapsePerSec": 0.036199999999999996,
+      "positioning": 0.357,
+      "decisionNoise": 0.4215,
+      "healAccuracy": 0.5785
     },
     "mastery": {
       "Hunter's Grudge": 0.36949999999999994,
-      "Soul Eruption": 0.12,
-      "Shadow Bolt": 0.12,
-      "Cleave": 0.12
+      "Soul Eruption": 0.428,
+      "Shadow Bolt": 0.2256,
+      "Cleave": 0.2256
     },
     "potential": "average",
-    "experience": 1,
+    "experience": 2,
     "gear": {
       "className": "Druid",
       "bagSize": 30,
@@ -1176,7 +1343,7 @@
       }
     },
     "kills": 0,
-    "attempts": 1
+    "attempts": 2
   },
   {
     "name": "Valk",
@@ -1252,9 +1419,13 @@
       "decisionNoise": 0.45,
       "healAccuracy": 0.55
     },
-    "mastery": {},
+    "mastery": {
+      "Soul Eruption": 0.12,
+      "Cleave": 0.12,
+      "Shadow Bolt": 0.12
+    },
     "potential": "casual",
-    "experience": 0,
+    "experience": 1,
     "gear": {
       "className": "Necromancer",
       "bagSize": 30,
@@ -1281,7 +1452,22 @@
         },
         "hands": null,
         "legs": null,
-        "feet": null,
+        "feet": {
+          "id": "itm_mutawo22_0",
+          "slotType": "feet",
+          "rarity": "common",
+          "itemLevel": 58,
+          "requiredLevel": 55,
+          "sourceType": "mob",
+          "source": "Crypt Ghoul",
+          "stats": {
+            "armor": 17,
+            "int": 12,
+            "sta": 12
+          },
+          "armorType": "cloth",
+          "name": "Plain Boots"
+        },
         "neck": null,
         "ring1": null,
         "ring2": null,
@@ -1291,6 +1477,6 @@
       }
     },
     "kills": 0,
-    "attempts": 0
+    "attempts": 1
   }
 ]
