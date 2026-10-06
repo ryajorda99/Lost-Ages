@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lost Ages</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  LOST AGES — main menu (served by scripts/play.js)
+    Title screen  →  Choose your character  →  Choose a raid  →  into the fight
+  Your character is shown in 3D behind the menu (the 3D viewer in "showcase" mode).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+  :root {
+    --gold:#d9b25f; --gold-hi:#f3dc9a; --gold-lo:#7a5b22; --ink:#ece6d6; --dim:#9a93a8; --red:#d0453c;
+    --display:"Cinzel", Georgia, serif; --ui:"Alegreya Sans", "Segoe UI", sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; overflow:hidden; background:#07080c; color:var(--ink); font:15px/1.4 var(--ui); }
+  button { font:inherit; color:inherit; }
+
+  /* The 3D character / boss behind the menu */
+  #stage { position:fixed; top:0; left:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .8s, width .6s; }
+  body.title #stage { width:140%; }   /* title screen: the boss stands off to the right */
+  #stage.ready { opacity:1; }
+  #shade { position:fixed; inset:0; pointer-events:none;
+    background: radial-gradient(ellipse at 50% 55%, transparent 25%, rgba(5,6,10,.55) 70%, rgba(5,6,10,.92) 100%),
+                linear-gradient(transparent 70%, rgba(5,6,10,.85)); }
+  body.title #shade { background: linear-gradient(90deg, rgba(5,6,10,.9) 0%, rgba(5,6,10,.55) 38%, transparent 62%),
+                                   radial-gradient(ellipse at 70% 50%, transparent 30%, rgba(5,6,10,.85) 95%); }
+
+  .screen { position:fixed; inset:0; display:none; pointer-events:none; }
+  .screen.on { display:block; }
+  .screen > * { pointer-events:auto; }
+
+  /* Bevelled gold-edged frames, same look as the in-game HUD */
+  .frame {
+    background: linear-gradient(180deg, rgba(35,38,51,.9), rgba(12,14,20,.92));
+    border:1px solid var(--gold-lo); border-radius:8px; position:relative;
+    box-shadow: inset 0 1px 0 rgba(255,235,180,.12), 0 0 0 1px rgba(0,0,0,.8), 0 12px 30px rgba(0,0,0,.6);
+  }
+  .frame::before { content:""; position:absolute; inset:4px; border:1px solid rgba(217,178,95,.2); border-radius:5px; pointer-events:none; }
+  .heading { font-family:var(--display); font-weight:700; letter-spacing:.12em; color:var(--gold-hi); text-transform:uppercase; font-size:13px;
+    text-shadow:0 1px 0 #000, 0 0 10px rgba(217,178,95,.3); }
+
+  /* Buttons */
+  .btn { position:relative; cursor:pointer; padding:11px 26px; min-width:220px; border-radius:6px; border:1px solid var(--gold-lo);
+    font-family:var(--display); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:15px; color:var(--gold-hi);
+    background: linear-gradient(180deg, #3a2f1c, #1c1610 60%, #120e09);
+    box-shadow: inset 0 1px 0 rgba(255,230,170,.25), 0 0 0 1px #000, 0 6px 16px rgba(0,0,0,.6);
+    text-shadow:0 1px 0 #000; transition: transform .08s, filter .15s, box-shadow .15s; }
+  .btn:hover:not(:disabled) { filter:brightness(1.25); box-shadow: inset 0 1px 0 rgba(255,230,170,.35), 0 0 0 1px #000, 0 0 18px rgba(217,178,95,.35); }
+  .btn:active:not(:disabled) { transform:translateY(1px); }
+  .btn:disabled { opacity:.4; cursor:default; }
+  .btn.primary { background: linear-gradient(180deg, #8a6421, #4d3510 60%, #2e1f08); color:#fff3d0; }
+  .btn.ghost { background:rgba(10,11,16,.7); min-width:0; padding:9px 18px; font-size:12px; }
+  .btn.small { min-width:0; padding:7px 14px; font-size:11px; }
+
+  /* ---------------- TITLE ---------------- */
+  #title { text-align:center; }
+  #title .logo { position:absolute; top:15%; left:6vw; width:min(640px, 52vw); }
+  #title h1 { margin:0; font-family:var(--display); font-weight:900; font-size:clamp(56px, 9vw, 120px); letter-spacing:.08em; line-height:1;
+    background: linear-gradient(180deg, #fff6d8 0%, #f3dc9a 35%, #c08a2e 62%, #6a4614 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter: drop-shadow(0 3px 0 #000) drop-shadow(0 0 24px rgba(217,178,95,.35)); }
+  #title .tag { margin-top:14px; font-family:var(--display); letter-spacing:.5em; color:var(--dim); font-size:13px; text-transform:uppercase; }
+  #title .rule { width:340px; max-width:70vw; height:1px; margin:18px auto 0; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+  #title .menu { position:absolute; top:50%; left:calc(6vw + min(640px, 52vw) / 2); transform:translateX(-50%); display:flex; flex-direction:column; gap:12px; align-items:center; }
+  #title .menu .btn { min-width:280px; }
+  #title .running { margin-top:6px; font-size:13px; color:var(--dim); }
+  #title .running b { color:var(--gold-hi); }
+  #title .foot { position:absolute; bottom:18px; left:6vw; width:min(640px, 52vw); color:#5f5a6b; font-size:12px; letter-spacing:.08em; }
+
+  /* ---------------- CHARACTER SELECT ---------------- */
+  .topbar { position:absolute; top:18px; left:50%; transform:translateX(-50%); text-align:center; }
+  .topbar .heading { font-size:20px; letter-spacing:.2em; }
+  .topbar .sub { color:var(--dim); font-size:13px; margin-top:4px; }
+  #roster { position:absolute; top:18px; left:18px; bottom:84px; width:290px; padding:14px 12px; display:flex; flex-direction:column; }
+  #roster .list { overflow:auto; flex:1; margin-top:8px; padding-right:4px; }
+  #roster .grp { font-family:var(--display); font-size:11px; letter-spacing:.14em; color:var(--gold); margin:12px 4px 6px; text-transform:uppercase; }
+  .hero { display:flex; align-items:center; gap:10px; width:100%; padding:7px 9px; margin-bottom:4px; border-radius:6px; cursor:pointer; text-align:left;
+    border:1px solid rgba(255,255,255,.05); background:rgba(0,0,0,.28); transition: background .12s, border-color .12s; }
+  .hero:hover { background:rgba(217,178,95,.1); border-color:rgba(217,178,95,.3); }
+  .hero.sel { background:linear-gradient(90deg, rgba(217,178,95,.28), rgba(217,178,95,.06)); border-color:var(--gold); box-shadow:0 0 12px rgba(217,178,95,.25); }
+  .hero .crest { width:34px; height:34px; flex:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px;
+    background:radial-gradient(circle at 40% 35%, #2a2d3a, #0b0c11); border:2px solid var(--c, #888); box-shadow:0 0 8px color-mix(in srgb, var(--c) 40%, transparent); }
+  .hero .who { flex:1; min-width:0; }
+  .hero .nm { font-weight:700; font-size:15px; color:var(--c); text-shadow:0 1px 1px #000; }
+  .hero .cl { font-size:12px; color:var(--dim); }
+  .hero .il { font-size:11px; color:var(--dim); text-align:right; white-space:nowrap; }
+  .hero .il b { display:block; color:var(--gold-hi); font-size:14px; }
+  .hero.big { padding:10px; }
+  .hero.big .crest { width:42px; height:42px; font-size:21px; }
+  .hero.big .nm { font-size:17px; }
+
+  #nameplate { position:absolute; left:50%; bottom:96px; transform:translateX(-50%); text-align:center; pointer-events:none; }
+  #nameplate .nm { font-family:var(--display); font-weight:900; font-size:44px; letter-spacing:.06em; text-shadow:0 3px 0 #000, 0 0 18px rgba(0,0,0,.9); }
+  #nameplate .cl { font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:13px; color:var(--gold-hi); text-shadow:0 2px 2px #000; }
+
+  #info { position:absolute; top:18px; right:18px; bottom:84px; width:330px; padding:16px; overflow:auto; }
+  #info .role { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 12px; }
+  .chip { font-size:12px; padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.35); color:var(--ink); }
+  .chip b { color:var(--gold-hi); }
+  #info .blurb { color:#cfc8b8; font-size:14px; line-height:1.5; }
+  #info .stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:14px 0; }
+  #info .stat { background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.06); border-radius:5px; padding:6px 9px; }
+  #info .stat span { display:block; font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:.08em; }
+  #info .stat b { font-size:16px; color:var(--gold-hi); }
+  .abilities { display:grid; grid-template-columns:1fr; gap:4px; margin-top:8px; }
+  .ab { display:flex; align-items:center; gap:9px; padding:4px 6px; border-radius:5px; background:rgba(0,0,0,.25); }
+  .ab .ic { width:30px; height:30px; flex:none; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:16px;
+    background:linear-gradient(#2a2d3a,#0f1016); border:1px solid #000; box-shadow: inset 0 0 0 1px rgba(217,178,95,.35); }
+  .ab .key { font-size:10px; color:var(--dim); width:14px; text-align:center; }
+  .ab .an { flex:1; font-size:14px; }
+  .ab .cd { font-size:11px; color:var(--dim); white-space:nowrap; }
+
+  .bottombar { position:absolute; left:18px; right:18px; bottom:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .bottombar .mid { color:var(--dim); font-size:13px; text-align:center; flex:1; }
+
+  /* ---------------- RAID SELECT ---------------- */
+  #raids { position:absolute; top:18px; left:18px; bottom:84px; width:360px; padding:14px 12px; overflow:auto; }
+  .raid { display:block; width:100%; text-align:left; cursor:pointer; padding:12px 14px; margin-top:8px; border-radius:7px;
+    border:1px solid rgba(255,255,255,.06); background:rgba(0,0,0,.3); transition:background .12s, border-color .12s; }
+  .raid:hover { background:rgba(217,178,95,.08); border-color:rgba(217,178,95,.3); }
+  .raid.sel { border-color:var(--gold); background:linear-gradient(90deg, rgba(217,178,95,.22), rgba(217,178,95,.04)); box-shadow:0 0 14px rgba(217,178,95,.2); }
+  .raid .rn { font-family:var(--display); font-weight:700; font-size:16px; color:var(--rc, var(--gold-hi)); text-shadow:0 1px 0 #000; }
+  .raid .rd { font-size:12px; color:var(--dim); margin-top:3px; }
+  .skulls { color:#d0453c; letter-spacing:2px; font-size:12px; }
+  #party { position:absolute; top:18px; right:18px; width:330px; padding:16px; }
+  #party .you { display:flex; gap:12px; align-items:center; margin:10px 0 4px; }
+  #party .you .crest { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;
+    background:radial-gradient(circle at 40% 35%, #2a2d3a, #0b0c11); border:2px solid var(--c); }
+  #party .you .nm { font-family:var(--display); font-weight:700; font-size:20px; color:var(--c); }
+  #party label { display:flex; gap:9px; align-items:flex-start; margin-top:14px; cursor:pointer; font-size:13px; color:#cfc8b8; }
+  #party label input { margin-top:3px; accent-color:var(--gold); }
+  #party .warn { color:#e0897f; font-size:12px; }
+  #party .comp { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+
+  /* ---------------- LOADING ---------------- */
+  #loading { display:none; position:fixed; inset:0; background:radial-gradient(ellipse at center, rgba(12,13,19,.9), #05060a); z-index:10;
+    flex-direction:column; align-items:center; justify-content:center; gap:18px; text-align:center; }
+  #loading.on { display:flex; }
+  #loading .heading { font-size:26px; letter-spacing:.2em; }
+  #loading .tip { color:var(--dim); max-width:520px; font-size:14px; }
+  .spinner { width:54px; height:54px; border-radius:50%; border:3px solid rgba(217,178,95,.15); border-top-color:var(--gold); animation:spin 1s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  #loading .err { color:#ff8a7a; white-space:pre-wrap; font-size:13px; max-width:640px; display:none; }
+
+  .keys { font-size:12px; color:#6f6a7c; }
+  kbd { font:11px var(--ui); padding:1px 5px; border-radius:3px; border:1px solid #444; background:#1a1b22; color:#bbb; }
+
+  @media (max-width: 1100px) {
+    #info { width:280px; } #roster { width:250px; } #nameplate .nm { font-size:34px; }
+  }
+</style>
+</head>
+<body class="title">
+<iframe id="stage" title="Your character in 3D"></iframe>
+<div id="shade"></div>
+
+<!-- ============ TITLE ============ -->
+<section id="title" class="screen on">
+  <div class="logo">
+    <h1>Lost Ages</h1>
+    <div class="rule"></div>
+    <div class="tag">A raiding saga</div>
+  </div>
+  <div class="menu">
+    <button class="btn primary" id="playBtn">Play</button>
+    <div id="runningBox" style="display:none;flex-direction:column;gap:12px;align-items:center"></div>
+    <button class="btn" id="watchBtn">Watch the raid</button>
+    <button class="btn" id="replayBtn">Replays</button>
+    <button class="btn ghost" id="quitBtn">Quit game</button>
+  </div>
+  <div class="foot">Press <kbd>Enter</kbd> to play</div>
+</section>
+
+<!-- ============ CHARACTER SELECT ============ -->
+<section id="chars" class="screen">
+  <div class="topbar"><div class="heading">Choose your character</div><div class="sub" id="rosterNote"></div></div>
+  <div id="roster" class="frame"><div class="heading">Your raid</div><div class="list" id="rosterList"></div></div>
+  <div id="nameplate"><div class="nm" id="npName"></div><div class="cl" id="npClass"></div></div>
+  <div id="info" class="frame"></div>
+  <div class="bottombar">
+    <button class="btn ghost" data-go="title">⟵ Back</button>
+    <div class="mid keys"><kbd>↑</kbd> <kbd>↓</kbd> pick &nbsp;·&nbsp; drag to turn them around &nbsp;·&nbsp; <kbd>Enter</kbd> enter the world</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" id="toRaids" title="Skip the world and go straight into a raid">Raid finder</button>
+      <button class="btn primary" id="toWorld">Enter world ⟶</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAID SELECT ============ -->
+<section id="raidsScreen" class="screen">
+  <div class="topbar"><div class="heading">Choose a raid</div><div class="sub">Your raid fights alongside you — they learn every fight, just like you.</div></div>
+  <div id="raids" class="frame"><div class="heading">Raids</div><div id="raidList"></div></div>
+  <div id="party" class="frame"></div>
+  <div class="bottombar">
+    <button class="btn ghost" data-go="chars">⟵ Back</button>
+    <div class="mid keys"><kbd>WASD</kbd> move &nbsp;·&nbsp; <kbd>1</kbd>–<kbd>=</kbd> abilities &nbsp;·&nbsp; <kbd>Tab</kbd> target &nbsp;·&nbsp; <kbd>Esc</kbd> hand back to the AI</div>
+    <button class="btn primary" id="enterBtn">Enter raid ⚔</button>
+  </div>
+</section>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="heading" id="loadTitle">Entering the raid…</div>
+  <div class="tip" id="loadTip"></div>
+  <div class="err" id="loadErr"></div>
+  <button class="btn ghost" id="loadBack" style="display:none">⟵ Back to the menu</button>
+</div>
+
+<script type="module">
+import { ICONS, ROLE_ICON, RESOURCE_COLOR } from "./hud.js";
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+const CLASS_COLORS = { Knight: "#f58cba", Warrior: "#c79c6e", Rogue: "#fff569", Mage: "#69ccf0", Healer: "#ffffff", Druid: "#ff8c1a", Necromancer: "#b06cff", Valkyrie: "#9fe7ff" };
+const CLASS_ICON = { Knight: "🛡️", Warrior: "🪓", Rogue: "🗡️", Mage: "🔥", Healer: "✨", Druid: "🌿", Necromancer: "💀", Valkyrie: "🪽" };
+const CLASS_BLURB = {
+  Knight: "A holy warrior in plate. Holds the boss's attention with taunts, shields and heals himself, and his Sanctified Aura flares when he deals damage, making everyone near him hit harder and take less damage.",
+  Valkyrie: "Tank and damage dealer who rides into battle on a flying Pegasus. When the Pegasus falls she lands, spreads her own wings and fights on, so she has two lives.",
+  Healer: "Keeps the raid alive with fast heals, wards and cleanses, and brings fallen allies back to their feet. Every wipe starts with a healer running out of mana.",
+  Druid: "A nature caster who does both jobs. Deals steady damage, then jumps in to heal, shield the raid, cleanse poisons and give a healer their mana back.",
+  Warrior: "Melee damage fuelled by Rage. Charges in, cleaves through packs and finishes enemies with Execute.",
+  Rogue: "A stealthy assassin with huge burst damage. Ambushes from stealth, interrupts spells and slips away with Evasion and Vanish.",
+  Mage: "Ranged fire and frost damage. Blinks out of danger, counters spells and drops a Meteor on the boss.",
+  Necromancer: "Switches between a ranged caster form and a melee Reaper form, and raises corrupted servants that poison whatever they attack.",
+};
+const ROLE_NAME = { tank: "Tank", healer: "Healer", dps: "Damage" };
+const BOSS_LOOK = {
+  hollowKing:     { color: "#b07cff", blurb: "An undead king on a throne of bones. Shadow bolts, cleaves, and souls torn from the fallen.", tier: 1 },
+  ashenTyrant:    { color: "#ff7a2a", blurb: "A demon lord of fire. Rains flame on the raid and brands his tanks: they must swap or burn.", tier: 2 },
+  stormSovereign: { color: "#7fd4ff", blurb: "A storm dragon thirty times deadlier than the Tyrant. Lightning, cyclones, and death from the sky.", tier: 3 },
+};
+const TIPS = [
+  "Stand still in fire and you die. Your raid learns that the hard way. So will you.",
+  "Tanks: when the boss brands you with stacks, let your co-tank taunt it off you.",
+  "Press Tab to cycle targets. Click an ally to target them for heals.",
+  "Press Esc any time to hand your character back to the AI.",
+  "The 🎥 button (or R) turns on realistic mode.",
+  "Every fight your raid learns the mechanics that killed them.",
+];
+
+let game = null, screen = "title";
+let pick = null;        // the character you chose (a roster entry), or null to just watch
+let boss = null;        // raid key
+
+// ---------- The 3D stage behind the menu ----------
+const stage = $("stage");
+let stageReady = false, pendingSpec = null;
+addEventListener("message", (e) => { if (e.data?.showcaseReady) { stageReady = true; stage.classList.add("ready"); if (pendingSpec) show(pendingSpec); } });
+function show(spec) {
+  pendingSpec = spec;
+  if (stageReady) stage.contentWindow.postMessage({ showcase: spec }, "*");
+}
+
+// ---------- Load the game data from play.js ----------
+async function load(bossKey) {
+  let data;
+  try {
+    const r = await fetch("/api/game" + (bossKey ? `?boss=${bossKey}` : ""));
+    data = await r.json();
+  } catch (err) {
+    data = { error: "The menu can't reach the game. Is the Lost Ages window (node scripts/play.js) still running?\n\n" + err.message };
+  }
+  if (data.error) { showProblem(data.error); throw new Error("game data failed to load"); }
+  game = data;
+  boss = boss || game.boss;
+  renderRunning();
+}
+function showProblem(text) {
+  $("loadTitle").textContent = "Something went wrong";
+  $("loadTip").textContent = "Copy this message and send it over so it can be fixed:";
+  $("loadErr").textContent = text;
+  $("loadErr").style.display = "block";
+  document.querySelector("#loading .spinner").style.display = "none";
+  $("loadBack").style.display = "none";
+  $("loading").classList.add("on");
+}
+addEventListener("error", (e) => showProblem(`${e.message}\n${e.filename?.split("/").pop()}:${e.lineno}`));
+addEventListener("unhandledrejection", (e) => { if (!game) return; showProblem(String(e.reason?.stack || e.reason)); });
+
+function renderRunning() {
+  const box = $("runningBox");
+  if (game.world && !game.running) {   // you left the world running: jump back in
+    box.style.display = "flex";
+    box.innerHTML = `<button class="btn" id="resumeBtn">Return to the world</button>
+      <div class="running">Exploring as <b>${esc(game.world.character)}</b></div>`;
+    $("resumeBtn").onclick = () => { location.href = `/?live=1&world=1&menu=${encodeURIComponent("/")}`; };
+    return;
+  }
+  if (!game.running) { box.style.display = "none"; box.innerHTML = ""; return; }
+  const b = game.bosses.find(x => x.key === game.running.boss);
+  box.style.display = "flex";
+  box.innerHTML = `<button class="btn" id="resumeBtn">Return to fight</button>
+    <div class="running">In progress: <b>${esc(b?.name)}</b>${game.running.character ? ` as <b>${esc(game.running.character)}</b>` : ""}</div>`;
+  $("resumeBtn").onclick = () => { location.href = `${game.running.url}/?live=1&menu=${encodeURIComponent(location.origin + "/")}`; };
+}
+
+// ---------- Screens ----------
+function go(name) {
+  screen = name;
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  $({ title: "title", chars: "chars", raids: "raidsScreen" }[name]).classList.add("on");
+  document.body.className = name;
+  if (name === "title") show({ boss: game.bosses[0].name });
+  if (name === "chars") { renderRoster(); selectHero(pick || defaultPick()); }
+  if (name === "raids") { renderRaids(); selectRaid(boss); }
+}
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+
+// ---------- Character select ----------
+const defaultPick = () => game.roster.members.find(m => m.core) || game.roster.members[0];
+function heroButton(m, big) {
+  const c = CLASS_COLORS[m.className] || "#ccc";
+  return `<button class="hero${big ? " big" : ""}${pick?.name === m.name ? " sel" : ""}" data-name="${esc(m.name)}" style="--c:${c}">
+    <span class="crest">${CLASS_ICON[m.className] || "⚔️"}</span>
+    <span class="who"><div class="nm">${esc(m.name)}</div><div class="cl">${ROLE_ICON[m.role] || ""} ${esc(m.className)}</div></span>
+    <span class="il">${m.ilvl ? `<b>${m.ilvl}</b>item lvl` : ""}</span>
+  </button>`;
+}
+function renderRoster() {
+  const R = game.roster, core = R.members.filter(m => m.core), rest = R.members.filter(m => !m.core);
+  const group = (role, label) => {
+    const list = rest.filter(m => m.role === role);
+    return list.length ? `<div class="grp">${label}</div>` + list.map(m => heroButton(m)).join("") : "";
+  };
+  $("rosterList").innerHTML = `<div class="grp">Your heroes</div>` + core.map(m => heroButton(m, true)).join("")
+    + group("tank", "Tanks") + group("healer", "Healers") + group("dps", "Damage");
+  $("rosterNote").textContent = R.saved ? `${R.members.length} raiders · pick who you'll play` : "A new raid will be recruited when you start";
+  $("rosterList").querySelectorAll(".hero").forEach(b => b.onclick = () => selectHero(R.members.find(m => m.name === b.dataset.name)));
+}
+function selectHero(m) {
+  if (!m) return;
+  pick = m;
+  document.querySelectorAll(".hero").forEach(b => b.classList.toggle("sel", b.dataset.name === m.name));
+  document.querySelector(".hero.sel")?.scrollIntoView({ block: "nearest" });
+  const c = CLASS_COLORS[m.className];
+  $("npName").textContent = m.name; $("npName").style.color = c;
+  $("npClass").textContent = `${ROLE_NAME[m.role] || ""} · ${m.className}`;
+  const info = game.classes[m.className];
+  const res = info.resource;
+  $("info").innerHTML = `
+    <div class="heading">${esc(m.className)}</div>
+    <div class="role">
+      <span class="chip">${ROLE_ICON[info.role]} <b>${ROLE_NAME[info.role]}</b></span>
+      <span class="chip" style="border-color:${RESOURCE_COLOR[res] || "#555"}">${esc(res)}</span>
+      ${m.core ? `<span class="chip">⭐ Hero</span>` : ""}
+    </div>
+    <div class="blurb">${esc(CLASS_BLURB[m.className] || "")}</div>
+    <div class="stats">
+      <div class="stat"><span>Item level</span><b>${m.ilvl || "—"}</b></div>
+      <div class="stat"><span>Skill</span><b>${esc(m.skill || "—")}</b></div>
+      <div class="stat"><span>Boss kills</span><b>${m.kills}</b></div>
+      <div class="stat"><span>Attempts</span><b>${m.attempts}</b></div>
+    </div>
+    <div class="heading" style="font-size:12px">Abilities</div>
+    <div class="abilities">${info.abilities.map((a, i) => `
+      <div class="ab"><span class="key">${["1","2","3","4","5","6","7","8","9","0","-","="][i] || ""}</span>
+        <span class="ic">${ICONS[a.key] || esc(a.name.split(" ").map(w => w[0]).join("").slice(0, 2))}</span>
+        <span class="an">${esc(a.name)}</span>
+        <span class="cd">${a.castTime ? a.castTime + "s cast" : "instant"}${a.cooldown ? ` · ${a.cooldown}s cd` : ""}</span></div>`).join("")}
+    </div>`;
+  show({ className: m.className, name: m.name, theme: game.bosses.find(b => b.key === boss)?.name });
+}
+$("toRaids").onclick = () => go("raids");
+$("toWorld").onclick = () => enterWorld();
+
+// ---------- Into the open world ----------
+async function enterWorld() {
+  const m = pick || defaultPick();
+  $("loadTitle").textContent = "Entering Emberhold…";
+  $("loadTip").textContent = `You'll travel with your party. Walk up to a glowing gate and press E to take your whole raid inside.`;
+  $("loadErr").style.display = "none"; $("loadBack").style.display = "none";
+  document.querySelector("#loading .spinner").style.display = "";
+  $("loading").classList.add("on");
+  try {
+    const res = await (await fetch("/api/world", { method: "POST", body: JSON.stringify({ character: m.name }) })).json();
+    if (!res.ok) throw new Error(res.reason);
+    location.href = res.url;
+  } catch (err) {
+    $("loadErr").textContent = "Couldn't enter the world:\n" + err.message;
+    $("loadErr").style.display = "block"; $("loadBack").style.display = "inline-block";
+  }
+}
+
+// ---------- Raid select ----------
+function renderRaids() {
+  $("raidList").innerHTML = game.bosses.map(b => {
+    const L = BOSS_LOOK[b.key] || { color: "#f3dc9a", blurb: "", tier: 1 };
+    return `<button class="raid${b.key === boss ? " sel" : ""}" data-key="${b.key}" style="--rc:${L.color}">
+      <div class="rn">${esc(b.name)}</div>
+      <div class="rd">${esc(L.blurb)}</div>
+      <div class="rd">Level ${b.level} · ${b.raidSize} players · <span class="skulls">${"💀".repeat(L.tier)}</span></div>
+    </button>`;
+  }).join("");
+  $("raidList").querySelectorAll(".raid").forEach(el => el.onclick = () => selectRaid(el.dataset.key));
+}
+async function selectRaid(key) {
+  boss = key;
+  document.querySelectorAll(".raid").forEach(el => el.classList.toggle("sel", el.dataset.key === key));
+  const b = game.bosses.find(x => x.key === key);
+  show({ boss: b.name });
+  if (game.roster.raidSize !== b.raidSize) {   // a different raid size uses a different group
+    await load(key);
+    if (pick && !game.roster.members.some(m => m.name === pick.name)) pick = defaultPick();
+  }
+  renderParty();
+}
+function renderParty() {
+  const m = pick, c = m ? CLASS_COLORS[m.className] : "#9a93a8";
+  const counts = {};
+  for (const r of game.roster.members) counts[r.role] = (counts[r.role] || 0) + 1;
+  $("party").innerHTML = `
+    <div class="heading">You</div>
+    <div class="you" style="--c:${c}">
+      <span class="crest">${m ? CLASS_ICON[m.className] : "👁"}</span>
+      <div><div class="nm">${m ? esc(m.name) : "Spectator"}</div><div style="color:var(--dim);font-size:13px">${m ? `${ROLE_NAME[m.role]} · ${m.className}` : "Watching the raid, not playing"}</div></div>
+    </div>
+    <label><input type="checkbox" id="watchOnly" ${m ? "" : "checked"}> <span>Just watch (the AI plays everyone)</span></label>
+    <label><input type="checkbox" id="fresh"> <span>Start a brand-new raid<br><span class="warn">Resets everyone's gear and everything they've learned.</span></span></label>
+    ${game.roster.saved ? `<div class="comp"><span class="chip">🛡 <b>${counts.tank || 0}</b> tanks</span><span class="chip">✚ <b>${counts.healer || 0}</b> healers</span><span class="chip">⚔ <b>${counts.dps || 0}</b> damage</span></div>` : ""}`;
+  $("watchOnly").onchange = (e) => { if (e.target.checked) { lastPick = pick; pick = null; } else pick = lastPick || defaultPick(); renderParty(); };
+}
+let lastPick = null;
+
+// ---------- Start the fight ----------
+async function enter() {
+  const fresh = $("fresh")?.checked;
+  if (fresh && !confirm("Start a brand-new raid? Everyone's gear and everything they've learned will be reset.")) return;
+  const b = game.bosses.find(x => x.key === boss);
+  $("loadTitle").textContent = `Entering ${b.name}…`;
+  $("loadTip").textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  $("loadErr").style.display = "none"; $("loadBack").style.display = "none";
+  $("loading").classList.add("on");
+  try {
+    const res = await (await fetch("/api/start", { method: "POST", body: JSON.stringify({ boss, character: pick?.name || null, fresh }) })).json();
+    if (!res.ok) throw new Error(res.reason);
+    location.href = res.url;
+  } catch (err) {
+    $("loadErr").textContent = "Couldn't start the fight:\n" + err.message;
+    $("loadErr").style.display = "block"; $("loadBack").style.display = "inline-block";
+  }
+}
+$("enterBtn").onclick = enter;
+$("loadBack").onclick = () => $("loading").classList.remove("on");
+
+// ---------- Title buttons ----------
+$("playBtn").onclick = () => game && go("chars");
+$("watchBtn").onclick = () => { if (!game) return; pick = null; go("raids"); };
+$("replayBtn").onclick = () => { location.href = "/3d"; };
+$("quitBtn").onclick = async () => {
+  if (!confirm("Quit Lost Ages?")) return;
+  try { await fetch("/api/quit", { method: "POST" }); } catch {}
+  document.body.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;color:#9a93a8;font-size:20px;letter-spacing:.1em">Farewell, adventurer. You can close this tab.</div>`;
+};
+
+// ---------- Keyboard ----------
+addEventListener("keydown", (e) => {
+  if ($("loading").classList.contains("on")) return;
+  if (!game) return;
+  if (e.key === "Enter") { e.preventDefault(); if (screen === "title") go("chars"); else if (screen === "chars") enterWorld(); else enter(); }
+  if (e.key === "Escape") { if (screen === "chars") go("title"); else if (screen === "raids") go("chars"); }
+  if (screen === "chars" && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+    e.preventDefault();
+    const order = [...document.querySelectorAll("#rosterList .hero")].map(b => b.dataset.name);
+    const i = order.indexOf(pick?.name), n = order[(i + (e.key === "ArrowDown" ? 1 : -1) + order.length) % order.length];
+    selectHero(game.roster.members.find(m => m.name === n));
+  }
+});
+
+// ---------- Start ----------
+await load();
+stage.src = `/3d?showcase=1&boss=${encodeURIComponent(game.bosses[0].name)}`;
+go("title");
+</script>
+</body>
+</html>

@@ -33,8 +33,11 @@ class Recorder {
    * @param {object} o { title, party: [Character], fps, live }
    *   live: the viewer server (optional) — frames stream to the browser in real time
    */
-  constructor({ title, party, fps = 10, live = null }) {
+  // keepFrames: false = live only (the open world runs forever, so frames aren't kept in memory)
+  // extra: more fields for the start message (the open world sends its map this way)
+  constructor({ title, party, fps = 10, live = null, keepFrames = true, extra = null }) {
     this.live = live;
+    this.keepFrames = keepFrames;
     this.fps = fps;
     this.nextFrameAt = 0;
     this.party = party;
@@ -58,6 +61,7 @@ class Recorder {
     };
     this.actions = [];           // abilities used since the last frame (see watch())
     this.petIds = new Map();     // summoned pets (Necromancer's Corrupted Servants) -> id
+    if (extra) Object.assign(this.data, extra);
     party.forEach(p => this.watch(p));
     this.live?.startFight(this.data);
   }
@@ -175,7 +179,7 @@ class Recorder {
       const ti = this.party.indexOf(target);
       if (ti !== -1) frame.tg = ti;
     }
-    this.data.frames.push(frame);
+    if (this.keepFrames) this.data.frames.push(frame);
 
     if (this.live) {
       const msg = { type: "frame", frame };
@@ -194,6 +198,7 @@ class Recorder {
   event(time, text) {
     const e = [r1(time), text];
     this.data.events.push(e);
+    if (!this.keepFrames && this.data.events.length > 80) this.data.events.splice(0, this.data.events.length - 80);
     this.live?.broadcast({ type: "event", e });
   }
 

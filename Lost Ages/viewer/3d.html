@@ -338,7 +338,8 @@ floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
 scene.add(floor);
 
-// Pillars with torches around the arena
+// Pillars with torches around the arena (hidden in the open world)
+const arenaProps = [floor];
 const torchMat = new THREE.MeshStandardMaterial({ color: 0x331100, emissive: 0xff8833, emissiveIntensity: 3 });
 const pillarMat = new THREE.MeshStandardMaterial({ color: 0x55555e, roughness: 0.9, flatShading: true });
 for (let i = 0; i < 18; i++) {
@@ -349,6 +350,7 @@ for (let i = 0; i < 18; i++) {
   const t = new THREE.Mesh(new THREE.SphereGeometry(0.45, 8, 6), torchMat);
   t.position.set(Math.cos(a) * (r - 1.9), 9, Math.sin(a) * (r - 1.9));
   scene.add(p, t);
+  arenaProps.push(p, t);
 }
 
 // A few torches cast real flickering light (more would slow things down)
@@ -1560,7 +1562,7 @@ class Unit {
     const fall = hasDeathClip ? 0 : 1 - Math.pow(1 - this.deathK, 3);
     this.pose.rotation.x = -Math.PI / 2 * fall * 0.95;
     this.pose.position.y = 0.15 * fall;
-    this.ring.visible = !this.dead;
+    this.ring.visible = !this.dead && !this.noRing;
 
     if (this.pegasus) this.animateValkyrie(dt, t, fall);
     if (this.holyWings) this.animateKnight(dt, t);
@@ -1899,6 +1901,7 @@ function resetFight(d) {
   particles.clear();
   const bossInfo = (d.enemies || []).find(e => e.boss);
   setTheme(bossInfo?.name || d.title);
+  setWorld(d.world || null);
   hud.reset(d, players);
   renderModelsPanel();
   hud.status(d.title);
@@ -2152,6 +2155,10 @@ function startLive() {
       if (msg.enemies) data.enemies = msg.enemies;
       if (msg.zoneNames) data.zoneNames = msg.zoneNames;
       if (!paused) applyFrame(msg.frame);
+    } else if (msg.type === "region") {
+      showRegion(msg);
+    } else if (msg.type === "door") {
+      showDoor(msg);
     } else if (msg.type === "castResult") {
       if (!msg.ok && msg.reason) hud.error(msg.reason);
     } else if (msg.type === "event") addLog(msg.e[0], msg.e[1]);
@@ -2278,7 +2285,8 @@ function frame() {
     hemi.intensity = t < flashUntil ? 3.2 : baseHemi;
   } else hemi.intensity = baseHemi;
   // Torches flicker
-  torchLights.forEach((l, i) => { l.intensity = 26 + Math.sin(t * 9 + i * 2.1) * 4 + Math.random() * 3; });
+  torchLights.forEach((l, i) => { l.intensity = worldMode ? 0 : 26 + Math.sin(t * 9 + i * 2.1) * 4 + Math.random() * 3; });
+  if (worldMode) animateWorld(dt, t);
 
   // Boss target line
   if (bossUnit && bossTarget && !bossUnit.dead && bossUnit.root.visible) {
@@ -2307,7 +2315,9 @@ function frame() {
   const focus = follow || bossUnit || enemies.find(u => u && !u.dead) || players[0];
   if (focus) {
     followPoint.set(focus.root.position.x, focus.root.position.y + focus.height * 0.4, focus.root.position.z);   // (a Valkyrie flies higher)
-    const delta = followPoint.clone().sub(controls.target).multiplyScalar(Math.min(1, dt * 3));
+    // (a long way off — e.g. you just came out of a raid gate — jump straight there instead of gliding)
+    const far = followPoint.distanceTo(controls.target) > 40;
+    const delta = followPoint.clone().sub(controls.target).multiplyScalar(far ? 1 : Math.min(1, dt * 3));
     controls.target.add(delta);
     camera.position.add(delta);
   }
@@ -2324,7 +2334,7 @@ function frame() {
   if (data) {
     const look = controls.target.clone().sub(camera.position);
     hud.drawMinimap({
-      players, enemies, pets, zones: zoneState, theme, follow,
+      players, enemies, pets, zones: zoneState, theme, follow, world: worldMode ? data.world : null,
       zoneColor: (nameId, hostile) => zoneColor(data?.zoneNames?.[nameId] || "", hostile),
       camTarget: controls.target, camAngle: Math.atan2(look.z, look.x),
     });
@@ -2337,6 +2347,417 @@ function frame() {
 }
 
 // =====================================================================
+//  OPEN WORLD — scenery built from the map the server sends (src/world/worldMap.js):
+//  rolling ground that changes with each region, mountains around the edge, roads, the town
+//  of Emberhold, graveyards in the Barrows, lava in the Ashen Wastes, crystals in Stormreach,
+//  and a glowing gate at the end of each road that leads into a raid.
+// =====================================================================
+let worldMode = false, worldGroup = null, worldBuiltFor = null;
+const worldAnim = { portals: [], fires: [], crystals: [], lavas: [], banners: [] };
+const WORLD_PALETTE = {   // sky / fog colour, ambient sky + ground colour, sunlight colour and strength
+  town:   { bg: 0x1b2537, hemi: 0xa8bce0, ground: 0x3a3020, sun: 0xffe0b0, sunI: 2.4, hemiI: 1.0 },
+  shadow: { bg: 0x141628, hemi: 0x8a96e0, ground: 0x2a2236, sun: 0xc8d0ff, sunI: 2.1, hemiI: 1.15 },
+  fire:   { bg: 0x2a0e08, hemi: 0xd88060, ground: 0x34140a, sun: 0xffa878, sunI: 2.3, hemiI: 1.05 },
+  storm:  { bg: 0x142036, hemi: 0x7a98ff, ground: 0x1c2638, sun: 0xb8ccff, sunI: 2.0, hemiI: 1.1 },
+};
+let worldTheme = "town";
+const tmpColor = new THREE.Color();
+
+function setWorld(map) {
+  worldMode = !!map;
+  arenaProps.forEach(o => { o.visible = !worldMode; });
+  scene.fog.near = worldMode ? 55 : 70;
+  scene.fog.far = worldMode ? 240 : 160;
+  camera.far = worldMode ? 700 : 500; camera.updateProjectionMatrix();
+  controls.maxDistance = worldMode ? 90 : 140;
+  if (worldGroup) worldGroup.visible = worldMode;
+  if (!worldMode) { $("worldDoor")?.remove(); return; }
+  if (worldBuiltFor !== JSON.stringify(map.doors)) { buildWorldScene(map); worldBuiltFor = JSON.stringify(map.doors); }
+  worldTheme = "town"; theme = "stone";
+  applyWorldPalette(WORLD_PALETTE.town, 1);
+}
+
+function applyWorldPalette(p, k) {
+  if (!scene.background?.isColor) scene.background = new THREE.Color();
+  scene.background.lerp(tmpColor.setHex(p.bg), k);
+  scene.fog.color.copy(scene.background);
+  hemi.color.lerp(tmpColor.setHex(p.hemi), k);
+  hemi.groundColor.lerp(tmpColor.setHex(p.ground), k);
+  sun.color.lerp(tmpColor.setHex(p.sun), k);
+  sun.intensity += (p.sunI - sun.intensity) * k;
+  baseHemi += (p.hemiI - baseHemi) * k;
+}
+
+// Called every frame in the open world: fade between region moods, flicker fires, pulse the gates
+function animateWorld(dt, t) {
+  applyWorldPalette(WORLD_PALETTE[worldTheme] || WORLD_PALETTE.town, Math.min(1, dt * 1.5));
+  for (const p of worldAnim.portals) {
+    p.material.opacity = 0.55 + Math.sin(t * 2 + p.userData.phase) * 0.15;
+    p.userData.swirl.rotation.z = t * 0.6;
+  }
+  for (const f of worldAnim.fires) {
+    f.light.intensity = f.base + Math.sin(t * 11 + f.phase) * f.base * 0.15 + Math.random() * f.base * 0.1;
+    f.flame.scale.y = 1 + Math.sin(t * 13 + f.phase) * 0.12;
+    if (fancy && Math.random() < dt * 14) particles.one(f.x + (Math.random() - 0.5) * 0.6, f.y + 0.6, f.z + (Math.random() - 0.5) * 0.6, (Math.random() - 0.5) * 0.4, 1.6 + Math.random(), (Math.random() - 0.5) * 0.4, Math.random() < 0.4 ? 0xffe0a0 : 0xff7a2a, 1 + Math.random(), 0.3);
+  }
+  for (const c of worldAnim.crystals) c.material.emissiveIntensity = 1.6 + Math.sin(t * 2.2 + c.userData.phase) * 0.6;
+  for (const b of worldAnim.banners) b.rotation.y = Math.sin(t * 1.7 + b.userData.phase) * 0.15;
+}
+
+// ----- Region banner + boss door prompt -----
+function showRegion(msg) {
+  worldTheme = msg.theme in WORLD_PALETTE ? msg.theme : "town";
+  theme = worldTheme === "town" ? "stone" : worldTheme;   // ambient particles: embers, wisps, rain
+  if (msg.quiet) return;   // just a reminder of where you are (no banner)
+  let el = $("worldRegion");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "worldRegion";
+    el.style.cssText = "position:absolute;top:22%;left:50%;transform:translateX(-50%);pointer-events:none;text-align:center;transition:opacity 1.2s;font-family:Cinzel,serif;z-index:5";
+    document.body.appendChild(el);
+  }
+  const COLORS = { shadow: "#c9b3ff", fire: "#ffb27a", storm: "#bfe6ff", town: "#f3dc9a" };
+  el.innerHTML = `<div style="font-size:13px;letter-spacing:.5em;color:#9a93a8;text-transform:uppercase;text-shadow:0 2px 3px #000">${msg.key === "town" ? "Safe haven" : msg.key === "wilds" ? "" : "Now entering"}</div>
+    <div style="font-size:46px;font-weight:700;letter-spacing:.08em;color:${COLORS[worldTheme]};text-shadow:0 3px 0 #000,0 0 22px rgba(0,0,0,.9)">${msg.name}</div>`;
+  el.style.opacity = 1;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.opacity = 0; }, 3200);
+}
+
+let doorHere = null;
+function showDoor(msg) {
+  doorHere = msg.boss ? msg : null;
+  let el = $("worldDoor");
+  if (!doorHere) { el?.remove(); return; }
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "worldDoor";
+    el.style.cssText = "position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:6;text-align:center;padding:12px 22px;border:1px solid #7a5b22;border-radius:8px;background:linear-gradient(180deg,rgba(35,38,51,.95),rgba(12,14,20,.95));box-shadow:0 0 0 1px #000,0 10px 24px rgba(0,0,0,.6);font-family:'Alegreya Sans',sans-serif;color:#ece6d6";
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `<div style="font-family:Cinzel,serif;font-weight:700;font-size:18px;color:#f3dc9a;letter-spacing:.06em">${msg.name}</div>
+    <div style="margin-top:4px;font-size:14px">Press <b style="display:inline-block;padding:0 7px;border:1px solid #888;border-radius:3px;background:#1a1b22">E</b> to enter the raid with your 20-player group</div>`;
+}
+async function enterDoor() {
+  if (!doorHere) return;
+  const el = $("worldDoor");
+  if (el) el.innerHTML = `<div style="font-family:Cinzel,serif;font-size:16px;color:#f3dc9a">Gathering the raid…</div>`;
+  try {
+    const res = await (await fetch("/api/world/enter", { method: "POST", body: JSON.stringify({ boss: doorHere.boss }) })).json();
+    if (!res.ok) throw new Error(res.reason);
+    location.href = res.url;
+  } catch (err) { hud.error(err.message || "Couldn't enter the raid"); showDoor(doorHere); }
+}
+addEventListener("keydown", (e) => { if (worldMode && (e.key === "e" || e.key === "E") && doorHere && !e.repeat) enterDoor(); });
+
+// ----- Building the world -----
+function buildWorldScene(map) {
+  if (worldGroup) { scene.remove(worldGroup); worldGroup.traverse(o => { o.geometry?.dispose(); }); }
+  for (const f of worldAnim.fires) scene.remove(f.light);
+  Object.keys(worldAnim).forEach(k => { worldAnim[k] = []; });
+  const G = new THREE.Group();
+  worldGroup = G;
+  scene.add(G);
+  const R = map.radius, rnd = rng(1234);
+  const V = (x, y, h = 0) => new THREE.Vector3(x, h, y);   // map (x, y) → 3D (x, height, z)
+
+  // --- helpers for placing things ---
+  const roadDist = (x, y) => Math.min(...map.doors.map(d => {   // distance to the nearest road
+    const ax = map.town.x, ay = map.town.y, bx = d.x - ax, by = d.y - ay, L = bx * bx + by * by;
+    const t = Math.max(0, Math.min(1, ((x - ax) * bx + (y - ay) * by) / L));
+    return Math.hypot(x - (ax + bx * t), y - (ay + by * t));
+  }));
+  const clear = (x, y, gap = 6) => roadDist(x, y) > 7 + gap
+    && map.camps.every(c => Math.hypot(x - c.x, y - c.y) > 11)
+    && map.doors.every(d => Math.hypot(x - d.x, y - d.y) > 20)
+    && Math.hypot(x - map.town.x, y - map.town.y) > map.town.radius + 6
+    && Math.hypot(x, y) < R - 8;
+  const regionOf = (x, y) => {
+    for (const r of map.regions) if (Math.hypot(x - r.center.x, y - r.center.y) < r.radius) return r.key;
+    return Math.hypot(x - map.town.x, y - map.town.y) < map.town.radius + 6 ? "town" : "wilds";
+  };
+  const scatter = (n, inRegion, gap = 6) => {
+    const out = [];
+    for (let tries = 0; out.length < n && tries < n * 60; tries++) {
+      const a = rnd() * Math.PI * 2, d = Math.sqrt(rnd()) * R;
+      const x = Math.cos(a) * d, y = Math.sin(a) * d;
+      if (regionOf(x, y) === inRegion && clear(x, y, gap)) out.push({ x, y, s: 0.7 + rnd() * 0.8, r: rnd() * Math.PI * 2 });
+    }
+    return out;
+  };
+  // Many copies of one shape, drawn in a single go (fast)
+  const instanced = (geo, material, spots, { y = 0, scaleY = 1, tilt = 0, shadow = true } = {}) => {
+    const m = new THREE.InstancedMesh(geo, material, spots.length);
+    const o = new THREE.Object3D();
+    spots.forEach((p, i) => {
+      o.position.set(p.x, y * p.s, p.y);
+      o.rotation.set((rnd() - 0.5) * tilt, p.r, (rnd() - 0.5) * tilt);
+      o.scale.set(p.s, p.s * scaleY, p.s);
+      o.updateMatrix();
+      m.setMatrixAt(i, o.matrix);
+    });
+    m.castShadow = shadow; m.receiveShadow = true;
+    G.add(m);
+    return m;
+  };
+
+  // --- Ground: one big sheet, coloured by region, rising into mountains at the edge ---
+  const size = (R + 110) * 2, seg = 200;
+  const groundGeo = new THREE.PlaneGeometry(size, size, seg, seg);
+  groundGeo.rotateX(-Math.PI / 2);
+  const pos = groundGeo.attributes.position, cols = new Float32Array(pos.count * 3);
+  const C = {
+    wilds: new THREE.Color(0x3b4a2a), town: new THREE.Color(0x6a5a3c), crypt: new THREE.Color(0x423c52),
+    volcano: new THREE.Color(0x3a1c16), storm: new THREE.Color(0x4a5a70), rock: new THREE.Color(0x4a4642),
+    snow: new THREE.Color(0xc8d0dc), ash: new THREE.Color(0x1a1210),
+  };
+  const noise = (x, y) => Math.sin(x * 0.05) * Math.cos(y * 0.043) + Math.sin(x * 0.13 + y * 0.07) * 0.5 + Math.sin(y * 0.21 - x * 0.03) * 0.25;
+  const col = new THREE.Color(), tmp = new THREE.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getZ(i), d = Math.hypot(x, y);
+    // colour: blend between the region colours by distance to each region's middle
+    col.copy(C.wilds);
+    const tw = 1 - Math.min(1, Math.max(0, (Math.hypot(x - map.town.x, y - map.town.y) - map.town.radius) / 25));
+    col.lerp(C.town, tw);
+    for (const r of map.regions) {
+      const w = 1 - Math.min(1, Math.max(0, (Math.hypot(x - r.center.x, y - r.center.y) - r.radius * 0.7) / (r.radius * 0.45)));
+      if (w > 0) col.lerp(C[r.key], w);
+    }
+    // roads are packed dirt
+    const rd = roadDist(x, y);
+    if (rd < 5.5 && d < R) col.lerp(tmp.setHex(0x7a6648), 0.75 * (1 - rd / 5.5));
+    // mountains around the edge
+    let h = 0;
+    if (d > R - 4) {
+      const k = d - (R - 4);
+      h = k * 0.9 + Math.max(0, noise(x * 1.7, y * 1.7)) * k * 0.6 + Math.pow(Math.max(0, k - 20), 1.25) * 0.35;
+      col.lerp(C.rock, Math.min(1, k / 12));
+      if (h > 38) col.lerp(C.snow, Math.min(1, (h - 38) / 14));
+    }
+    pos.setY(i, h);
+    col.multiplyScalar(0.82 + (noise(x, y) + 1.75) * 0.1);
+    cols.set([col.r, col.g, col.b], i * 3);
+  }
+  groundGeo.setAttribute("color", new THREE.BufferAttribute(cols, 3));
+  groundGeo.computeVertexNormals();
+  const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ vertexColors: true, map: hideTex(70, 70), roughness: 0.96, metalness: 0 }));
+  ground.receiveShadow = true;
+  G.add(ground);
+
+  // --- Materials ---
+  const M = {
+    bark: mat(0x3a2a1c, { roughness: 0.95, metalness: 0, map: bandsTex(3, 1) }),
+    pine: mat(0x223a26, { roughness: 0.9, metalness: 0 }),
+    deadwood: mat(0x2a2420, { roughness: 0.95, metalness: 0 }),
+    stone: mat(0x7a7680, { roughness: 0.92, metalness: 0, map: hideTex(1, 1), bumpMap: hideTex(1, 1), bumpScale: 2 }),
+    grave: mat(0x6a6670, { roughness: 0.9, metalness: 0, map: hideTex(1, 1) }),
+    basalt: mat(0x1e1614, { roughness: 0.75, metalness: 0.1, map: lavaTex(1, 1).map, emissiveMap: lavaTex(1, 1).glow, emissive: 0xffffff, emissiveIntensity: 0.8 }),
+    obsidian: mat(0x0c0a0e, { roughness: 0.2, metalness: 0.4, envMap: metalEnv, envMapIntensity: 0.8 }),
+    slate: mat(0x4a5668, { roughness: 0.85, metalness: 0.05, map: hideTex(1, 1), bumpMap: hideTex(1, 1), bumpScale: 2 }),
+    wood: mat(0x6a4a2c, { roughness: 0.9, metalness: 0, map: bandsTex(1, 4) }),
+    plaster: mat(0xc8b89a, { roughness: 0.95, metalness: 0 }),
+    roof: mat(0x5a2a22, { roughness: 0.85, metalness: 0 }),
+    canvas: mat(0xd8c8a0, { roughness: 0.95, metalness: 0, side: THREE.DoubleSide }),
+    plaza: new THREE.MeshStandardMaterial({ map: stoneTex, color: 0xb8ac98, roughness: 0.95 }),
+  };
+
+  // --- Wilds: pine forests and boulders between the regions ---
+  const pines = scatter(170, "wilds", 4);
+  instanced(new THREE.CylinderGeometry(0.18, 0.28, 2.4, 6).translate(0, 1.2, 0), M.bark, pines);
+  instanced(new THREE.ConeGeometry(1.6, 4.2, 8).translate(0, 4.2, 0), M.pine, pines);
+  instanced(new THREE.ConeGeometry(1.15, 3, 8).translate(0, 6.1, 0), M.pine, pines);
+  instanced(new THREE.DodecahedronGeometry(1.3, 0).translate(0, 0.5, 0), M.stone, scatter(60, "wilds", 3), { tilt: 0.6 });
+
+  // --- The Hollow Barrows: graveyards, dead trees, crypts, ghostly glow ---
+  const graves = scatter(140, "crypt", 2);
+  instanced(new THREE.BoxGeometry(0.75, 1.2, 0.22).translate(0, 0.6, 0), M.grave, graves, { tilt: 0.25 });
+  instanced(new THREE.BoxGeometry(0.75, 0.05, 1.7).translate(0, 0.03, 0.9), mat(0x221d26, { roughness: 1 }), graves, { shadow: false });
+  for (const p of scatter(32, "crypt", 4)) {   // dead trees: crooked trunk with bare branches
+    const tree = new THREE.Group();
+    tree.add(mesh(taperTube([[0, 0, 0], [0.2, 2, 0.1], [-0.1, 4, -0.2], [0.3, 6, 0]], 0.35, 0.1, 7, 12), M.deadwood));
+    for (let k = 0; k < 4; k++) {
+      const a = rnd() * Math.PI * 2, y0 = 2.5 + rnd() * 3, L = 1.5 + rnd() * 2;
+      tree.add(mesh(taperTube([[0, y0, 0], [Math.cos(a) * L * 0.5, y0 + 0.6, Math.sin(a) * L * 0.5], [Math.cos(a) * L, y0 + 1.4 + rnd(), Math.sin(a) * L]], 0.12, 0.1, 5, 8), M.deadwood));
+    }
+    tree.position.set(p.x, 0, p.y); tree.scale.setScalar(p.s); tree.rotation.y = p.r;
+    G.add(tree);
+  }
+  for (const p of scatter(5, "crypt", 10)) {   // stone crypts
+    const c = new THREE.Group();
+    c.add(mesh(new THREE.BoxGeometry(5, 3.2, 6.5).translate(0, 1.6, 0), M.stone));
+    c.add(mesh(new THREE.ConeGeometry(4.6, 2.2, 4).rotateY(Math.PI / 4).translate(0, 4.3, 0), M.stone));
+    c.add(mesh(new THREE.BoxGeometry(1.6, 2.2, 0.2).translate(0, 1.1, 3.3), mat(0x050407)));
+    c.position.set(p.x, 0, p.y); c.rotation.y = p.r;
+    G.add(c);
+  }
+  instanced(new THREE.SphereGeometry(0.16, 8, 6).translate(0, 0.12, 0), glowMat(0xa07cff), scatter(70, "crypt", 1), { shadow: false });
+
+  // --- Ashen Wastes: black rock, obsidian spikes and pools of lava ---
+  instanced(new THREE.DodecahedronGeometry(1.6, 0).translate(0, 0.6, 0), M.basalt, scatter(90, "volcano", 3), { tilt: 0.8 });
+  instanced(new THREE.ConeGeometry(0.7, 5, 5).translate(0, 2.3, 0), M.obsidian, scatter(45, "volcano", 3), { tilt: 0.5 });
+  const lavaMat = new THREE.MeshStandardMaterial({ color: 0x220800, emissive: 0xff4a0a, emissiveIntensity: 2.2, roughness: 0.6 });
+  for (const p of scatter(16, "volcano", 6)) {
+    const pool = mesh(new THREE.CircleGeometry(2.5 + p.s * 2.5, 20), lavaMat, p.x, 0.04, p.y);
+    pool.rotation.x = -Math.PI / 2; pool.scale.y = 0.7 + rnd() * 0.5; pool.castShadow = false;
+    G.add(pool);
+    const rim = mesh(new THREE.TorusGeometry(2.6 + p.s * 2.5, 0.35, 5, 20), M.basalt, p.x, 0.05, p.y);
+    rim.rotation.x = -Math.PI / 2; rim.scale.y = pool.scale.y;
+    G.add(rim);
+  }
+
+  // --- Stormreach Peaks: rock spires and glowing storm crystals ---
+  instanced(new THREE.ConeGeometry(2.2, 14, 6).translate(0, 6.5, 0), M.slate, scatter(34, "storm", 5), { tilt: 0.2 });
+  instanced(new THREE.DodecahedronGeometry(1.4, 0).translate(0, 0.5, 0), M.slate, scatter(60, "storm", 3), { tilt: 0.7 });
+  const crystalMat = new THREE.MeshStandardMaterial({ color: 0x0a1a2a, emissive: 0x5ab8ff, emissiveIntensity: 1.8, roughness: 0.2, metalness: 0.3 });
+  for (const p of scatter(26, "storm", 3)) {
+    const cl = new THREE.Group();
+    for (let k = 0; k < 3; k++) {
+      const c = mesh(new THREE.OctahedronGeometry(0.6, 0), crystalMat, (rnd() - 0.5) * 1.2, 0.9, (rnd() - 0.5) * 1.2);
+      c.scale.set(0.6, 1.8 + rnd() * 1.4, 0.6); c.rotation.set((rnd() - 0.5) * 0.6, rnd() * 3, (rnd() - 0.5) * 0.6);
+      cl.add(c);
+    }
+    cl.position.set(p.x, 0, p.y); cl.scale.setScalar(p.s);
+    G.add(cl);
+  }
+  worldAnim.crystals.push({ material: crystalMat, userData: { phase: 0 } });
+  for (const c of worldAnim.crystals) c.userData.phase = rnd() * 6;
+
+  // --- Emberhold: plaza, campfire, houses, tents, a wooden wall with gates on the three roads ---
+  const T = map.town;
+  const plaza = mesh(new THREE.CircleGeometry(15, 40), M.plaza, T.x, 0.03, T.y);
+  plaza.rotation.x = -Math.PI / 2; plaza.castShadow = false; plaza.receiveShadow = true;
+  G.add(plaza);
+  const campfire = (x, y, big = 1) => {
+    const g = new THREE.Group();
+    for (let k = 0; k < 5; k++) {
+      const log = mesh(new THREE.CylinderGeometry(0.12 * big, 0.14 * big, 1.4 * big, 6), M.bark);
+      log.rotation.set(Math.PI / 2 - 0.35, (k / 5) * Math.PI * 2, 0);
+      log.position.y = 0.25 * big;
+      g.add(log);
+    }
+    for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2; g.add(mesh(new THREE.DodecahedronGeometry(0.22 * big, 0), M.stone, Math.cos(a) * 0.85 * big, 0.12, Math.sin(a) * 0.85 * big)); }
+    const flame = mesh(new THREE.ConeGeometry(0.45 * big, 1.4 * big, 8), new THREE.MeshStandardMaterial({ color: 0x331100, emissive: 0xff8a2a, emissiveIntensity: 3, transparent: true, opacity: 0.9 }), 0, 0.8 * big, 0);
+    flame.castShadow = false;
+    g.add(flame);
+    g.position.set(x, 0, y);
+    G.add(g);
+    const light = new THREE.PointLight(0xff9a4a, 40 * big, 22 * big, 1.6);
+    light.position.set(x, 2.2 * big, y);
+    scene.add(light);
+    worldAnim.fires.push({ light, flame, base: 40 * big, phase: rnd() * 6, x, y: 0, z: y });
+  };
+  campfire(T.x, T.y, 1.3);
+  const roadAngles = map.doors.map(d => Math.atan2(d.y - T.y, d.x - T.x));
+  const nearRoad = (a, w) => roadAngles.some(r => Math.abs(Math.atan2(Math.sin(a - r), Math.cos(a - r))) < w);
+  // houses in a ring (not on the roads)
+  for (let k = 0; k < 9; k++) {
+    const a = (k / 9) * Math.PI * 2 + 0.2;
+    if (nearRoad(a, 0.38)) continue;
+    const h = new THREE.Group(), w = 5 + rnd() * 2, d = 4 + rnd() * 2;
+    h.add(mesh(new THREE.BoxGeometry(w, 3, d).translate(0, 1.5, 0), M.plaster));
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) h.add(mesh(new THREE.BoxGeometry(0.3, 3.1, 0.3).translate(sx * w / 2, 1.55, sz * d / 2), M.wood));
+    const roof = mesh(new THREE.ConeGeometry(Math.hypot(w, d) / 2 + 0.6, 2.6, 4).rotateY(Math.PI / 4).translate(0, 4.3, 0), M.roof);
+    roof.scale.set(w / Math.max(w, d), 1, d / Math.max(w, d));
+    h.add(roof);
+    h.add(mesh(new THREE.BoxGeometry(1.1, 1.9, 0.15).translate(0, 0.95, d / 2 + 0.05), M.wood));
+    const win = glowMat(0xffc46a); win.emissiveIntensity = 1.2;
+    for (const sx of [-1, 1]) h.add(mesh(new THREE.BoxGeometry(0.7, 0.6, 0.1).translate(sx * w * 0.3, 1.8, d / 2 + 0.05), win));
+    const r = 22 + rnd() * 3;
+    h.position.set(T.x + Math.cos(a) * r, 0, T.y + Math.sin(a) * r);
+    h.rotation.y = -a - Math.PI / 2;   // doors face the plaza
+    G.add(h);
+  }
+  // tents and lanterns closer in
+  for (let k = 0; k < 6; k++) {
+    const a = (k / 6) * Math.PI * 2 + 0.55;
+    if (nearRoad(a, 0.3)) continue;
+    const tent = mesh(new THREE.ConeGeometry(2, 2.6, 4, 1, true).translate(0, 1.3, 0), M.canvas);
+    tent.position.set(T.x + Math.cos(a) * 12.5, 0, T.y + Math.sin(a) * 12.5); tent.rotation.y = rnd() * 3;
+    G.add(tent);
+  }
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2;
+    const pole = mesh(new THREE.CylinderGeometry(0.07, 0.09, 3.2, 6).translate(0, 1.6, 0), M.wood, T.x + Math.cos(a) * 16, 0, T.y + Math.sin(a) * 16);
+    G.add(pole);
+    G.add(mesh(new THREE.SphereGeometry(0.22, 10, 8), glowMat(0xffc46a), T.x + Math.cos(a) * 16, 3.25, T.y + Math.sin(a) * 16));
+  }
+  // banners on tall poles at each gate
+  for (const ra of roadAngles) for (const side of [-1, 1]) {
+    const a = ra + side * 0.2, x = T.x + Math.cos(a) * (T.radius + 1), y = T.y + Math.sin(a) * (T.radius + 1);
+    G.add(mesh(new THREE.CylinderGeometry(0.1, 0.12, 7, 6).translate(0, 3.5, 0), M.wood, x, 0, y));
+    const flag = mesh(new THREE.PlaneGeometry(1.4, 2.4).translate(0.75, 0, 0), mat(0x8a1a1a, { side: THREE.DoubleSide, roughness: 0.9, metalness: 0 }), x, 5.6, y);
+    flag.userData.phase = rnd() * 6;
+    G.add(flag);
+    worldAnim.banners.push(flag);
+  }
+  // wooden palisade around town, open where the roads leave
+  const postGeo = new THREE.CylinderGeometry(0.28, 0.32, 4.2, 6).translate(0, 2.1, 0);
+  const posts = [];
+  for (let k = 0; k < 120; k++) {
+    const a = (k / 120) * Math.PI * 2;
+    if (nearRoad(a, 0.16)) continue;
+    posts.push({ x: T.x + Math.cos(a) * (T.radius + 1), y: T.y + Math.sin(a) * (T.radius + 1), s: 0.9 + rnd() * 0.25, r: rnd() * 3 });
+  }
+  instanced(postGeo, M.wood, posts);
+
+  // --- Camps: a brazier or bonfire in each ---
+  for (const c of map.camps) {
+    const g = new THREE.Group();
+    const bowl = mat(c.region === "crypt" ? 0x2a2630 : c.region === "volcano" ? 0x1a0e0a : 0x2a3444, { roughness: 0.6, metalness: 0.5 });
+    g.add(mesh(new THREE.CylinderGeometry(0.15, 0.25, 1.1, 6).translate(0, 0.55, 0), bowl));
+    g.add(mesh(new THREE.CylinderGeometry(0.6, 0.3, 0.4, 10).translate(0, 1.25, 0), bowl));
+    const fireColor = c.region === "crypt" ? 0x9a6aff : c.region === "storm" ? 0x6ac8ff : 0xff7a2a;
+    const flame = mesh(new THREE.ConeGeometry(0.4, 0.9, 8), new THREE.MeshStandardMaterial({ color: 0x110808, emissive: fireColor, emissiveIntensity: 3 }), 0, 1.8, 0);
+    flame.castShadow = false;
+    g.add(flame);
+    const off = 5;
+    g.position.set(c.x + off, 0, c.y + off);
+    G.add(g);
+  }
+
+  // --- Boss gates at the end of each road ---
+  const DOOR_COLOR = { shadow: 0x9a6aff, fire: 0xff6a1a, storm: 0x6ac8ff };
+  const gateStone = { shadow: M.grave, fire: M.basalt, storm: M.slate };
+  for (const d of map.doors) {
+    const g = new THREE.Group();
+    const stone = gateStone[d.theme] || M.stone, color = DOOR_COLOR[d.theme] || 0xffffff;
+    for (const sx of [-1, 1]) {
+      g.add(mesh(new THREE.BoxGeometry(2.6, 15, 2.6).translate(sx * 7, 7.5, 0), stone));
+      g.add(mesh(new THREE.ConeGeometry(1.4, 3, 4).rotateY(Math.PI / 4).translate(sx * 7, 16.5, 0), stone));
+      g.add(mesh(new THREE.BoxGeometry(3.4, 1.4, 3.4).translate(sx * 7, 0.7, 0), stone));
+    }
+    g.add(mesh(new THREE.BoxGeometry(17.5, 2.2, 3).translate(0, 14.2, 0), stone));
+    // glowing portal
+    const portal = new THREE.Mesh(new THREE.PlaneGeometry(11.4, 13), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+    portal.position.y = 6.6;
+    const swirl = new THREE.Mesh(new THREE.RingGeometry(1, 5.2, 48, 1, 0, Math.PI * 1.6), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+    swirl.position.set(0, 6.6, 0.05);
+    portal.userData = { phase: rnd() * 6, swirl };
+    g.add(portal, swirl);
+    worldAnim.portals.push(portal);
+    // standing stones leading up to it
+    for (let k = 0; k < 6; k++) for (const sx of [-1, 1]) g.add(mesh(new THREE.BoxGeometry(1, 2.5 + rnd(), 0.8).translate(sx * 6.5, 1.3, 6 + k * 4.5), stone));
+    // the boss's name over the gate
+    const cnv = document.createElement("canvas"); cnv.width = 1024; cnv.height = 160;
+    const cx = cnv.getContext("2d");
+    cx.font = "700 72px Cinzel, Georgia, serif"; cx.textAlign = "center"; cx.textBaseline = "middle";
+    cx.shadowColor = "#000"; cx.shadowBlur = 16;
+    cx.fillStyle = "#" + color.toString(16).padStart(6, "0");
+    cx.fillText(d.name || d.boss, 512, 80);
+    const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cnv), transparent: true, depthWrite: false }));
+    label.scale.set(22, 3.4, 1); label.position.y = 19;
+    g.add(label);
+    const glow = new THREE.PointLight(color, 120, 40, 1.5);
+    glow.position.set(0, 6, 5);
+    g.add(glow);
+    // face back down the road toward town
+    g.position.set(d.x, 0, d.y);
+    g.rotation.y = Math.atan2(-Math.cos(d.angle), -Math.sin(d.angle));
+    G.add(g);
+  }
+}
+
+// =====================================================================
 //  START
 // =====================================================================
 await refreshModelList();
@@ -2344,11 +2765,71 @@ await loadRealisticAssets();
 if (realAssets.found?.length) applyRealistic(true);   // you added textures/sky: show them
 frame();
 const params = new URLSearchParams(location.search);
-const replays = await loadReplayList();
-if (params.get("replay")) startReplay(params.get("replay"));
-else if (params.has("live")) startLive();
-else if (replays.length) { hud.el("replays").value = replays[0]; startReplay(replays[0]); }
-else startLive();
+if (params.has("showcase")) {
+  startShowcase();
+} else {
+  const replays = await loadReplayList();
+  if (params.has("world")) {   // the open world: make sure it's running (and pick up new gear after a raid)
+    const res = await fetch("/api/world/resume", { method: "POST" }).then(r => r.json()).catch(() => ({ ok: false }));
+    if (!res.ok) location.href = "/";
+    else startLive();
+  }
+  else if (params.get("replay")) startReplay(params.get("replay"));
+  else if (params.has("live")) startLive();
+  else if (replays.length) { hud.el("replays").value = replays[0]; startReplay(replays[0]); }
+  else startLive();
+}
+
+// Started from the main menu: a button to go back to it
+if (params.get("menu")) {
+  const b = document.createElement("button");
+  const toWorld = /world=1/.test(params.get("menu"));
+  b.className = "hbtn"; b.textContent = toWorld ? "⟵ Back to the world" : "⟵ Menu"; b.title = toWorld ? "Leave the raid and go back to the open world" : "Back to the main menu";
+  b.onclick = () => { location.href = params.get("menu"); };
+  document.getElementById("hud-controls")?.prepend(b);
+}
+
+// =====================================================================
+//  SHOWCASE — the main menu shows one character (or boss) slowly turning,
+//  showing off attacks and spells. The menu tells it who to show with postMessage.
+// =====================================================================
+function startShowcase() {
+  document.body.classList.add("showcase", "nonames");
+  const style = document.createElement("style");
+  style.textContent = "body.showcase > :not(canvas) { display:none !important; }";
+  document.head.appendChild(style);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.35;   // how fast the menu camera circles your character (higher = faster)
+  addEventListener("message", (e) => { if (e.data?.showcase) showUnit(e.data.showcase); });
+  showUnit({ className: params.get("class") || "Knight", name: params.get("name") || undefined, boss: params.get("boss") || undefined });
+  setInterval(() => {   // show off now and then
+    const u = players[0] || enemies[0];
+    if (!u || u.oneShot) return;
+    u.oneShot = { kind: Math.random() < 0.55 ? "attack" : "spell", t: 0, len: u.isDragon ? 0.9 : 0.5 };
+    if (u.holyWings) { u.auraUp = true; setTimeout(() => { u.auraUp = false; }, 2500); }
+  }, 3200);
+  parent?.postMessage({ showcaseReady: true }, "*");
+}
+
+function showUnit(spec) {
+  players.forEach(u => u.dispose());
+  enemies.forEach(u => u?.dispose());
+  players = []; enemies = []; bossUnit = null; follow = null;
+  const ROLES = { Knight: "tank", Valkyrie: "tank", Healer: "healer" };
+  const u = spec.boss
+    ? new Unit({ kind: "e", index: 0, name: spec.boss, isBoss: true })
+    : new Unit({ kind: "p", index: 0, name: spec.name || spec.className, className: spec.className, role: ROLES[spec.className] || "dps" });
+  if (spec.boss) enemies = [u]; else players = [u];
+  u.noRing = true;   // no role ring on the floor in the menu
+  u.root.position.set(0, 0, 0); u.placed = true; u.tx = 0; u.tz = 0;
+  u.facing = u.targetFacing = Math.PI / 2;   // facing the camera
+  setTheme(spec.boss || spec.theme || "");
+  const h = u.height;
+  const dist = spec.boss ? (u.isDragon ? h * 2.6 : h * 2.3) : (u.pegasus ? 6.5 : 4.4);
+  controls.target.set(0, h * 0.4, 0);
+  camera.position.set(dist * 0.35, h * (spec.boss ? 0.55 : 0.6), dist);
+  follow = u;
+}
 </script>
 </body>
 </html>

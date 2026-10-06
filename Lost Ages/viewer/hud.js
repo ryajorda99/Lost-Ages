@@ -12,7 +12,7 @@
 import { castColor } from "./effects.js";
 
 // Icons for the action bar (any ability not listed shows its initials)
-const ICONS = {
+export const ICONS = {
   // Knight
   righteousStrike: "⚔️", shieldOfValor: "🛡️", divineTaunt: "📢", challenge: "🗯️", holyTouch: "✋",
   holyGrounds: "✨", judgment: "🔨", sonOfLight: "☀️", redemption: "🕊️",
@@ -38,8 +38,8 @@ const ICONS = {
   valkyriesCall: "📯", aegisOfValhalla: "🛡️", skyLance: "🔱", divingStrike: "🦅", stormGallop: "🌪️",
   thunderLance: "⚡", wingedSlash: "🪽", heavensFall: "☄️", soulspear: "✨", wingGuard: "🪶",
 };
-const ROLE_ICON = { tank: "🛡", healer: "✚", dps: "⚔" };
-const RESOURCE_COLOR = { Mana: "#3a7bff", Rage: "#d63a3a", Energy: "#f2d23c", "Holy Power": "#f5c542", Valor: "#7fd6ff" };
+export const ROLE_ICON = { tank: "🛡", healer: "✚", dps: "⚔" };
+export const RESOURCE_COLOR = { Mana: "#3a7bff", Rage: "#d63a3a", Energy: "#f2d23c", "Holy Power": "#f5c542", Valor: "#7fd6ff" };
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="];
 const hex = (n) => "#" + n.toString(16).padStart(6, "0");
 const esc = (s) => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -460,20 +460,45 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
 
     // Top-down minimap — call every rendered frame. s = { players, enemies, pets, zones, zoneColor, follow, camTarget, camAngle }
     drawMinimap(s) {
-      const W = map.width, R = W / 2, scale = R / 48;   // shows 48 m around the middle of the arena
-      const px = (x) => R + x * scale, py = (y) => R + y * scale;
+      // Raids: 48 m around the middle of the arena. Open world: 80 m around you, and it moves with you.
+      const world = s.world;
+      const W = map.width, R = W / 2, scale = R / (world ? 80 : 48);
+      const ox = world && s.camTarget ? s.camTarget.x : 0, oy = world && s.camTarget ? s.camTarget.z : 0;
+      const px = (x) => R + (x - ox) * scale, py = (y) => R + (y - oy) * scale;
       mctx.clearRect(0, 0, W, W);
       mctx.save();
       mctx.beginPath(); mctx.arc(R, R, R, 0, Math.PI * 2); mctx.clip();
       const bg = mctx.createRadialGradient(R, R, 10, R, R, R);
-      bg.addColorStop(0, s.theme === "fire" ? "#3a1a12" : s.theme === "shadow" ? "#1a1a30" : s.theme === "storm" ? "#122038" : "#262830");
+      bg.addColorStop(0, s.theme === "fire" ? "#3a1a12" : s.theme === "shadow" ? "#1a1a30" : s.theme === "storm" ? "#122038" : world ? "#2a3324" : "#262830");
       bg.addColorStop(1, "#08090c");
       mctx.fillStyle = bg; mctx.fillRect(0, 0, W, W);
-      // Arena ring + pillars
-      mctx.strokeStyle = "rgba(217,178,95,.25)"; mctx.lineWidth = 2;
-      mctx.beginPath(); mctx.arc(R, R, 62 * scale, 0, Math.PI * 2); mctx.stroke();
-      mctx.fillStyle = "rgba(200,190,170,.35)";
-      for (let i = 0; i < 18; i++) { const a = (i / 18) * Math.PI * 2; mctx.beginPath(); mctx.arc(px(Math.cos(a) * 62), py(Math.sin(a) * 62), 3, 0, Math.PI * 2); mctx.fill(); }
+      if (world) {
+        // Regions, the edge of the world, roads, town and the boss doors
+        const REGION_FILL = { shadow: "rgba(120,100,200,.22)", fire: "rgba(220,80,30,.22)", storm: "rgba(90,150,230,.22)" };
+        for (const r of world.regions) { mctx.fillStyle = REGION_FILL[r.theme]; mctx.beginPath(); mctx.arc(px(r.center.x), py(r.center.y), r.radius * scale, 0, Math.PI * 2); mctx.fill(); }
+        mctx.strokeStyle = "rgba(0,0,0,.6)"; mctx.lineWidth = 6;
+        mctx.beginPath(); mctx.arc(px(0), py(0), world.radius * scale, 0, Math.PI * 2); mctx.stroke();
+        mctx.strokeStyle = "rgba(200,170,120,.45)"; mctx.lineWidth = Math.max(2, 7 * scale);
+        for (const d of world.doors) { mctx.beginPath(); mctx.moveTo(px(world.town.x), py(world.town.y)); mctx.lineTo(px(d.x), py(d.y)); mctx.stroke(); }
+        mctx.fillStyle = "rgba(240,210,140,.35)"; mctx.strokeStyle = "rgba(243,220,154,.7)"; mctx.lineWidth = 1.5;
+        mctx.beginPath(); mctx.arc(px(world.town.x), py(world.town.y), world.town.radius * scale, 0, Math.PI * 2); mctx.fill(); mctx.stroke();
+        const DOOR_COLOR = { shadow: "#b07cff", fire: "#ff7a2a", storm: "#7fd4ff" };
+        for (const d of world.doors) {
+          let x = px(d.x), y = py(d.y);
+          const dx = x - R, dy = y - R, dist = Math.hypot(dx, dy);
+          const edge = dist > R - 10;   // off the map: pin it to the edge so you know which way to go
+          if (edge) { x = R + dx / dist * (R - 10); y = R + dy / dist * (R - 10); }
+          mctx.fillStyle = DOOR_COLOR[d.theme]; mctx.strokeStyle = "#000"; mctx.lineWidth = 2;
+          mctx.beginPath(); mctx.moveTo(x, y - 7); mctx.lineTo(x + 6, y); mctx.lineTo(x, y + 7); mctx.lineTo(x - 6, y); mctx.closePath(); mctx.fill(); mctx.stroke();
+          if (!edge) { mctx.fillStyle = "#fff"; mctx.font = "bold 10px sans-serif"; mctx.textAlign = "center"; mctx.fillText("💀", x, y + 3.5); }
+        }
+      } else {
+        // Arena ring + pillars
+        mctx.strokeStyle = "rgba(217,178,95,.25)"; mctx.lineWidth = 2;
+        mctx.beginPath(); mctx.arc(R, R, 62 * scale, 0, Math.PI * 2); mctx.stroke();
+        mctx.fillStyle = "rgba(200,190,170,.35)";
+        for (let i = 0; i < 18; i++) { const a = (i / 18) * Math.PI * 2; mctx.beginPath(); mctx.arc(px(Math.cos(a) * 62), py(Math.sin(a) * 62), 3, 0, Math.PI * 2); mctx.fill(); }
+      }
       // Ground effects
       for (const [x, y, r, age, hostile, nameId, warn] of s.zones || []) {
         const col = hex(s.zoneColor(nameId, hostile));

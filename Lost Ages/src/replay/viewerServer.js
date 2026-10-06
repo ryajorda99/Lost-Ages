@@ -33,7 +33,8 @@ const TYPES = {
 };
 const REPLAYS = path.join(ROOT, "replays");
 
-function startViewerServer({ port = 3000 } = {}) {
+// routes: optional (req, res, url) => true if it answered the request itself (the main menu uses this)
+function startViewerServer({ port = 3000, routes = null } = {}) {
   const clients = new Set();     // browsers watching live
   let liveData = null;           // the fight currently playing (so late viewers can catch up)
   let viewerWaiters = [];
@@ -45,6 +46,7 @@ function startViewerServer({ port = 3000 } = {}) {
 
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split("?")[0]);
+    if (routes && routes(req, res, url)) return;
 
     if (url === "/" || url === "/3d" || url === "/2d" || url === "/index.html") {
       const file = url === "/2d" || url === "/index.html" ? VIEWER_2D : VIEWER_3D;

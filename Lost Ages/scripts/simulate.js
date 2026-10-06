@@ -26,6 +26,8 @@
 //   --play <name>   PLAY one of the raid members yourself (e.g. --play Courtney). You can also
 //                   click "Take control" in the 3D viewer. WASD move, 1-0 abilities, Tab target.
 //   --record        with --fast: still save boss fights as replays
+//   --port <n>      port for the live viewer (default 3000)    --noopen  don't open the browser
+//   (The main menu, scripts/play.js, starts fights with these options for you.)
 //   --potential <tier>  TESTING: new players start as beginners but can all grow to this tier
 //   --testgear <ilvl>  TESTING: dress everyone in a full set of Epic gear at that item level
 //                      (great for checking if a raid is beatable with the right gear)
@@ -57,7 +59,7 @@ function option(name) {
   const i = argv.indexOf(`--${name}`);
   return i !== -1 ? argv[i + 1] : undefined;
 }
-const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill", "--potential", "--speed", "--play"].includes(argv[i - 1])));
+const positional = argv.filter((a, i) => !a.startsWith("--") && !(i > 0 && ["--boss", "--raid", "--testgear", "--skill", "--potential", "--speed", "--play", "--port", "--menu"].includes(argv[i - 1])));
 
 const BOSS_KEY = option("boss") || "hollowKing";
 const BOSS_DEF = BOSSES[BOSS_KEY];
@@ -74,7 +76,7 @@ for (const [label, value] of [["boss multiplier", multiplier], ["player level", 
   if (!Number.isFinite(value) || value < 0) {
     console.log(`The ${label} must be a number, but got "${[positional[0], positional[1], positional[2], option("raid")][["boss multiplier", "player level", "attempts", "raid size"].indexOf(label)]}".`);
     console.log(`Check your command. Example:  node scripts/simulate.js --boss ashenTyrant`);
-    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d", "--2d", "--play"].includes(a));
+    const unknown = argv.filter(a => a.startsWith("--") && !["--boss", "--raid", "--fresh", "--quiet", "--noscale", "--testgear", "--skill", "--farm", "--potential", "--record", "--fast", "--speed", "--3d", "--2d", "--play", "--port", "--noopen", "--menu"].includes(a));
     if (unknown.length) console.log(`Unknown option(s): ${unknown.join(", ")}`);
     process.exit(1);
   }
@@ -135,11 +137,8 @@ const NAMES = ["Aldric", "Brakka", "Vex", "Ryn", "Sera", "Thorne", "Kael", "Mira
   "Orin", "Kira", "Doran", "Selene", "Rook", "Ilya", "Garrick", "Wren", "Talos", "Ember",
   "Jax", "Nadia", "Silas", "Freya", "Magnus", "Quinn", "Vera", "Otto", "Luna", "Brom"];
 
-// These players are always in the raid, even in a brand new (--fresh) group.
-// Change the class next to a name to move them to a different class.
-const CORE_MEMBERS = { Courtney: "Druid", Valk: "Valkyrie", Maddy: "Necromancer", Ryan: "Knight" };
-// Old names that were renamed (an older save with these names gets the new ones)
-const RENAMED = { Jax: "Maddy", Vex: "Ryan" };
+// Ryan, Valk, Maddy and Courtney are always in the raid — see src/config/roster.js
+const { CORE_MEMBERS, RENAMED } = require("../src/config/roster");
 
 // ================= LOAD OR CREATE THE GROUP =================
 function makeBot(name, className, skill, personality) {
@@ -549,11 +548,12 @@ let lootSkipped = 0;
 // ================= ATTEMPTS =================
 async function main() {
 if (WATCH) {
-  viewer = await startViewerServer({ port: 3000 });
-  const page = USE_3D ? "/?live=1" : "/2d?live=1";
+  viewer = await startViewerServer({ port: Number(option("port") || 3000) });
+  const menuUrl = option("menu");   // started from the main menu (scripts/play.js): show a "Menu" button
+  const page = (USE_3D ? "/?live=1" : "/2d?live=1") + (menuUrl ? `&menu=${encodeURIComponent(menuUrl)}` : "");
   say(`\n📺 Opening the ${USE_3D ? "3D " : ""}fight viewer: ${viewer.url()}${page}  (if it doesn't open, paste that into your browser)`);
   if (USE_3D) say(`   (Prefer the old top-down view? Add --2d, or open ${viewer.url()}/2d?live=1)`);
-  openBrowser(viewer.url() + page);
+  if (!argv.includes("--noopen")) openBrowser(viewer.url() + page);
   // Playing a character yourself (from the viewer's "Take control" button or --play)
   viewer.onControl = (name) => {
     if (name && !bots.some(b => b.name === name)) return { ok: false, reason: `No raid member called ${name}` };
