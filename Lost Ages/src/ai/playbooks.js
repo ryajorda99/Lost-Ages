@@ -12,6 +12,8 @@ const pct = (u) => u.hp / u.maxHp;
 
 // Which enemy a DPS goes after: most players swap to adds, some tunnel the boss
 function dpsTarget(bot, world) {
+  // A stagger check (Sovereign's Wrath) or a staggered boss: everything goes into the boss
+  if (world.boss && (world.boss.ascend || world.boss.hasBuff?.("staggered"))) return world.boss;
   const adds = world.adds.filter(a => !a.isDead);
   if (adds.length && bot.style.swapsToAdds) return adds.sort((a, b) => a.hp - b.hp)[0];
   return world.boss;
@@ -185,7 +187,7 @@ const PLAYBOOKS = {
       wr.setTarget(t);
       const addsNear = w.adds.filter(a => !a.isDead && bot.distanceTo(a) < 8).length;
       const kickIt = bot.sees(kickableCast(b) || "noCast", !!kickableCast(b), now, castName(b)) && bot.distanceTo(b) < 5;
-      const burst = bot.personality.cooldownsEarly || b.phaseIndex >= 2;
+      const burst = bot.personality.cooldownsEarly || b.phaseIndex >= 2 || !!b.ascend || b.hasBuff?.("staggered");
       return [
         { key: "pummel", target: b, score: kickIt ? 90 : 0, onUse: (r) => r.interrupted && bot.say("gotInterrupt", now) },
         // Don't Charge into fire!

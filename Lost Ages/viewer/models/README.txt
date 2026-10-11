@@ -28,5 +28,15 @@ WHERE TO GET THEM (free, CC0 — no credit needed): https://polyhaven.com
    - Same as the floor, with a different stone (search "rock wall", "stone wall", "marble").
    - Put them in viewer/assets/pillars/
 
+4) THE OPEN WORLD (optional — same kind of files, 2K JPG from Poly Haven or ambientCG)
+   - viewer/assets/ground/   the grass everywhere   (search "grass", "forest ground", "meadow")
+   - viewer/assets/rock/     mountains, boulders, the rocky regions   (search "rock", "cliff", "rocky ground")
+   - viewer/assets/dirt/     the roads   (search "dirt", "mud road", "gravel")
+   Each region still gets its own tint (grey graveyards, ash in the Wastes...), so one set of textures
+   works for the whole world. Press R in the world to switch them on.
+
+GRAPHICS SETTINGS: the ⚙ button (next to G and R) — Low / Medium / High / Ultra, time of day in the
+open world (Cycle / Day / Dusk / Night), the film look and depth blur. Saved on your PC.
+
 Also works with textures from ambientCG.com (names containing Color / NormalGL / Roughness / AmbientOcclusion).
 Big files (4K, 8K) look sharper but load slower — 2K is the sweet spot.

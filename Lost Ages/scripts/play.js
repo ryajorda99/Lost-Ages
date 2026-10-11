@@ -21,7 +21,7 @@ const BOSSES = require("../src/data/bosses");
 const CLASSES = require("../src/classes");
 const { Gear } = require("../src/items/Gear");
 const { SKILL_PROFILES } = require("../src/ai/skillProfiles");
-const { CORE_MEMBERS, RENAMED } = require("../src/config/roster");
+const { CORE_MEMBERS, RENAMED, bodyTypeFor } = require("../src/config/roster");
 const { World } = require("../src/world/World");
 const { loadBots, saveBots, pickParty } = require("../src/world/party");
 const { HumanController } = require("../src/ai/HumanController");
@@ -64,7 +64,7 @@ function roster(bossKey) {
   if (!fs.existsSync(file)) {
     return {
       saved: false, raidSize: size,
-      members: Object.entries(CORE_MEMBERS).map(([name, className]) => ({ name, className, role: info[className].role, ilvl: 0, skill: "Casual", core: true, kills: 0, attempts: 0 })),
+      members: Object.entries(CORE_MEMBERS).map(([name, className]) => ({ name, className, role: info[className].role, ilvl: 0, skill: "Casual", core: true, kills: 0, attempts: 0, body: bodyTypeFor(name) })),
     };
   }
   const saved = JSON.parse(fs.readFileSync(file, "utf8"));
@@ -79,6 +79,7 @@ function roster(bossKey) {
         name, className: s.className, role: info[s.className]?.role || "dps", ilvl,
         skill: SKILL_PROFILES[s.skill]?.label || s.skill, potential: SKILL_PROFILES[s.potential]?.label || s.potential,
         core: name in CORE_MEMBERS, kills: s.kills || 0, attempts: s.attempts || 0,
+        body: bodyTypeFor(name, s.body), canChange: true,
       };
     }),
   };
@@ -161,15 +162,15 @@ function startWorldLoop() {
 }
 
 // Build (or rebuild) the world around your party. `at` = where to stand (outside a boss gate after a raid)
-function buildWorld(character, at = null) {
+function buildWorld(character, at = null, size = world?.size) {
   const bots = loadBots(WORLD_SAVE);
-  const party = pickParty(bots, character);
+  const party = pickParty(bots, character, size);
   const human = new HumanController();
   human.take(party[0].name);
   human.onResult = (r) => menu.broadcast({ type: "castResult", ...r });
   const w = new World({ bots: party, human, live: menu, onSave: () => saveBots(WORLD_SAVE, bots) });
   if (at) w.placeAt(at);
-  world = { w, bots, party, character: party[0].name, human, timer: null };
+  world = { w, bots, party, character: party[0].name, human, timer: null, size: party.length };
   menu.onControl = (name) => {
     if (name && name !== world.character) return { ok: false, reason: `In the open world you play ${world.character}` };
     human.take(name);
@@ -179,15 +180,15 @@ function buildWorld(character, at = null) {
   menu.controlled = world.character;
   menu.broadcast({ type: "control", name: world.character, playable: true });
   startWorldLoop();
-  console.log(`\n🌍 Open world: you are ${world.character} — with ${party.slice(1).map(b => b.name).join(", ")}`);
+  console.log(`\n🌍 Open world: you are ${world.character} — ${party.length > 1 ? "with " + party.slice(1).map(b => b.name).join(", ") : "on your own"}`);
 }
 
-async function startWorld(character, fresh) {
+async function startWorld(character, fresh, size) {
   await stopFight();
   stopWorldLoop();
   if (world && !world.inRaid) saveBots(WORLD_SAVE, world.bots);
   await ensureSave(fresh);
-  buildWorld(character);
+  buildWorld(character, null, size);
 }
 
 // Leave the raid: everyone comes back out of the gate with their new gear
@@ -264,6 +265,27 @@ function routes(req, res, url) {
     json(res, 200, { ok: true });
     return true;
   }
+  if (req.method === "POST" && url === "/api/body") {   // character select: male / female body
+    let body = "";
+    req.on("data", c => { body += c; if (body.length > 2000) req.destroy(); });
+    req.on("end", () => {
+      try {
+        const { name, type, boss } = JSON.parse(body || "{}");
+        if (type !== "male" && type !== "female") throw new Error("Body must be male or female");
+        const file = saveFileFor(raidSizeFor(BOSSES[boss] ? boss : Object.keys(BOSSES)[0]));
+        if (!fs.existsSync(file)) throw new Error("Start the game once first, then you can change this");
+        const saved = JSON.parse(fs.readFileSync(file, "utf8"));
+        const entry = saved.find(s => s.name === name || RENAMED[s.name] === name);
+        if (!entry) throw new Error(`No raid member called ${name}`);
+        entry.body = type;
+        fs.writeFileSync(file, JSON.stringify(saved, null, 2));
+        const wb = world?.bots.find(b => b.name === name);   // keep the open world's copy in step
+        if (wb) { wb.body = type; if (wb._saved) wb._saved.body = type; }
+        json(res, 200, { ok: true });
+      } catch (err) { json(res, 200, { ok: false, reason: err.message }); }
+    });
+    return true;
+  }
   if (req.method === "POST" && url.startsWith("/api/world")) {
     let body = "";
     req.on("data", c => { body += c; if (body.length > 5000) req.destroy(); });
@@ -271,7 +293,7 @@ function routes(req, res, url) {
       try {
         const msg = JSON.parse(body || "{}");
         if (url === "/api/world") {                       // Enter world (from the menu)
-          await startWorld(msg.character, !!msg.fresh);
+          await startWorld(msg.character, !!msg.fresh, msg.partySize);
           return json(res, 200, { ok: true, url: `/?live=1&world=1&menu=${encodeURIComponent("/")}` });
         }
         if (url === "/api/world/resume") return json(res, 200, { ok: await resumeWorld() });

@@ -104,7 +104,7 @@
   #nameplate .nm { font-family:var(--display); font-weight:900; font-size:44px; letter-spacing:.06em; text-shadow:0 3px 0 #000, 0 0 18px rgba(0,0,0,.9); }
   #nameplate .cl { font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:13px; color:var(--gold-hi); text-shadow:0 2px 2px #000; }
 
-  #info { position:absolute; top:18px; right:18px; bottom:84px; width:330px; padding:16px; overflow:auto; }
+  #info { position:absolute; top:18px; right:18px; bottom:134px; width:330px; padding:16px; overflow:auto; }
   #info .role { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 12px; }
   .chip { font-size:12px; padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.35); color:var(--ink); }
   .chip b { color:var(--gold-hi); }
@@ -113,6 +113,11 @@
   #info .stat { background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.06); border-radius:5px; padding:6px 9px; }
   #info .stat span { display:block; font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:.08em; }
   #info .stat b { font-size:16px; color:var(--gold-hi); }
+  .bodypick { display:flex; align-items:center; gap:6px; margin-top:12px; }
+  .bodypick span { font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:.08em; margin-right:4px; }
+  .seg { cursor:pointer; padding:5px 12px; border-radius:14px; font-size:13px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.35); color:var(--ink); }
+  .seg:hover { border-color:rgba(217,178,95,.5); }
+  .seg.on { background:linear-gradient(180deg, #8a6421, #4d3510); border-color:var(--gold); color:#fff3d0; }
   .abilities { display:grid; grid-template-columns:1fr; gap:4px; margin-top:8px; }
   .ab { display:flex; align-items:center; gap:9px; padding:4px 6px; border-radius:5px; background:rgba(0,0,0,.25); }
   .ab .ic { width:30px; height:30px; flex:none; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:16px;
@@ -122,6 +127,13 @@
   .ab .cd { font-size:11px; color:var(--dim); white-space:nowrap; }
 
   .bottombar { position:absolute; left:18px; right:18px; bottom:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  #partySize { display:flex; align-items:center; gap:8px; padding:6px 10px; }
+  #partySize .ps-label { font-family:var(--display); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+  #partySize button { cursor:pointer; min-width:30px; height:28px; border-radius:4px; border:1px solid var(--gold-lo); background:rgba(10,11,16,.75);
+    color:var(--ink); font:700 13px var(--display); }
+  #partySize button:hover { filter:brightness(1.3); }
+  #partySize button.sel { background:linear-gradient(180deg, #8a6421, #4d3510); color:#fff3d0; border-color:var(--gold); box-shadow:0 0 10px rgba(217,178,95,.35); }
+  #partySize .ps-who { color:var(--dim); font-size:12px; min-width:118px; }
   .bottombar .mid { color:var(--dim); font-size:13px; text-align:center; flex:1; }
 
   /* ---------------- RAID SELECT ---------------- */
@@ -191,9 +203,16 @@
   <div class="bottombar">
     <button class="btn ghost" data-go="title">⟵ Back</button>
     <div class="mid keys"><kbd>↑</kbd> <kbd>↓</kbd> pick &nbsp;·&nbsp; drag to turn them around &nbsp;·&nbsp; <kbd>Enter</kbd> enter the world</div>
-    <div style="display:flex;gap:10px">
-      <button class="btn ghost" id="toRaids" title="Skip the world and go straight into a raid">Raid finder</button>
-      <button class="btn primary" id="toWorld">Enter world ⟶</button>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+      <div id="partySize" class="frame" title="How many of your raid travel the open world with you">
+        <span class="ps-label">Party</span>
+        <span id="psBtns"></span>
+        <span class="ps-who" id="psWho"></span>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn ghost" id="toRaids" title="Skip the world and go straight into a raid">Raid finder</button>
+        <button class="btn primary" id="toWorld">Enter world ⟶</button>
+      </div>
     </div>
   </div>
 </section>
@@ -219,6 +238,7 @@
 </div>
 
 <script type="module">
+const withGfx = (url) => { try { const g = localStorage.getItem("lostAgesGraphics"); return g && /:\d+\//.test(url) && !url.startsWith("/") ? url + (url.includes("?") ? "&" : "?") + "gfx=" + encodeURIComponent(g) : url; } catch { return url; } };
 import { ICONS, ROLE_ICON, RESOURCE_COLOR } from "./hud.js";
 
 const $ = (id) => document.getElementById(id);
@@ -304,7 +324,7 @@ function renderRunning() {
   box.style.display = "flex";
   box.innerHTML = `<button class="btn" id="resumeBtn">Return to fight</button>
     <div class="running">In progress: <b>${esc(b?.name)}</b>${game.running.character ? ` as <b>${esc(game.running.character)}</b>` : ""}</div>`;
-  $("resumeBtn").onclick = () => { location.href = `${game.running.url}/?live=1&menu=${encodeURIComponent(location.origin + "/")}`; };
+  $("resumeBtn").onclick = () => { location.href = withGfx(`${game.running.url}/?live=1&menu=${encodeURIComponent(location.origin + "/")}`); };
 }
 
 // ---------- Screens ----------
@@ -358,6 +378,11 @@ function selectHero(m) {
       ${m.core ? `<span class="chip">⭐ Hero</span>` : ""}
     </div>
     <div class="blurb">${esc(CLASS_BLURB[m.className] || "")}</div>
+    <div class="bodypick">
+      <span>Body</span>
+      <button class="seg${m.body !== "female" ? " on" : ""}" data-body="male">♂ Male</button>
+      <button class="seg${m.body === "female" ? " on" : ""}" data-body="female">♀ Female</button>
+    </div>
     <div class="stats">
       <div class="stat"><span>Item level</span><b>${m.ilvl || "—"}</b></div>
       <div class="stat"><span>Skill</span><b>${esc(m.skill || "—")}</b></div>
@@ -371,23 +396,48 @@ function selectHero(m) {
         <span class="an">${esc(a.name)}</span>
         <span class="cd">${a.castTime ? a.castTime + "s cast" : "instant"}${a.cooldown ? ` · ${a.cooldown}s cd` : ""}</span></div>`).join("")}
     </div>`;
-  show({ className: m.className, name: m.name, theme: game.bosses.find(b => b.key === boss)?.name });
+  $("info").querySelectorAll("[data-body]").forEach(btn => btn.onclick = () => setBody(m, btn.dataset.body));
+  show({ className: m.className, name: m.name, body: m.body, theme: game.bosses.find(b => b.key === boss)?.name });
+}
+async function setBody(m, type) {
+  if (m.body === type) return;
+  const prev = m.body;
+  m.body = type;
+  selectHero(m);   // redraw right away
+  try {
+    const res = await (await fetch("/api/body", { method: "POST", body: JSON.stringify({ name: m.name, type, boss }) })).json();
+    if (!res.ok) throw new Error(res.reason);
+  } catch (err) { m.body = prev; selectHero(m); alert("Couldn't change the body: " + err.message); }
 }
 $("toRaids").onclick = () => go("raids");
 $("toWorld").onclick = () => enterWorld();
+
+// ---------- Party size for the open world (1 = just you … 5 = you + 4) ----------
+let partySize = 5;
+try { partySize = Math.min(5, Math.max(1, +localStorage.getItem("lostAgesPartySize") || 5)); } catch {}
+function renderPartySize() {
+  $("psBtns").innerHTML = [1, 2, 3, 4, 5].map(n => `<button data-n="${n}" class="${n === partySize ? "sel" : ""}" title="${n === 1 ? "Just you" : `You + ${n - 1}`}">${n}</button>`).join(" ");
+  $("psWho").textContent = partySize === 1 ? "just you (solo)" : `you + ${partySize - 1} companion${partySize > 2 ? "s" : ""}`;
+  document.querySelectorAll("#psBtns button").forEach(b => b.onclick = () => {
+    partySize = +b.dataset.n;
+    try { localStorage.setItem("lostAgesPartySize", partySize); } catch {}
+    renderPartySize();
+  });
+}
+renderPartySize();
 
 // ---------- Into the open world ----------
 async function enterWorld() {
   const m = pick || defaultPick();
   $("loadTitle").textContent = "Entering Emberhold…";
-  $("loadTip").textContent = `You'll travel with your party. Walk up to a glowing gate and press E to take your whole raid inside.`;
+  $("loadTip").textContent = `${partySize === 1 ? "You'll travel alone — the wilds are a little gentler for a solo hero." : `You'll travel with ${partySize - 1} companion${partySize > 2 ? "s" : ""}.`} Walk up to a glowing gate and press E to take your whole raid inside.`;
   $("loadErr").style.display = "none"; $("loadBack").style.display = "none";
   document.querySelector("#loading .spinner").style.display = "";
   $("loading").classList.add("on");
   try {
-    const res = await (await fetch("/api/world", { method: "POST", body: JSON.stringify({ character: m.name }) })).json();
+    const res = await (await fetch("/api/world", { method: "POST", body: JSON.stringify({ character: m.name, partySize }) })).json();
     if (!res.ok) throw new Error(res.reason);
-    location.href = res.url;
+    location.href = withGfx(res.url);
   } catch (err) {
     $("loadErr").textContent = "Couldn't enter the world:\n" + err.message;
     $("loadErr").style.display = "block"; $("loadBack").style.display = "inline-block";
@@ -446,7 +496,7 @@ async function enter() {
   try {
     const res = await (await fetch("/api/start", { method: "POST", body: JSON.stringify({ boss, character: pick?.name || null, fresh }) })).json();
     if (!res.ok) throw new Error(res.reason);
-    location.href = res.url;
+    location.href = withGfx(res.url);
   } catch (err) {
     $("loadErr").textContent = "Couldn't start the fight:\n" + err.message;
     $("loadErr").style.display = "block"; $("loadBack").style.display = "inline-block";

@@ -138,7 +138,7 @@ const NAMES = ["Aldric", "Brakka", "Vex", "Ryn", "Sera", "Thorne", "Kael", "Mira
   "Jax", "Nadia", "Silas", "Freya", "Magnus", "Quinn", "Vera", "Otto", "Luna", "Brom"];
 
 // Ryan, Valk, Maddy and Courtney are always in the raid — see src/config/roster.js
-const { CORE_MEMBERS, RENAMED } = require("../src/config/roster");
+const { CORE_MEMBERS, RENAMED, bodyTypeFor } = require("../src/config/roster");
 
 // ================= LOAD OR CREATE THE GROUP =================
 function makeBot(name, className, skill, personality) {
@@ -161,6 +161,7 @@ function loadGroup() {
       bot.lootState = s.lootState;
       bot.kills = s.kills || 0;
       bot.attempts = s.attempts || 0;
+      bot.body = s.body;   // male / female (set in the menu)
       return bot;
     });
   }
@@ -202,7 +203,7 @@ function migrateRoster(list) {
     const bot = makeBot(newName, newClass, old.skillKey, old.personalityKey);
     Object.assign(bot, {
       p: old.p, mastery: old.mastery, potential: old.potential, experience: old.experience,
-      lootState: old.lootState, kills: old.kills, attempts: old.attempts,
+      lootState: old.lootState, kills: old.kills, attempts: old.attempts, body: old.body,
     });
     // Same item level and rarity in every slot they had filled, made for the new class
     for (const [slot, item] of Object.entries(old.gear.equipped)) {
@@ -261,6 +262,7 @@ function saveGroup(bots) {
     name: b.name, className: b.className, skill: b.skillKey, personality: b.personalityKey,
     profile: b.p, mastery: b.mastery, potential: b.potential, experience: b.experience,
     gear: b.gear.toJSON(), lootState: b.lootState, kills: b.kills || 0, attempts: b.attempts || 0,
+    ...(b.body ? { body: b.body } : {}),
   })), null, 2));
 }
 
@@ -391,6 +393,7 @@ function startSpot(bot, index) {
 function spawnParty() {
   return bots.map((b, i) => {
     const c = new CLASSES[b.className](b.name, partyLevel, startSpot(b, i));
+    c.body = bodyTypeFor(b.name, b.body);   // male / female body in the 3D viewer
     b.gear.applyTo(c);
     b.attach(c);
     return c;
@@ -414,7 +417,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
     const orig = boss.finishAbility.bind(boss);
     boss.finishAbility = (key, t, ctx) => { executing = boss.abilities[key].name; const r = orig(key, t, ctx); executing = null; return r; };
     boss.onAnnounce = (msg) => {
-      if (/^PHASE|ADAPTS|fixates|glares|BERSERK|WORLDFIRE|HURRICANE|rekindles|recharges|IMMOLATED|OVERLOADED|incinerated|struck down|consumes|absorbs|takes to the skies|lands!/.test(msg)) log(`>>> ${msg}`);
+      if (/^PHASE|ADAPTS|fixates|glares|BERSERK|WORLDFIRE|HURRICANE|rekindles|recharges|IMMOLATED|OVERLOADED|incinerated|struck down|consumes|absorbs|takes to the skies|lands!|SOVEREIGN'S WRATH|STAGGERED/.test(msg)) log(`>>> ${msg}`);
       if (msg.startsWith("PHASE") && boss.phaseIndex > 0) bots.find(b => !b.character.isDead)?.say("phase", time, 5);
     };
   }

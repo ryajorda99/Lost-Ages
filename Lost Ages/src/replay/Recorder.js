@@ -50,7 +50,7 @@ class Recorder {
       recordedAt: new Date().toISOString(),
       // abilities: [key, name, cooldown, cast time] — the 3D viewer's action bar shows these with cooldowns
       players: party.map(p => ({
-        name: p.name, className: p.className, role: p.role, resource: p.resource.name,
+        name: p.name, className: p.className, role: p.role, resource: p.resource.name, body: p.body || "male",
         abilities: Object.entries(p.abilities).map(([k, a]) => [k, a.name, a.cooldown || 0, a.castTime || 0]),
       })),
       enemies: [],               // filled as enemies appear: { name, maxHp, boss, elite }
@@ -137,7 +137,7 @@ class Recorder {
     const foes = list.map(e => [
       this.enemyId(e), r1(e.position.x), r1(e.position.y), r2(Math.max(0, e.hp / e.maxHp)), e.isDead ? 1 : 0,
       facing(e, e.cast?.target && e.cast.target !== e ? e.cast.target : e.pickTarget?.()), e.cast ? e.cast.key : 0, castProgress(e),
-      e.flying ? 1 : 0,
+      e.flying ? (e.ascend ? 2 : 1) : 0,   // 2 = high in the storm, charging a stagger check
     ]);
 
     // Ground effects: [x, y, radius, age in seconds, hostile (1) or friendly (0), name id, warning seconds]
@@ -172,6 +172,12 @@ class Recorder {
     if (pets.length) frame.pt = pets;
     if (this.actions.length) { frame.a = this.actions; this.actions = []; }
     if (cast) frame.c = cast;
+    // Stagger check: [progress 0-1, seconds left, state (1 charging, 2 staggered!, 3 failed), name]
+    if (boss?.ascend) frame.st = [r2(Math.min(1, boss.ascend.done / boss.ascend.need)), r1(Math.max(0, boss.ascend.dur - boss.ascend.t)), 1, boss.ascend.name];
+    else if (boss?.staggerResult && boss.fightTime < boss.staggerResult.until) {
+      const R = boss.staggerResult;
+      frame.st = [R.state === 2 ? 1 : r2(R.progress || 0), 0, R.state, boss.def.staggerCheck?.name || ""];
+    }
     if (boss) frame.ph = boss.phaseIndex + 1;
     // who the boss is attacking (index into players), for drawing a target line
     if (boss) {

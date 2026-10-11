@@ -7,22 +7,22 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40103075504146407,
-        0.8020615100829281
+        0.40092767953731767,
+        0.8018553590746353
       ],
-      "awareness": 0.7489692449585359,
-      "mistakeRate": 0.040206151008292806,
+      "awareness": 0.7490723204626824,
+      "mistakeRate": 0.04018553590746353,
       "inputDelay": [
-        0.20077306628109803,
-        0.5015461325621959
+        0.20069575965298822,
+        0.5013915193059764
       ],
-      "lapsePerSec": 0.020103075504146403,
-      "positioning": 0.5984538674378039,
-      "decisionNoise": 0.300773066281098,
-      "healAccuracy": 0.6992269337189019
+      "lapsePerSec": 0.020092767953731765,
+      "positioning": 0.5986084806940235,
+      "decisionNoise": 0.3006957596529882,
+      "healAccuracy": 0.6993042403470117
     },
     "mastery": {
-      "Rain of Fire": 0.9997961996384088,
+      "Rain of Fire": 0.9998363172830753,
       "Flame Breath": 0.9827060771568037,
       "Pyroclasm": 0.9224372063618105,
       "Inferno Rift": 0.9843862726744125,
@@ -32,10 +32,11 @@
       "Hunter's Grudge": 0.8004603802568999,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.35
     },
     "potential": "average",
-    "experience": 50,
+    "experience": 51,
     "gear": {
       "className": "Knight",
       "bagSize": 30,
@@ -61,26 +62,27 @@
       ],
       "equipped": {
         "head": {
-          "name": "Crown of the Hollow King",
+          "name": "Crown of the Ashen Tyrant",
           "slotType": "head",
           "rarity": "epic",
           "armorType": "plate",
           "allowedClasses": [
             "Knight",
-            "Warrior"
+            "Warrior",
+            "Valkyrie"
           ],
           "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
+            "str": 45,
+            "sta": 55,
+            "faith": 20,
+            "armor": 170,
+            "blockChance": 0.03
           },
-          "id": "itm_mun8usby_g",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "id": "itm_mv38ae1x_i",
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "bossOnly": true
         },
         "shoulders": {
@@ -102,24 +104,25 @@
           "name": "Sanctified Pauldrons"
         },
         "chest": {
-          "id": "itm_mun4cx74_0",
+          "id": "itm_muxp6rrk_a",
           "slotType": "chest",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "rarity": "uncommon",
+          "itemLevel": 63,
+          "requiredLevel": 60,
           "sourceType": "mob",
-          "source": "Cinder Imp",
+          "source": "Hollow Deathguard",
           "stats": {
-            "armor": 96,
-            "str": 11,
-            "sta": 11,
-            "faith": 11
+            "armor": 101,
+            "str": 15,
+            "sta": 15,
+            "faith": 15,
+            "blockChance": 0.01
           },
           "armorType": "plate",
-          "name": "Worn Chestguard"
+          "name": "Polished Chestguard"
         },
         "hands": {
-          "id": "itm_mun8usbz_h",
+          "id": "itm_muywdsp8_d",
           "slotType": "hands",
           "rarity": "epic",
           "itemLevel": 60,
@@ -131,29 +134,30 @@
             "str": 17,
             "sta": 17,
             "faith": 17,
-            "crit": 21
+            "crit": 18,
+            "blockChance": 0.01
           },
           "armorType": "plate",
           "name": "Dreadforged Gauntlets"
         },
         "legs": {
-          "id": "itm_muolnu7i_14",
+          "id": "itm_mv38ae1x_j",
           "slotType": "legs",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "blockChance": 0.02,
-            "crit": 24
+            "armor": 112,
+            "str": 26,
+            "sta": 26,
+            "faith": 26,
+            "crit": 11,
+            "blockChance": 0.02
           },
           "armorType": "plate",
-          "name": "Radiant Greaves"
+          "name": "Dreadforged Greaves"
         },
         "feet": {
           "id": "itm_muomhgxd_f",
@@ -209,21 +213,38 @@
           },
           "name": "Sanctified Ring"
         },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muokskqq_c",
-          "slotType": "trinket",
+        "ring2": {
+          "id": "itm_muxp7i1h_g",
+          "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "str": 16,
-            "sta": 16,
-            "faith": 16,
-            "blockChance": 0.01,
-            "crit": 16
+            "str": 12,
+            "sta": 12,
+            "faith": 12,
+            "blockChance": 0.02,
+            "armor": 7
+          },
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mv38ae1x_k",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "str": 18,
+            "sta": 18,
+            "faith": 18,
+            "armor": 8,
+            "crit": 8,
+            "blockChance": 0.01
           },
           "name": "Radiant Charm"
         },
@@ -277,272 +298,288 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589850
+        "The Hollow King": 1792293789867,
+        "Azgaroth, the Ashen Tyrant": 1792291982757
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 2,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 2
+        "The Hollow King:Crown of the Hollow King": 3,
+        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 6,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 0,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 50
+    "kills": 20,
+    "attempts": 51,
+    "body": "male"
   },
   {
     "name": "Valkyrie",
-    "className": "Knight",
+    "className": "Warrior",
     "skill": "casual",
     "personality": "steady",
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9996178320698054,
-      "Flame Breath": 0.9938670666828348,
-      "Pyroclasm": 0.9317447415983933,
-      "Inferno Rift": 0.980822727294314,
-      "Soul Eruption": 0.968606739806896,
-      "Shadow Bolt": 0.318528,
+      "Rain of Fire": 0.9998064749420945,
+      "Flame Breath": 0.9946030186808946,
+      "Pyroclasm": 0.9434851920855368,
+      "Inferno Rift": 0.9831240000189962,
+      "Soul Eruption": 0.977812060824405,
+      "Shadow Bolt": 0.33897215999999997,
       "Crushing Blow": 0.5183533282983936,
-      "Hunter's Grudge": 0.806446568849193,
+      "Hunter's Grudge": 0.8296729805872898,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Immolation": 0.24431405738399997,
+      "Immolation": 0.4147968060381696,
       "Safe Revive": 0.6356017289666126,
-      "Tyrant's Gaze": 0.2256
+      "Tyrant's Gaze": 0.318528,
+      "Storm Call": 0.5791083817937824,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6478978187694259
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
-      "className": "Knight",
+      "className": "Warrior",
       "bagSize": 30,
       "bag": [],
       "equipped": {
         "head": {
-          "name": "Crown of the Hollow King",
+          "id": "itm_muwyfieu_b",
           "slotType": "head",
           "rarity": "epic",
-          "armorType": "plate",
-          "allowedClasses": [
-            "Knight",
-            "Warrior"
-          ],
-          "stats": {
-            "str": 34,
-            "sta": 42,
-            "faith": 16,
-            "armor": 130,
-            "blockChance": 0.02
-          },
-          "id": "itm_muojufg6_i",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
+          "source": "class change",
+          "stats": {
+            "armor": 96,
+            "str": 34,
+            "sta": 34,
+            "haste": 19,
+            "crit": 9
+          },
+          "armorType": "plate",
+          "name": "Sanctified Helm"
         },
         "shoulders": {
-          "id": "itm_muok1reo_k",
+          "id": "itm_muwyfieu_c",
           "slotType": "shoulders",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "armor": 72,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "blockChance": 0.02,
+            "str": 25,
+            "sta": 25,
+            "haste": 7,
             "crit": 15
           },
           "armorType": "plate",
           "name": "Sanctified Pauldrons"
         },
         "chest": {
-          "id": "itm_mun8usc0_i",
+          "id": "itm_mv38ae1x_l",
           "slotType": "chest",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "blockChance": 0.01,
-            "crit": 27
+            "armor": 112,
+            "str": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
           },
           "armorType": "plate",
-          "name": "Sanctified Chestguard"
+          "name": "Radiant Chestguard"
         },
         "hands": {
-          "id": "itm_mun7iz4x_h",
+          "id": "itm_muwyfieu_e",
           "slotType": "hands",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
-            "armor": 79,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "crit": 7,
-            "blockChance": 0.01
+            "armor": 72,
+            "str": 25,
+            "sta": 25,
+            "agi": 7,
+            "crit": 15
           },
           "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
+          "name": "Radiant Gauntlets"
         },
         "legs": {
-          "id": "itm_mun7tri4_e",
+          "id": "itm_muwyfieu_f",
           "slotType": "legs",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "armor": 96,
-            "str": 22,
-            "sta": 22,
-            "faith": 22,
-            "crit": 30
+            "str": 34,
+            "sta": 34,
+            "crit": 9,
+            "haste": 10,
+            "agi": 9
           },
           "armorType": "plate",
-          "name": "Radiant Greaves"
+          "name": "Sanctified Greaves"
         },
         "feet": {
-          "id": "itm_muolu3xd_e",
+          "id": "itm_mv38ae1x_m",
           "slotType": "feet",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 86,
-            "str": 17,
-            "sta": 17,
-            "faith": 17,
-            "blockChance": 0.01
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 9,
+            "agi": 9,
+            "haste": 8
           },
           "armorType": "plate",
-          "name": "Sanctified Boots"
+          "name": "Radiant Boots"
         },
         "neck": {
-          "id": "itm_muolnu7j_15",
+          "id": "itm_muwyfieu_h",
           "slotType": "neck",
           "rarity": "epic",
           "itemLevel": 60,
+          "requiredLevel": 57,
+          "sourceType": "boss",
+          "source": "class change",
+          "stats": {
+            "str": 19,
+            "sta": 19,
+            "agi": 5,
+            "haste": 10
+          },
+          "name": "Dreadforged Amulet"
+        },
+        "ring1": {
+          "id": "itm_mv39d4ff_e",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "str": 12,
-            "sta": 12,
-            "faith": 12,
-            "armor": 14,
-            "blockChance": 0.01
+            "str": 19,
+            "sta": 19,
+            "haste": 5,
+            "crit": 5,
+            "agi": 5
           },
-          "name": "Sanctified Amulet"
+          "name": "Radiant Ring"
         },
-        "ring1": null,
         "ring2": null,
         "trinket": {
-          "id": "itm_muolhcjc_i",
+          "id": "itm_muwyfieu_i",
           "slotType": "trinket",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
-            "str": 16,
-            "sta": 16,
-            "faith": 16,
-            "blockChance": 0.01,
-            "armor": 8,
-            "crit": 8
+            "str": 23,
+            "sta": 23,
+            "crit": 14,
+            "haste": 7
           },
-          "name": "Dreadforged Charm"
+          "name": "Radiant Charm"
         },
         "mainHand": {
-          "name": "Dawnbreaker, Blade of the Oathsworn",
+          "id": "itm_muywdsp8_e",
           "slotType": "mainHand",
-          "rarity": "legendary",
-          "weaponType": "sword",
-          "allowedClasses": [
-            "Knight"
-          ],
-          "weaponDamage": 110,
-          "weaponSpeed": 2.4,
-          "stats": {
-            "str": 55,
-            "sta": 48,
-            "faith": 38
-          },
-          "effect": "Righteous Strike has a 10% chance to reset Judgment's cooldown.",
-          "id": "itm_muomhgxd_g",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "bossOnly": true
-        },
-        "offHand": {
-          "id": "itm_muojufg6_j",
-          "slotType": "offHand",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "armor": 180,
-            "blockChance": 0.06,
-            "str": 18,
-            "sta": 18,
-            "faith": 18,
-            "crit": 10
+            "str": 40,
+            "sta": 40,
+            "agi": 12,
+            "crit": 12,
+            "haste": 11
           },
-          "weaponType": "shield",
+          "weaponType": "axe",
           "allowedClasses": [
-            "Knight",
             "Warrior"
           ],
-          "name": "Sanctified Bulwark"
+          "weaponSpeed": 2.8,
+          "weaponDamage": 126,
+          "name": "Dreadforged Axe"
+        },
+        "offHand": {
+          "id": "itm_muwyfieu_k",
+          "slotType": "offHand",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 57,
+          "sourceType": "boss",
+          "source": "class change",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "crit": 16,
+            "agi": 7
+          },
+          "weaponType": "axe",
+          "allowedClasses": [
+            "Warrior"
+          ],
+          "name": "Sanctified Axe"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589850
+        "The Hollow King": 1792293789867,
+        "Azgaroth, the Ashen Tyrant": 1792291982757
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 4,
-        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 3
+        "The Hollow King:Crown of the Hollow King": 2,
+        "The Hollow King:Dawnbreaker, Blade of the Oathsworn": 3,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Kira",
@@ -552,65 +589,43 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9999379362022258,
-      "Flame Breath": 0.9972964665239893,
-      "Pyroclasm": 0.9317447415983933,
-      "Inferno Rift": 0.9933635233777537,
-      "Soul Eruption": 0.9788367526998369,
+      "Rain of Fire": 0.9999599655287429,
+      "Flame Breath": 0.9976922638248773,
+      "Pyroclasm": 0.9399353726065861,
+      "Inferno Rift": 0.9956862901955399,
+      "Soul Eruption": 0.9836111812907536,
       "Shadow Bolt": 0.318528,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.6855635797950318,
+      "Hunter's Grudge": 0.8779645616594162,
+      "Doom": 0.713022369062271,
       "Cleave": 0.12,
-      "Safe Revive": 0.7144052748870049,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Safe Revive": 0.8135534027948468,
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Thunderstorm": 0.6585394959452009,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun9af2v_6",
-          "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "faith": 27,
-            "sta": 27,
-            "crit": 24
-          },
-          "weaponType": "mace",
-          "allowedClasses": [
-            "Knight",
-            "Warrior",
-            "Healer"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 85,
-          "name": "Reinforced Warhammer"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_muojufg6_l",
@@ -631,7 +646,7 @@
           "name": "Dreadforged Helm"
         },
         "shoulders": {
-          "id": "itm_muomqqgn_h",
+          "id": "itm_mux6dzq6_m",
           "slotType": "shoulders",
           "rarity": "epic",
           "itemLevel": 60,
@@ -642,11 +657,10 @@
             "armor": 18,
             "faith": 25,
             "sta": 25,
-            "crit": 15,
-            "int": 7
+            "crit": 22
           },
           "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
+          "name": "Dreadforged Pauldrons"
         },
         "chest": {
           "name": "Shroud of the Hollow King",
@@ -790,59 +804,67 @@
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_mun7kdwn_2",
+          "id": "itm_mv38ae1y_p",
           "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "faith": 25,
-            "sta": 25,
-            "int": 22
+            "faith": 47,
+            "sta": 47,
+            "crit": 13,
+            "int": 27
           },
           "weaponType": "staff",
           "allowedClasses": [
             "Mage",
-            "Healer"
+            "Healer",
+            "Druid",
+            "Necromancer"
           ],
           "weaponSpeed": 3,
-          "weaponDamage": 84,
-          "name": "Reinforced Staff"
+          "weaponDamage": 158,
+          "name": "Sanctified Staff"
         },
         "offHand": {
-          "id": "itm_mun7vqad_h",
+          "id": "itm_mv38ae1x_o",
           "slotType": "offHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "faith": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
+            "faith": 31,
+            "sta": 31,
+            "crit": 19,
+            "int": 9
           },
           "weaponType": "relic",
           "allowedClasses": [
-            "Healer"
+            "Healer",
+            "Druid"
           ],
-          "name": "Dreadforged Relic"
+          "name": "Radiant Relic"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589850
+        "The Hollow King": 1792293789867,
+        "Azgaroth, the Ashen Tyrant": 1792291982757
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 4
+        "The Hollow King:Shroud of the Hollow King": 0,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 0,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Quinn",
@@ -852,58 +874,63 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9999158370393499,
-      "Flame Breath": 0.9944026373506227,
-      "Pyroclasm": 0.9627610450998465,
-      "Inferno Rift": 0.994115116797915,
-      "Soul Eruption": 0.9964568080584004,
+      "Rain of Fire": 0.9999573809298311,
+      "Flame Breath": 0.9963617142779048,
+      "Pyroclasm": 0.967229719687865,
+      "Inferno Rift": 0.9948213027821652,
+      "Soul Eruption": 0.9973384675956126,
       "Shadow Bolt": 0.49663999999999997,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
-      "Doom": 0.5736016645821373,
+      "Hunter's Grudge": 0.8779645616594162,
+      "Doom": 0.5863936146446732,
       "Cleave": 0.12,
-      "Safe Revive": 0.6243316793470233,
-      "Tyrant's Gaze": 0.24883199999999997,
-      "Immolation": 0.12
+      "Safe Revive": 0.871757071569518,
+      "Tyrant's Gaze": 0.33897215999999997,
+      "Immolation": 0.318528,
+      "Cyclone": 0.6104509881406466,
+      "Thunderstorm": 0.7399833785626341,
+      "Sovereign's Wrath": 0.428
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
       "bag": [],
       "equipped": {
         "head": {
-          "id": "itm_mun7x74k_0",
+          "id": "itm_muxp7i1l_l",
           "slotType": "head",
-          "rarity": "uncommon",
+          "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
             "armor": 24,
-            "faith": 21,
-            "sta": 21,
-            "haste": 18
+            "faith": 34,
+            "sta": 34,
+            "haste": 9,
+            "int": 10,
+            "crit": 9
           },
           "armorType": "cloth",
-          "name": "Polished Helm"
+          "name": "Sanctified Helm"
         },
         "shoulders": {
           "id": "itm_muomqqgn_j",
@@ -925,26 +952,27 @@
           "name": "Sanctified Pauldrons"
         },
         "chest": {
-          "name": "Shroud of the Hollow King",
+          "name": "Cinderweave Robes",
           "slotType": "chest",
           "rarity": "epic",
           "armorType": "cloth",
           "allowedClasses": [
             "Mage",
-            "Healer"
+            "Healer",
+            "Necromancer"
           ],
           "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
+            "int": 40,
+            "faith": 40,
+            "sta": 45,
+            "haste": 25,
+            "armor": 45
           },
-          "id": "itm_mun8usc1_k",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "id": "itm_mv38ae1y_q",
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "bossOnly": true
         },
         "hands": {
@@ -984,20 +1012,20 @@
           "name": "Dreadforged Greaves"
         },
         "feet": {
-          "id": "itm_muomj20o_m",
+          "id": "itm_mv38ae1y_r",
           "slotType": "feet",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "haste": 7,
-            "crit": 8,
-            "int": 7
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "int": 9,
+            "crit": 9,
+            "haste": 8
           },
           "armorType": "cloth",
           "name": "Sanctified Boots"
@@ -1076,7 +1104,7 @@
           "name": "Dreadforged Warhammer"
         },
         "offHand": {
-          "id": "itm_mun7iz4y_j",
+          "id": "itm_muywdsp8_g",
           "slotType": "offHand",
           "rarity": "epic",
           "itemLevel": 60,
@@ -1086,13 +1114,13 @@
           "stats": {
             "faith": 27,
             "sta": 27,
-            "int": 8,
-            "crit": 8,
-            "haste": 7
+            "haste": 8,
+            "crit": 15
           },
           "weaponType": "relic",
           "allowedClasses": [
-            "Healer"
+            "Healer",
+            "Druid"
           ],
           "name": "Sanctified Relic"
         }
@@ -1100,14 +1128,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589850
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 3,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 0,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Orin",
@@ -1117,37 +1149,40 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9998097034950317,
-      "Flame Breath": 0.998524996263411,
-      "Pyroclasm": 0.9495841841351768,
-      "Inferno Rift": 0.9943010317137145,
+      "Rain of Fire": 0.9999036362310034,
+      "Flame Breath": 0.9990979098397581,
+      "Pyroclasm": 0.9556340820389555,
+      "Inferno Rift": 0.9949849079080688,
       "Shadow Bolt": 0.49663999999999997,
-      "Soul Eruption": 0.9924497506015696,
+      "Soul Eruption": 0.9944986394320834,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8570343974454265,
-      "Doom": 0.6758387420567338,
+      "Hunter's Grudge": 0.8851768560653447,
+      "Doom": 0.713022369062271,
       "Cleave": 0.12,
-      "Safe Revive": 0.871757071569518,
-      "Tyrant's Gaze": 0.428,
-      "Immolation": 0.12
+      "Safe Revive": 0.8994904564477659,
+      "Tyrant's Gaze": 0.49663999999999997,
+      "Immolation": 0.318528,
+      "Cyclone": 0.609081216402496,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479491199299698
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -1298,22 +1333,38 @@
           },
           "name": "Sanctified Ring"
         },
-        "ring2": null,
+        "ring2": {
+          "id": "itm_mv38ae1y_t",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "faith": 22,
+            "sta": 22,
+            "crit": 6,
+            "int": 6,
+            "haste": 6
+          },
+          "name": "Radiant Ring"
+        },
         "trinket": {
-          "id": "itm_muomhgxd_k",
+          "id": "itm_mv38ae1y_u",
           "slotType": "trinket",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "faith": 23,
-            "sta": 23,
-            "int": 7,
-            "crit": 14
+            "faith": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
           },
-          "name": "Radiant Charm"
+          "name": "Sanctified Charm"
         },
         "mainHand": {
           "id": "itm_muok1reo_o",
@@ -1362,14 +1413,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 2
+        "The Hollow King:Shroud of the Hollow King": 0,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Ilya",
@@ -1379,37 +1434,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9999231867382147,
-      "Flame Breath": 0.9897405973120054,
-      "Pyroclasm": 0.9627610450998465,
-      "Inferno Rift": 0.9947901552135043,
-      "Soul Eruption": 0.9848370142923265,
+      "Rain of Fire": 0.9999703804726939,
+      "Flame Breath": 0.9909717256345647,
+      "Pyroclasm": 0.967229719687865,
+      "Inferno Rift": 0.9954153365878838,
+      "Soul Eruption": 0.9918393599396558,
       "Shadow Bolt": 0.318528,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7379584316727537,
-      "Doom": 0.7814720476692553,
+      "Hunter's Grudge": 0.7763213172758625,
+      "Doom": 0.7943870496520024,
       "Cleave": 0.12,
-      "Safe Revive": 0.5989929314568422,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Safe Revive": 0.6659723381249049,
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479843608895824
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -1433,21 +1490,21 @@
           "name": "Sturdy Helm"
         },
         "shoulders": {
-          "id": "itm_muoop2ae_1",
+          "id": "itm_mux6dzq7_r",
           "slotType": "shoulders",
-          "rarity": "uncommon",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Bone Archer",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
-            "armor": 17,
-            "faith": 15,
-            "sta": 15,
-            "haste": 14
+            "armor": 18,
+            "faith": 25,
+            "sta": 25,
+            "haste": 22
           },
           "armorType": "cloth",
-          "name": "Reinforced Pauldrons"
+          "name": "Sanctified Pauldrons"
         },
         "chest": {
           "name": "Shroud of the Hollow King",
@@ -1508,22 +1565,22 @@
           "name": "Sanctified Greaves"
         },
         "feet": {
-          "id": "itm_muomhgxe_m",
+          "id": "itm_mv38ae1y_w",
           "slotType": "feet",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 18,
-            "faith": 25,
-            "sta": 25,
-            "haste": 15,
-            "crit": 7
+            "armor": 21,
+            "faith": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
           },
           "armorType": "cloth",
-          "name": "Dreadforged Boots"
+          "name": "Sanctified Boots"
         },
         "neck": {
           "id": "itm_muokskqr_i",
@@ -1542,7 +1599,7 @@
           "name": "Dreadforged Amulet"
         },
         "ring1": {
-          "id": "itm_muojufg6_q",
+          "id": "itm_muxp7i1l_p",
           "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
@@ -1552,9 +1609,8 @@
           "stats": {
             "faith": 19,
             "sta": 19,
-            "haste": 5,
-            "crit": 5,
-            "int": 5
+            "haste": 10,
+            "crit": 5
           },
           "name": "Sanctified Ring"
         },
@@ -1577,19 +1633,19 @@
         },
         "trinket": null,
         "mainHand": {
-          "id": "itm_muomj20p_p",
+          "id": "itm_mv38ae1y_v",
           "slotType": "mainHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "faith": 40,
-            "sta": 40,
-            "haste": 12,
-            "int": 12,
-            "crit": 11
+            "faith": 47,
+            "sta": 47,
+            "haste": 13,
+            "int": 14,
+            "crit": 13
           },
           "weaponType": "mace",
           "allowedClasses": [
@@ -1599,39 +1655,46 @@
             "Druid"
           ],
           "weaponSpeed": 2.8,
-          "weaponDamage": 126,
+          "weaponDamage": 147,
           "name": "Sanctified Warhammer"
         },
         "offHand": {
-          "id": "itm_mun4dusg_4",
+          "id": "itm_muwyfnvo_n",
           "slotType": "offHand",
-          "rarity": "common",
+          "rarity": "rare",
           "itemLevel": 60,
           "requiredLevel": 57,
           "sourceType": "mob",
-          "source": "Forge Guardian",
+          "source": "Flameweaver",
           "stats": {
-            "faith": 13,
-            "sta": 13
+            "faith": 20,
+            "sta": 20,
+            "int": 9,
+            "haste": 9
           },
           "weaponType": "relic",
           "allowedClasses": [
-            "Healer"
+            "Healer",
+            "Druid"
           ],
-          "name": "Simple Relic"
+          "name": "Valiant Relic"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 3
+        "The Hollow King:Shroud of the Hollow King": 2,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Mira",
@@ -1641,62 +1704,46 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9998790979931806,
-      "Pyroclasm": 0.978477698999673,
-      "Flame Breath": 0.9979413112003199,
-      "Inferno Rift": 0.9957905347885392,
-      "Shadow Bolt": 0.5413508828106854,
-      "Soul Eruption": 0.9933158184938629,
+      "Rain of Fire": 0.9999145496085142,
+      "Pyroclasm": 0.9816285638661209,
+      "Flame Breath": 0.998661852280208,
+      "Inferno Rift": 0.9962956706139144,
+      "Shadow Bolt": 0.5551103563263649,
+      "Soul Eruption": 0.9952757944926858,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8004603802568999,
+      "Hunter's Grudge": 0.8244051346260719,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Storm Call": 0.6132685894449799,
+      "Thunderstorm": 0.6585162357274966,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_muoml2l0_f",
-          "slotType": "shoulders",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 78,
-            "str": 21,
-            "sta": 21,
-            "haste": 9,
-            "crit": 8
-          },
-          "armorType": "plate",
-          "name": "Valiant Pauldrons"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
-          "id": "itm_mun9dny3_i",
+          "id": "itm_mux6dzq7_s",
           "slotType": "head",
           "rarity": "epic",
           "itemLevel": 60,
@@ -1707,28 +1754,30 @@
             "armor": 96,
             "str": 34,
             "sta": 34,
-            "haste": 19,
+            "haste": 9,
+            "crit": 10,
             "agi": 9
           },
           "armorType": "plate",
           "name": "Dreadforged Helm"
         },
         "shoulders": {
-          "id": "itm_mun5u6j3_7",
+          "id": "itm_mv38ae1y_x",
           "slotType": "shoulders",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 72,
-            "str": 16,
-            "sta": 16,
-            "crit": 13
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 9,
+            "crit": 17
           },
           "armorType": "plate",
-          "name": "Polished Pauldrons"
+          "name": "Dreadforged Pauldrons"
         },
         "chest": {
           "id": "itm_mun7vqag_m",
@@ -1867,32 +1916,33 @@
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_muoopy57_l",
+          "id": "itm_mv38ae1y_y",
           "slotType": "mainHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "str": 40,
-            "sta": 40,
-            "crit": 23,
-            "agi": 12
+            "str": 47,
+            "sta": 47,
+            "agi": 13,
+            "crit": 14,
+            "haste": 13
           },
-          "weaponType": "mace",
+          "weaponType": "sword",
           "allowedClasses": [
             "Knight",
             "Warrior",
-            "Healer",
-            "Druid"
+            "Rogue",
+            "Valkyrie"
           ],
-          "weaponSpeed": 2.8,
+          "weaponSpeed": 2.4,
           "weaponDamage": 126,
-          "name": "Sanctified Warhammer"
+          "name": "Dreadforged Longsword"
         },
         "offHand": {
-          "id": "itm_muolhcjd_o",
+          "id": "itm_mv39d4fg_l",
           "slotType": "offHand",
           "rarity": "epic",
           "itemLevel": 60,
@@ -1900,29 +1950,37 @@
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
+            "armor": 180,
+            "blockChance": 0.04,
             "str": 27,
             "sta": 27,
-            "haste": 16,
-            "crit": 7
+            "haste": 15,
+            "crit": 8
           },
-          "weaponType": "axe",
+          "weaponType": "shield",
           "allowedClasses": [
-            "Warrior"
+            "Knight",
+            "Warrior",
+            "Valkyrie"
           ],
-          "name": "Dreadforged Axe"
+          "name": "Sanctified Bulwark"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
+        "The Hollow King:Crown of the Hollow King": 2,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Brakka",
@@ -1932,36 +1990,40 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9996512056486454,
-      "Flame Breath": 0.9944026373506227,
-      "Pyroclasm": 0.9699609438853484,
-      "Inferno Rift": 0.987459799923705,
-      "Soul Eruption": 0.9843423589320052,
-      "Shadow Bolt": 0.48192381999655615,
+      "Rain of Fire": 0.9997608767942261,
+      "Flame Breath": 0.995074320868548,
+      "Pyroclasm": 0.9751279018495174,
+      "Inferno Rift": 0.9892956852148745,
+      "Soul Eruption": 0.9878747227569448,
+      "Shadow Bolt": 0.4974661053966595,
       "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.8526127808715738,
+      "Hunter's Grudge": 0.8702992471669849,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.49663999999999997,
+      "Immolation": 0.318528,
+      "Rekindle": 0.03,
+      "Storm Call": 0.5975244388764192,
+      "Thunderstorm": 0.6584375306589308,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -2003,61 +2065,63 @@
           "name": "Dreadforged Pauldrons"
         },
         "chest": {
-          "name": "Shroud of the Hollow King",
+          "name": "Cinderweave Robes",
           "slotType": "chest",
           "rarity": "epic",
           "armorType": "cloth",
           "allowedClasses": [
             "Mage",
-            "Healer"
+            "Healer",
+            "Necromancer"
           ],
           "stats": {
-            "int": 30,
-            "faith": 30,
-            "sta": 34,
-            "haste": 18,
-            "armor": 35
+            "int": 40,
+            "faith": 40,
+            "sta": 45,
+            "haste": 25,
+            "armor": 45
           },
-          "id": "itm_mun8usc4_r",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "id": "itm_mv38ae1y_z",
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "bossOnly": true
         },
         "hands": {
-          "id": "itm_muoomfbq_9",
+          "id": "itm_mux6dzq7_u",
           "slotType": "hands",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Forge Guardian",
-          "stats": {
-            "armor": 18,
-            "int": 13,
-            "sta": 13
-          },
-          "armorType": "cloth",
-          "name": "Simple Gauntlets"
-        },
-        "legs": {
-          "id": "itm_muomj20p_r",
-          "slotType": "legs",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
+            "armor": 18,
+            "int": 25,
+            "sta": 25,
+            "haste": 22
           },
           "armorType": "cloth",
-          "name": "Dreadforged Greaves"
+          "name": "Sanctified Gauntlets"
+        },
+        "legs": {
+          "id": "itm_mv38ae1y_10",
+          "slotType": "legs",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 22,
+            "haste": 12
+          },
+          "armorType": "cloth",
+          "name": "Sanctified Greaves"
         },
         "feet": {
           "id": "itm_muomgqal_a",
@@ -2109,9 +2173,24 @@
           "name": "Dreadforged Ring"
         },
         "ring2": null,
-        "trinket": null,
+        "trinket": {
+          "id": "itm_mv38ae1y_11",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "int": 27,
+            "sta": 27,
+            "crit": 8,
+            "haste": 16
+          },
+          "name": "Sanctified Charm"
+        },
         "mainHand": {
-          "id": "itm_muojufg7_t",
+          "id": "itm_muywdsp9_m",
           "slotType": "mainHand",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2121,16 +2200,18 @@
           "stats": {
             "int": 40,
             "sta": 40,
-            "crit": 12,
-            "haste": 23
+            "haste": 35
           },
-          "weaponType": "wand",
+          "weaponType": "staff",
           "allowedClasses": [
-            "Mage"
+            "Mage",
+            "Healer",
+            "Druid",
+            "Necromancer"
           ],
-          "weaponSpeed": 2,
-          "weaponDamage": 90,
-          "name": "Radiant Wand"
+          "weaponSpeed": 3,
+          "weaponDamage": 135,
+          "name": "Radiant Staff"
         },
         "offHand": {
           "id": "itm_mun7tri8_k",
@@ -2155,14 +2236,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 0,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 0,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Hask",
@@ -2172,36 +2257,40 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9998589775744516,
-      "Flame Breath": 0.9980030718643103,
-      "Pyroclasm": 0.9448509221453987,
-      "Inferno Rift": 0.9942916632939774,
-      "Soul Eruption": 0.9873488946273198,
+      "Rain of Fire": 0.9998972464126463,
+      "Flame Breath": 0.998242703240593,
+      "Pyroclasm": 0.954337004729013,
+      "Inferno Rift": 0.995273542874107,
+      "Soul Eruption": 0.9902029839993964,
       "Shadow Bolt": 0.4493823148013138,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
+      "Hunter's Grudge": 0.8702992471669849,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Rekindle": 0.0591,
+      "Lightning Breath": 0.6109772532860251,
+      "Thunderstorm": 0.658507373722701,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -2226,7 +2315,7 @@
           "name": "Dreadforged Helm"
         },
         "shoulders": {
-          "id": "itm_muolu3xf_p",
+          "id": "itm_muxp7i1m_t",
           "slotType": "shoulders",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2237,11 +2326,11 @@
             "armor": 36,
             "agi": 25,
             "sta": 25,
-            "haste": 14,
-            "crit": 8
+            "crit": 14,
+            "haste": 8
           },
           "armorType": "leather",
-          "name": "Dreadforged Pauldrons"
+          "name": "Radiant Pauldrons"
         },
         "chest": {
           "id": "itm_mun7tri9_l",
@@ -2262,7 +2351,7 @@
           "name": "Dreadforged Chestguard"
         },
         "hands": {
-          "id": "itm_muolnu7j_1d",
+          "id": "itm_muywdsp9_n",
           "slotType": "hands",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2273,28 +2362,29 @@
             "armor": 36,
             "agi": 25,
             "sta": 25,
-            "haste": 14,
-            "crit": 8
+            "haste": 7,
+            "crit": 15
           },
           "armorType": "leather",
-          "name": "Sanctified Gauntlets"
+          "name": "Radiant Gauntlets"
         },
         "legs": {
-          "id": "itm_mun4dbzc_8",
+          "id": "itm_mv38ae1y_13",
           "slotType": "legs",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 48,
-            "agi": 21,
-            "sta": 21,
-            "crit": 18
+            "armor": 56,
+            "agi": 39,
+            "sta": 39,
+            "crit": 11,
+            "haste": 23
           },
           "armorType": "leather",
-          "name": "Polished Greaves"
+          "name": "Dreadforged Greaves"
         },
         "feet": {
           "id": "itm_mun7vqah_p",
@@ -2371,18 +2461,18 @@
           "name": "Radiant Longsword"
         },
         "offHand": {
-          "id": "itm_muok1rep_t",
+          "id": "itm_mv38ae1y_12",
           "slotType": "offHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "agi": 27,
-            "sta": 27,
-            "crit": 15,
-            "haste": 8
+            "agi": 31,
+            "sta": 31,
+            "haste": 19,
+            "crit": 9
           },
           "weaponType": "dagger",
           "allowedClasses": [
@@ -2394,14 +2484,17 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Bonecarver": 3
+        "The Hollow King:Bonecarver": 0,
+        "Azgaroth, the Ashen Tyrant:Emberfang": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Elara",
@@ -2411,36 +2504,39 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9997567962429499,
-      "Flame Breath": 0.9984793775911452,
-      "Pyroclasm": 0.9650193712888397,
-      "Inferno Rift": 0.9957836149330516,
-      "Soul Eruption": 0.9965631038166484,
+      "Rain of Fire": 0.9998730357325367,
+      "Flame Breath": 0.9986618522802078,
+      "Pyroclasm": 0.9701405353321536,
+      "Inferno Rift": 0.9962895811410853,
+      "Soul Eruption": 0.9976437644988138,
       "Shadow Bolt": 0.39669773818368,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7298540532708799,
+      "Hunter's Grudge": 0.7622715668783744,
       "Doom": 0.71207808,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Thunderstorm": 0.658494973980776,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Storm Call": 0.5946217915633133
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -2483,7 +2579,7 @@
           "name": "Polished Pauldrons"
         },
         "chest": {
-          "id": "itm_muolhcjd_r",
+          "id": "itm_muxp7i1m_u",
           "slotType": "chest",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2494,12 +2590,11 @@
             "armor": 96,
             "str": 34,
             "sta": 34,
-            "crit": 9,
-            "agi": 10,
+            "crit": 19,
             "haste": 9
           },
           "armorType": "plate",
-          "name": "Sanctified Chestguard"
+          "name": "Dreadforged Chestguard"
         },
         "hands": {
           "id": "itm_muok1rep_v",
@@ -2538,38 +2633,39 @@
           "name": "Sanctified Greaves"
         },
         "feet": {
-          "id": "itm_mun4cx78_4",
+          "id": "itm_mv38ae1y_14",
           "slotType": "feet",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 72,
-            "str": 16,
-            "sta": 16,
-            "haste": 13
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 18,
+            "agi": 8
           },
           "armorType": "plate",
-          "name": "Reinforced Boots"
+          "name": "Radiant Boots"
         },
         "neck": {
-          "id": "itm_mun8usc5_u",
+          "id": "itm_mv38ae1y_15",
           "slotType": "neck",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "str": 19,
-            "sta": 19,
-            "agi": 5,
-            "crit": 5,
-            "haste": 5
+            "str": 22,
+            "sta": 22,
+            "agi": 6,
+            "crit": 6,
+            "haste": 6
           },
-          "name": "Dreadforged Amulet"
+          "name": "Radiant Amulet"
         },
         "ring1": {
           "id": "itm_muokskqr_m",
@@ -2670,14 +2766,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
+        "The Hollow King:Crown of the Hollow King": 4,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Corvin",
@@ -2687,109 +2787,79 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9997575938711668,
-      "Flame Breath": 0.9984793775911454,
-      "Pyroclasm": 0.970862115568788,
-      "Inferno Rift": 0.9904508785735807,
-      "Shadow Bolt": 0.48192381999655615,
-      "Soul Eruption": 0.9884536777061997,
+      "Rain of Fire": 0.9998387990445123,
+      "Flame Breath": 0.9986618522802079,
+      "Pyroclasm": 0.9751279018495175,
+      "Inferno Rift": 0.9939792789406426,
+      "Shadow Bolt": 0.4974661053966595,
+      "Soul Eruption": 0.9913267721752107,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8004603802568999,
+      "Hunter's Grudge": 0.8296729805872898,
       "Doom": 0.610198016,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.33897215999999997,
+      "Immolation": 0.318528,
+      "Storm Call": 0.5975244388764192,
+      "Cyclone": 0.608495940343454,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479148858955025
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mun5sjbv_c",
-          "slotType": "feet",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 20,
-            "int": 21,
-            "sta": 21,
-            "haste": 9,
-            "crit": 8
-          },
-          "armorType": "cloth",
-          "name": "Blessed Boots"
-        },
-        {
-          "id": "itm_mun9af2v_a",
-          "slotType": "feet",
-          "rarity": "rare",
-          "itemLevel": 65,
-          "requiredLevel": 62,
-          "sourceType": "mob",
-          "source": "Molten Giant",
-          "stats": {
-            "armor": 20,
-            "int": 21,
-            "sta": 21,
-            "crit": 17
-          },
-          "armorType": "cloth",
-          "name": "Blessed Boots"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
-          "id": "itm_mun4qv58_2",
+          "id": "itm_mux6dzq7_y",
           "slotType": "head",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 24,
-            "int": 17,
-            "sta": 17
-          },
-          "armorType": "cloth",
-          "name": "Simple Helm"
-        },
-        "shoulders": {
-          "id": "itm_mun7iz50_q",
-          "slotType": "shoulders",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
+            "armor": 24,
+            "int": 34,
+            "sta": 34,
+            "crit": 28
           },
           "armorType": "cloth",
-          "name": "Sanctified Pauldrons"
+          "name": "Radiant Helm"
+        },
+        "shoulders": {
+          "id": "itm_mv38ae1y_17",
+          "slotType": "shoulders",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
+          },
+          "armorType": "cloth",
+          "name": "Dreadforged Pauldrons"
         },
         "chest": {
           "id": "itm_muomqqgo_r",
@@ -2810,7 +2880,7 @@
           "name": "Dreadforged Chestguard"
         },
         "hands": {
-          "id": "itm_muolhcjd_s",
+          "id": "itm_mv39d4fg_s",
           "slotType": "hands",
           "rarity": "epic",
           "itemLevel": 60,
@@ -2821,8 +2891,8 @@
             "armor": 18,
             "int": 25,
             "sta": 25,
-            "crit": 14,
-            "haste": 8
+            "crit": 7,
+            "haste": 15
           },
           "armorType": "cloth",
           "name": "Radiant Gauntlets"
@@ -2846,21 +2916,22 @@
           "name": "Dreadforged Greaves"
         },
         "feet": {
-          "id": "itm_muok0x3s_9",
+          "id": "itm_mv38ae1y_16",
           "slotType": "feet",
-          "rarity": "uncommon",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Crypt Ghoul",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 17,
-            "int": 15,
-            "sta": 15,
-            "haste": 14
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "crit": 18,
+            "haste": 8
           },
           "armorType": "cloth",
-          "name": "Sturdy Boots"
+          "name": "Radiant Boots"
         },
         "neck": {
           "id": "itm_mun9dny5_n",
@@ -2892,7 +2963,21 @@
           },
           "name": "Sanctified Ring"
         },
-        "ring2": null,
+        "ring2": {
+          "id": "itm_muywdsp9_p",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "int": 19,
+            "sta": 19,
+            "crit": 15
+          },
+          "name": "Dreadforged Ring"
+        },
         "trinket": {
           "id": "itm_muomj20p_v",
           "slotType": "trinket",
@@ -2958,14 +3043,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 0
+        "The Hollow King:Shroud of the Hollow King": 0,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Rook",
@@ -2975,57 +3064,43 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9993778336880208,
-      "Flame Breath": 0.9990924841672343,
-      "Pyroclasm": 0.9604869391053111,
-      "Inferno Rift": 0.9956532112711871,
+      "Rain of Fire": 0.9996751987263729,
+      "Flame Breath": 0.9992013860671661,
+      "Pyroclasm": 0.9662716512202936,
+      "Inferno Rift": 0.9964008937068528,
       "Crushing Blow": 0.610198016,
-      "Soul Eruption": 0.9909357705255967,
+      "Soul Eruption": 0.9937858293823526,
       "Shadow Bolt": 0.4147968060381696,
-      "Hunter's Grudge": 0.721499023990598,
+      "Hunter's Grudge": 0.7549191411117262,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Rekindle": 0.03,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6478285049275249
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_murzvpku_i",
-          "slotType": "legs",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Magma Hound",
-          "stats": {
-            "armor": 48,
-            "agi": 17,
-            "sta": 17
-          },
-          "armorType": "leather",
-          "name": "Simple Greaves"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_mun8usc6_x",
@@ -3099,54 +3174,54 @@
           "name": "Radiant Gauntlets"
         },
         "legs": {
-          "id": "itm_mun4br5g_3",
+          "id": "itm_mv39cnrt_8",
           "slotType": "legs",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "rarity": "uncommon",
+          "itemLevel": 63,
+          "requiredLevel": 60,
           "sourceType": "mob",
-          "source": "Cinder Imp",
+          "source": "Hollow Deathguard",
           "stats": {
-            "armor": 48,
-            "agi": 17,
-            "sta": 17
+            "armor": 50,
+            "agi": 22,
+            "sta": 22,
+            "haste": 19
           },
           "armorType": "leather",
-          "name": "Plain Greaves"
+          "name": "Sturdy Greaves"
         },
         "feet": {
-          "id": "itm_muoopy57_t",
+          "id": "itm_mv38ae1y_19",
           "slotType": "feet",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 36,
-            "agi": 25,
-            "sta": 25,
-            "crit": 14,
-            "haste": 8
+            "armor": 42,
+            "agi": 29,
+            "sta": 29,
+            "haste": 26
           },
           "armorType": "leather",
-          "name": "Sanctified Boots"
+          "name": "Radiant Boots"
         },
         "neck": {
-          "id": "itm_muolnu7j_1g",
+          "id": "itm_mv38ae1y_18",
           "slotType": "neck",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "agi": 19,
-            "sta": 19,
-            "crit": 10,
-            "haste": 5
+            "agi": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
           },
-          "name": "Sanctified Amulet"
+          "name": "Radiant Amulet"
         },
         "ring1": {
           "id": "itm_muokskqr_o",
@@ -3226,14 +3301,17 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Bonecarver": 0
+        "The Hollow King:Bonecarver": 1,
+        "Azgaroth, the Ashen Tyrant:Emberfang": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Ryn",
@@ -3243,57 +3321,42 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9998031725067683,
-      "Flame Breath": 0.9961099283682735,
-      "Pyroclasm": 0.9639374961740617,
-      "Inferno Rift": 0.9979634805013902,
-      "Shadow Bolt": 0.4323529018570245,
-      "Soul Eruption": 0.9980668923097548,
+      "Rain of Fire": 0.9999033191496588,
+      "Flame Breath": 0.9965767369640807,
+      "Pyroclasm": 0.9779447135976136,
+      "Inferno Rift": 0.9982616269559866,
+      "Shadow Bolt": 0.4493823148013138,
+      "Soul Eruption": 0.9989908231484719,
       "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.806446568849193,
+      "Hunter's Grudge": 0.8296729805872898,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479489525110198
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_mus034xw_7",
-          "slotType": "chest",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 96,
-            "str": 17,
-            "sta": 17
-          },
-          "armorType": "plate",
-          "name": "Plain Chestguard"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
           "id": "itm_muomhgxe_x",
@@ -3351,20 +3414,22 @@
           "name": "Dreadforged Chestguard"
         },
         "hands": {
-          "id": "itm_mun7kdwr_5",
+          "id": "itm_mv38ae1y_1b",
           "slotType": "hands",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 72,
-            "str": 13,
-            "sta": 13
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "agi": 17,
+            "haste": 9
           },
           "armorType": "plate",
-          "name": "Plain Gauntlets"
+          "name": "Radiant Gauntlets"
         },
         "legs": {
           "id": "itm_muolhcjd_v",
@@ -3433,7 +3498,22 @@
           },
           "name": "Radiant Ring"
         },
-        "ring2": null,
+        "ring2": {
+          "id": "itm_muywdsp9_s",
+          "slotType": "ring",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
+          "stats": {
+            "str": 19,
+            "sta": 19,
+            "crit": 10,
+            "agi": 5
+          },
+          "name": "Radiant Ring"
+        },
         "trinket": {
           "id": "itm_muojufg7_z",
           "slotType": "trinket",
@@ -3452,60 +3532,67 @@
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_mun71s4p_a",
+          "id": "itm_mv39d4fg_u",
           "slotType": "mainHand",
-          "rarity": "uncommon",
-          "itemLevel": 63,
-          "requiredLevel": 60,
-          "sourceType": "mob",
-          "source": "Hollow Deathguard",
+          "rarity": "epic",
+          "itemLevel": 60,
+          "requiredLevel": 56,
+          "sourceType": "boss",
+          "source": "The Hollow King",
           "stats": {
-            "str": 27,
-            "sta": 27,
-            "crit": 22
+            "str": 40,
+            "sta": 40,
+            "haste": 12,
+            "agi": 23
           },
           "weaponType": "axe",
           "allowedClasses": [
             "Warrior"
           ],
           "weaponSpeed": 2.8,
-          "weaponDamage": 83,
-          "name": "Sturdy Axe"
+          "weaponDamage": 126,
+          "name": "Dreadforged Axe"
         },
         "offHand": {
-          "id": "itm_mun6k1e8_1",
+          "id": "itm_mv38ae1y_1c",
           "slotType": "offHand",
-          "rarity": "uncommon",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Bone Archer",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 109,
-            "blockChance": 0.02,
-            "str": 16,
-            "sta": 16,
-            "haste": 14
+            "armor": 210,
+            "blockChance": 0.04,
+            "str": 31,
+            "sta": 31,
+            "crit": 18,
+            "haste": 10
           },
           "weaponType": "shield",
           "allowedClasses": [
             "Knight",
-            "Warrior"
+            "Warrior",
+            "Valkyrie"
           ],
-          "name": "Polished Bulwark"
+          "name": "Dreadforged Bulwark"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589851
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 3
+        "The Hollow King:Crown of the Hollow King": 3,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 0,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Magnus",
@@ -3515,36 +3602,39 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40092767953731767,
-        0.8018553590746353
+        0.40039933562220326,
+        0.8007986712444065
       ],
-      "awareness": 0.7490723204626824,
-      "mistakeRate": 0.04018553590746353,
+      "awareness": 0.7496006643777967,
+      "mistakeRate": 0.040079867124440643,
       "inputDelay": [
-        0.20069575965298822,
-        0.5013915193059764
+        0.2002995017166524,
+        0.5005990034333048
       ],
-      "lapsePerSec": 0.020092767953731765,
-      "positioning": 0.5986084806940235,
-      "decisionNoise": 0.3006957596529882,
-      "healAccuracy": 0.6993042403470117
+      "lapsePerSec": 0.020039933562220322,
+      "positioning": 0.5994009965666951,
+      "decisionNoise": 0.30029950171665243,
+      "healAccuracy": 0.6997004982833475
     },
     "mastery": {
-      "Rain of Fire": 0.9998960066609675,
-      "Flame Breath": 0.9890961816473646,
-      "Pyroclasm": 0.9650193712888396,
-      "Inferno Rift": 0.9885360836019532,
-      "Soul Eruption": 0.9869790282416181,
+      "Rain of Fire": 0.9999586595019361,
+      "Flame Breath": 0.9904046398496809,
+      "Pyroclasm": 0.9701405353321535,
+      "Inferno Rift": 0.9899117535697188,
+      "Soul Eruption": 0.9948237698416474,
       "Shadow Bolt": 0.4147968060381696,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8526127808715738,
+      "Hunter's Grudge": 0.9125643819616612,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.428,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.49663999999999997,
+      "Immolation": 0.318528,
+      "Cyclone": 0.6089874340478387,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479781722170223
     },
     "potential": "average",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -3604,22 +3694,22 @@
           "name": "Sturdy Pauldrons"
         },
         "chest": {
-          "id": "itm_mun7tric_r",
+          "id": "itm_mv38ae1y_1d",
           "slotType": "chest",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 19,
-            "crit": 9
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "crit": 23,
+            "haste": 11
           },
           "armorType": "cloth",
-          "name": "Radiant Chestguard"
+          "name": "Sanctified Chestguard"
         },
         "hands": {
           "id": "itm_muojxtcb_2",
@@ -3640,7 +3730,7 @@
           "name": "Valiant Gauntlets"
         },
         "legs": {
-          "id": "itm_muokskqs_q",
+          "id": "itm_muxp7i1m_z",
           "slotType": "legs",
           "rarity": "epic",
           "itemLevel": 60,
@@ -3651,8 +3741,8 @@
             "armor": 24,
             "int": 34,
             "sta": 34,
-            "haste": 18,
-            "crit": 10
+            "haste": 19,
+            "crit": 9
           },
           "armorType": "cloth",
           "name": "Sanctified Greaves"
@@ -3676,7 +3766,7 @@
         },
         "neck": null,
         "ring1": {
-          "id": "itm_muomhgxf_z",
+          "id": "itm_mux6dzq8_12",
           "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
@@ -3686,8 +3776,8 @@
           "stats": {
             "int": 19,
             "sta": 19,
-            "crit": 10,
-            "haste": 5
+            "crit": 5,
+            "haste": 10
           },
           "name": "Radiant Ring"
         },
@@ -3746,38 +3836,42 @@
           "name": "Polished Staff"
         },
         "offHand": {
-          "id": "itm_muomj20p_10",
+          "id": "itm_mv38ae1y_1e",
           "slotType": "offHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "int": 27,
-            "sta": 27,
-            "haste": 16,
-            "crit": 7
+            "int": 31,
+            "sta": 31,
+            "haste": 18,
+            "crit": 10
           },
           "weaponType": "orb",
           "allowedClasses": [
             "Mage",
             "Necromancer"
           ],
-          "name": "Radiant Orb"
+          "name": "Dreadforged Orb"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 2,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Sera",
@@ -3787,36 +3881,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9993409227214325,
-      "Pyroclasm": 0.9836111812907536,
-      "Flame Breath": 0.998808222284848,
-      "Inferno Rift": 0.997483638158289,
-      "Soul Eruption": 0.975395740792555,
-      "Shadow Bolt": 0.6054949425934413,
+      "Rain of Fire": 0.9995481558944642,
+      "Pyroclasm": 0.9864301892192937,
+      "Flame Breath": 0.9992485841505967,
+      "Inferno Rift": 0.9977856015792943,
+      "Soul Eruption": 0.9831320395111744,
+      "Shadow Bolt": 0.617330094315638,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.7379584316727535,
+      "Hunter's Grudge": 0.7694034198720231,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6477614263122771,
+      "Lightning Breath": 0.6115626759756472
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -3946,7 +4043,7 @@
           "name": "Radiant Amulet"
         },
         "ring1": {
-          "id": "itm_muok1req_13",
+          "id": "itm_mv39d4fg_w",
           "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
@@ -3956,26 +4053,42 @@
           "stats": {
             "agi": 19,
             "sta": 19,
-            "haste": 15
+            "crit": 5,
+            "haste": 10
           },
           "name": "Radiant Ring"
         },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muojufg7_12",
-          "slotType": "trinket",
+        "ring2": {
+          "id": "itm_muxp7i1m_11",
+          "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "agi": 23,
-            "sta": 23,
-            "crit": 7,
-            "haste": 14
+            "agi": 19,
+            "sta": 19,
+            "haste": 10,
+            "crit": 5
           },
-          "name": "Dreadforged Charm"
+          "name": "Sanctified Ring"
+        },
+        "trinket": {
+          "id": "itm_mv38ae1y_1f",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "agi": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
+          },
+          "name": "Sanctified Charm"
         },
         "mainHand": {
           "id": "itm_muomhgxf_10",
@@ -4002,35 +4115,39 @@
           "name": "Sanctified Longsword"
         },
         "offHand": {
-          "id": "itm_mun7nvpo_6",
+          "id": "itm_mv38ae1y_1g",
           "slotType": "offHand",
-          "rarity": "common",
-          "itemLevel": 58,
-          "requiredLevel": 55,
-          "sourceType": "mob",
-          "source": "Crypt Ghoul",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "agi": 13,
-            "sta": 13
+            "agi": 31,
+            "sta": 31,
+            "haste": 28
           },
           "weaponType": "dagger",
           "allowedClasses": [
             "Rogue"
           ],
-          "name": "Simple Dagger"
+          "name": "Sanctified Dagger"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Bonecarver": 2
+        "The Hollow King:Bonecarver": 1,
+        "Azgaroth, the Ashen Tyrant:Emberfang": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Talos",
@@ -4040,36 +4157,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9996999860450022,
-      "Flame Breath": 0.9990056506188243,
-      "Pyroclasm": 0.9628221610041873,
-      "Inferno Rift": 0.9962672646160392,
-      "Soul Eruption": 0.982371607465575,
-      "Shadow Bolt": 0.4147968060381696,
+      "Rain of Fire": 0.9998004896310253,
+      "Flame Breath": 0.9993536729022358,
+      "Pyroclasm": 0.969217046734179,
+      "Inferno Rift": 0.9968137370762511,
+      "Soul Eruption": 0.9871553721676,
+      "Shadow Bolt": 0.4323529018570245,
       "Crushing Blow": 0.610198016,
-      "Hunter's Grudge": 0.745819678722571,
+      "Hunter's Grudge": 0.7763213172758625,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Rekindle": 0.03,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6478946585251814
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -4207,45 +4327,62 @@
           },
           "name": "Radiant Amulet"
         },
-        "ring1": null,
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muolhcje_z",
-          "slotType": "trinket",
+        "ring1": {
+          "id": "itm_muywdsp9_w",
+          "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
           "sourceType": "boss",
           "source": "The Hollow King",
           "stats": {
-            "str": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
+            "str": 19,
+            "sta": 19,
+            "crit": 5,
+            "haste": 5,
+            "agi": 5
+          },
+          "name": "Dreadforged Ring"
+        },
+        "ring2": null,
+        "trinket": {
+          "id": "itm_mv38ae1y_1i",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "str": 27,
+            "sta": 27,
+            "haste": 8,
+            "agi": 8,
+            "crit": 8
           },
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_muokskqs_t",
+          "id": "itm_mv38ae1y_1j",
           "slotType": "mainHand",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "str": 40,
-            "sta": 40,
-            "agi": 24,
-            "crit": 11
+            "str": 47,
+            "sta": 47,
+            "agi": 13,
+            "haste": 27
           },
           "weaponType": "axe",
           "allowedClasses": [
             "Warrior"
           ],
           "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Sanctified Axe"
+          "weaponDamage": 147,
+          "name": "Dreadforged Axe"
         },
         "offHand": {
           "id": "itm_muojufg7_13",
@@ -4274,14 +4411,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982758
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 0
+        "The Hollow King:Crown of the Hollow King": 2,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 0,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Vera",
@@ -4291,36 +4432,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2516234391903058,
-        0.5032468783806116
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8983765608096942,
-      "mistakeRate": 0.015301495849628225,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10115959942164704,
-        0.30231919884329395
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008148428725970821,
-      "positioning": 0.8474488812723764,
-      "decisionNoise": 0.1513915193059764,
-      "healAccuracy": 0.8486084806940235
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
-      "Rain of Fire": 0.9997343998027408,
-      "Flame Breath": 0.9988062631453498,
-      "Pyroclasm": 0.9660687901501747,
-      "Inferno Rift": 0.9885548979757678,
-      "Soul Eruption": 0.9474841676317279,
-      "Shadow Bolt": 0.4974661053966595,
+      "Rain of Fire": 0.9998655033834782,
+      "Flame Breath": 0.9989495115679078,
+      "Pyroclasm": 0.9710363192721891,
+      "Inferno Rift": 0.9899283102186757,
+      "Soul Eruption": 0.9617352336146421,
+      "Shadow Bolt": 0.5125421222347597,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.9266100829998447,
+      "Hunter's Grudge": 0.9537276573314021,
       "Doom": 0.4722680832,
       "Cleave": 0.35,
-      "Tyrant's Gaze": 0.44516,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.5117408,
+      "Immolation": 0.318528,
+      "Cyclone": 0.6061382765472693,
+      "Thunderstorm": 0.6584911162128823,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 51,
+    "experience": 59,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -4415,25 +4559,42 @@
           "name": "Sanctified Greaves"
         },
         "feet": {
-          "id": "itm_muomhgxf_13",
+          "id": "itm_mv38ae1z_1l",
           "slotType": "feet",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 18,
-            "int": 25,
-            "sta": 25,
-            "haste": 22
+            "armor": 21,
+            "int": 29,
+            "sta": 29,
+            "haste": 9,
+            "crit": 17
           },
           "armorType": "cloth",
-          "name": "Dreadforged Boots"
+          "name": "Radiant Boots"
         },
         "neck": {
-          "id": "itm_muolnu7k_1m",
+          "id": "itm_mv38ae1z_1k",
           "slotType": "neck",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "int": 22,
+            "sta": 22,
+            "haste": 12,
+            "crit": 6
+          },
+          "name": "Sanctified Amulet"
+        },
+        "ring1": {
+          "id": "itm_mv39d4fg_y",
+          "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
           "requiredLevel": 56,
@@ -4444,21 +4605,6 @@
             "sta": 19,
             "haste": 10,
             "crit": 5
-          },
-          "name": "Sanctified Amulet"
-        },
-        "ring1": {
-          "id": "itm_mun7trie_v",
-          "slotType": "ring",
-          "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "int": 19,
-            "sta": 19,
-            "crit": 15
           },
           "name": "Sanctified Ring"
         },
@@ -4540,14 +4686,18 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982759
       },
       "pity": {
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 1,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59
   },
   {
     "name": "Maddy",
@@ -4557,36 +4707,39 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.25180382132256196,
-        0.5036076426451239
+        0.2507764859320617,
+        0.5015529718641234
       ],
-      "awareness": 0.898196178677438,
-      "mistakeRate": 0.015334995388475806,
+      "awareness": 0.8992235140679381,
+      "mistakeRate": 0.015144204530240046,
       "inputDelay": [
-        0.10128844380183004,
-        0.30257688760365997
+        0.10055463280861557,
+        0.30110926561723106
       ],
-      "lapsePerSec": 0.008164920806634245,
-      "positioning": 0.8471654236359738,
-      "decisionNoise": 0.151546132562196,
-      "healAccuracy": 0.8484538674378039
+      "lapsePerSec": 0.008070992999502792,
+      "positioning": 0.8487798078210458,
+      "decisionNoise": 0.15066555937033868,
+      "healAccuracy": 0.8493344406296612
     },
     "mastery": {
-      "Rain of Fire": 0.9995780542234737,
-      "Flame Breath": 0.9960865313114176,
-      "Pyroclasm": 0.9776419165182738,
-      "Inferno Rift": 0.9917369630666208,
-      "Soul Eruption": 0.9917408994627375,
+      "Rain of Fire": 0.9997797236478758,
+      "Flame Breath": 0.9965561475540474,
+      "Pyroclasm": 0.980324886536081,
+      "Inferno Rift": 0.9927285274986264,
+      "Soul Eruption": 0.9939821471285968,
       "Shadow Bolt": 0.5807152115989386,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8809136554042344,
+      "Hunter's Grudge": 0.8952040167557263,
       "Doom": 0.4722680832,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.12,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.47795104399999994,
+      "Immolation": 0.318528,
+      "Lightning Breath": 0.6099956778764556,
+      "Thunderstorm": 0.658447183263496,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 50,
+    "experience": 58,
     "gear": {
       "className": "Necromancer",
       "bagSize": 30,
@@ -4669,19 +4822,19 @@
           "name": "Sanctified Gauntlets"
         },
         "legs": {
-          "id": "itm_muolu3xg_11",
+          "id": "itm_mv38ae1z_1n",
           "slotType": "legs",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 24,
-            "int": 34,
-            "sta": 34,
-            "haste": 18,
-            "crit": 10
+            "armor": 28,
+            "int": 39,
+            "sta": 39,
+            "haste": 11,
+            "crit": 23
           },
           "armorType": "cloth",
           "name": "Radiant Greaves"
@@ -4737,18 +4890,18 @@
           "name": "Radiant Ring"
         },
         "trinket": {
-          "id": "itm_muolmq0a_h",
+          "id": "itm_mv38ae1z_1m",
           "slotType": "trinket",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "class change",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "int": 23,
-            "sta": 23,
-            "crit": 14,
-            "haste": 7
+            "int": 27,
+            "sta": 27,
+            "haste": 16,
+            "crit": 8
           },
           "name": "Dreadforged Charm"
         },
@@ -4774,16 +4927,16 @@
           "name": "Radiant Scythe"
         },
         "offHand": {
-          "id": "itm_muolmq0a_j",
+          "id": "itm_mv3al85v_4",
           "slotType": "offHand",
           "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "itemLevel": 62,
+          "requiredLevel": 59,
           "sourceType": "mob",
-          "source": "class change",
+          "source": "Gale Wisp",
           "stats": {
-            "int": 13,
-            "sta": 13
+            "int": 14,
+            "sta": 14
           },
           "weaponType": "orb",
           "allowedClasses": [
@@ -4796,19 +4949,24 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982759
       },
       "pity": {
         "The Hollow King:Bonecarver": 0,
-        "The Hollow King:Shroud of the Hollow King": 1
+        "The Hollow King:Shroud of the Hollow King": 1,
+        "Azgaroth, the Ashen Tyrant:Cinderweave Robes": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 50
+    "kills": 20,
+    "attempts": 58,
+    "body": "female"
   },
   {
-    "name": "Fenn",
-    "className": "Warrior",
+    "name": "Valk",
+    "className": "Valkyrie",
     "skill": "casual",
     "personality": "greedy",
     "profile": {
@@ -4829,298 +4987,261 @@
       "healAccuracy": 0.55
     },
     "mastery": {
-      "Rain of Fire": 0.9999464404346431,
-      "Flame Breath": 0.9921876619643903,
-      "Pyroclasm": 0.9413868871775943,
-      "Inferno Rift": 0.9915323344787155,
-      "Soul Eruption": 0.9924373388979193,
+      "Rain of Fire": 0.9999585234725876,
+      "Flame Breath": 0.9931251425286635,
+      "Pyroclasm": 0.948420460716283,
+      "Inferno Rift": 0.9925484543412696,
+      "Soul Eruption": 0.9941434752425486,
       "Shadow Bolt": 0.39669773818368,
       "Crushing Blow": 0.4722680832,
       "Doom": 0.610198016,
-      "Hunter's Grudge": 0.8004603802568999,
+      "Hunter's Grudge": 0.8244051346260719,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.2256,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.318528,
+      "Immolation": 0.318528,
+      "Sovereign's Wrath": 0.5774999999999999,
+      "Thunderstorm": 0.6479781003935262
     },
     "potential": "casual",
-    "experience": 51,
+    "experience": 59,
     "gear": {
-      "className": "Warrior",
+      "className": "Valkyrie",
       "bagSize": 30,
-      "bag": [
-        {
-          "id": "itm_murzpa5y_5",
-          "slotType": "legs",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "armor": 96,
-            "str": 17,
-            "sta": 17
-          },
-          "armorType": "plate",
-          "name": "Worn Greaves"
-        },
-        {
-          "id": "itm_murzvpkt_6",
-          "slotType": "mainHand",
-          "rarity": "common",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Flameweaver",
-          "stats": {
-            "str": 20,
-            "sta": 20
-          },
-          "weaponType": "axe",
-          "allowedClasses": [
-            "Warrior"
-          ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 63,
-          "name": "Worn Axe"
-        },
-        {
-          "id": "itm_mus034xw_4",
-          "slotType": "legs",
-          "rarity": "uncommon",
-          "itemLevel": 60,
-          "requiredLevel": 57,
-          "sourceType": "mob",
-          "source": "Cinder Imp",
-          "stats": {
-            "armor": 96,
-            "str": 21,
-            "sta": 21,
-            "haste": 18
-          },
-          "armorType": "plate",
-          "name": "Polished Greaves"
-        }
-      ],
+      "bag": [],
       "equipped": {
         "head": {
-          "id": "itm_mun9dnyb_x",
+          "name": "Crown of the Ashen Tyrant",
           "slotType": "head",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
-          "sourceType": "boss",
-          "source": "The Hollow King",
-          "stats": {
-            "armor": 96,
-            "str": 34,
-            "sta": 34,
-            "crit": 9,
-            "haste": 19
-          },
           "armorType": "plate",
-          "name": "Radiant Helm"
+          "allowedClasses": [
+            "Knight",
+            "Warrior",
+            "Valkyrie"
+          ],
+          "stats": {
+            "str": 45,
+            "sta": 55,
+            "faith": 20,
+            "armor": 170,
+            "blockChance": 0.03
+          },
+          "id": "itm_mv38ae1z_1o",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "bossOnly": true
         },
         "shoulders": {
-          "id": "itm_mun7vqam_13",
+          "id": "itm_muwyfiet_1",
           "slotType": "shoulders",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "armor": 72,
             "str": 25,
             "sta": 25,
-            "agi": 7,
-            "crit": 15
+            "crit": 15,
+            "haste": 7
           },
           "armorType": "plate",
-          "name": "Dreadforged Pauldrons"
+          "name": "Radiant Pauldrons"
         },
         "chest": {
-          "id": "itm_muomhgxf_15",
+          "id": "itm_muwyfiet_2",
           "slotType": "chest",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
-            "armor": 96,
+            "armor": 105,
             "str": 34,
             "sta": 34,
-            "crit": 9,
             "agi": 10,
-            "haste": 9
+            "crit": 9
           },
           "armorType": "plate",
-          "name": "Dreadforged Chestguard"
+          "name": "Radiant Chestguard"
         },
         "hands": {
-          "id": "itm_muomqqgp_14",
+          "id": "itm_mv38ae1z_1q",
           "slotType": "hands",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 72,
-            "str": 25,
-            "sta": 25,
-            "agi": 14,
-            "crit": 8
+            "armor": 84,
+            "str": 29,
+            "sta": 29,
+            "crit": 9,
+            "haste": 17
           },
           "armorType": "plate",
-          "name": "Dreadforged Gauntlets"
+          "name": "Radiant Gauntlets"
         },
         "legs": {
-          "id": "itm_muomj20q_16",
+          "id": "itm_muwyfiet_4",
           "slotType": "legs",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "armor": 96,
             "str": 34,
             "sta": 34,
-            "crit": 9,
-            "agi": 19
+            "crit": 19,
+            "agi": 9
           },
           "armorType": "plate",
           "name": "Dreadforged Greaves"
         },
         "feet": {
-          "id": "itm_mun8uscf_17",
+          "id": "itm_muwyfiet_5",
           "slotType": "feet",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "armor": 72,
             "str": 25,
             "sta": 25,
             "haste": 7,
-            "agi": 8,
-            "crit": 7
+            "crit": 8,
+            "agi": 7
           },
           "armorType": "plate",
-          "name": "Sanctified Boots"
+          "name": "Dreadforged Boots"
         },
         "neck": {
-          "id": "itm_muok1req_17",
+          "id": "itm_muwyfiet_6",
           "slotType": "neck",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "str": 19,
             "sta": 19,
+            "armor": 5,
             "agi": 5,
-            "haste": 10
+            "haste": 5
           },
           "name": "Sanctified Amulet"
         },
         "ring1": {
-          "id": "itm_muokskqs_x",
+          "id": "itm_muwyfieu_7",
           "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "str": 19,
             "sta": 19,
-            "haste": 5,
-            "agi": 10
+            "crit": 5,
+            "agi": 5,
+            "haste": 5
           },
           "name": "Sanctified Ring"
         },
         "ring2": null,
         "trinket": {
-          "id": "itm_muoopy58_11",
+          "id": "itm_mv38ae1z_1p",
           "slotType": "trinket",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 56,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "str": 23,
-            "sta": 23,
-            "haste": 7,
-            "agi": 7,
-            "crit": 7
+            "str": 27,
+            "sta": 27,
+            "crit": 24
           },
           "name": "Sanctified Charm"
         },
         "mainHand": {
-          "id": "itm_muolnu7k_1p",
+          "id": "itm_muwyfieu_9",
           "slotType": "mainHand",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
             "str": 40,
             "sta": 40,
-            "agi": 12,
-            "haste": 23
+            "crit": 23,
+            "armor": 12
           },
-          "weaponType": "axe",
+          "weaponType": "sword",
           "allowedClasses": [
-            "Warrior"
+            "Knight",
+            "Warrior",
+            "Rogue",
+            "Valkyrie"
           ],
-          "weaponSpeed": 2.8,
-          "weaponDamage": 126,
-          "name": "Dreadforged Axe"
+          "weaponSpeed": 2.4,
+          "weaponDamage": 108,
+          "name": "Dreadforged Longsword"
         },
         "offHand": {
-          "id": "itm_muojufg8_16",
+          "id": "itm_muwyfieu_a",
           "slotType": "offHand",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 56,
+          "requiredLevel": 57,
           "sourceType": "boss",
-          "source": "The Hollow King",
+          "source": "class change",
           "stats": {
-            "armor": 180,
+            "armor": 188,
             "blockChance": 0.04,
             "str": 27,
             "sta": 27,
             "agi": 8,
-            "haste": 8,
             "crit": 7
           },
           "weaponType": "shield",
           "allowedClasses": [
             "Knight",
-            "Warrior"
+            "Warrior",
+            "Valkyrie"
           ],
-          "name": "Dreadforged Bulwark"
+          "name": "Sanctified Bulwark"
         }
       }
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982759
       },
       "pity": {
-        "The Hollow King:Crown of the Hollow King": 1
+        "The Hollow King:Crown of the Hollow King": 5,
+        "The Hollow King:Gravewing Spear": 4,
+        "Azgaroth, the Ashen Tyrant:Crown of the Ashen Tyrant": 0,
+        "Azgaroth, the Ashen Tyrant:Emberwing Lance": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Tyrantsbane, Greatblade of Cinders": 1
       }
     },
-    "kills": 15,
-    "attempts": 51
+    "kills": 20,
+    "attempts": 59,
+    "body": "male"
   },
   {
     "name": "Courtney",
@@ -5130,36 +5251,38 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.25180382132256196,
-        0.5036076426451239
+        0.2507764859320617,
+        0.5015529718641234
       ],
-      "awareness": 0.898196178677438,
-      "mistakeRate": 0.015334995388475806,
+      "awareness": 0.8992235140679381,
+      "mistakeRate": 0.015144204530240046,
       "inputDelay": [
-        0.10128844380183004,
-        0.30257688760365997
+        0.10055463280861557,
+        0.30110926561723106
       ],
-      "lapsePerSec": 0.008164920806634245,
-      "positioning": 0.8471654236359738,
-      "decisionNoise": 0.151546132562196,
-      "healAccuracy": 0.8484538674378039
+      "lapsePerSec": 0.008070992999502792,
+      "positioning": 0.8487798078210458,
+      "decisionNoise": 0.15066555937033868,
+      "healAccuracy": 0.8493344406296612
     },
     "mastery": {
-      "Rain of Fire": 0.9993948600744686,
-      "Flame Breath": 0.9908477764343842,
-      "Pyroclasm": 0.9814876857417986,
-      "Inferno Rift": 0.9858349690242092,
-      "Soul Eruption": 0.9645391221542802,
+      "Rain of Fire": 0.9995975797531651,
+      "Flame Breath": 0.9940510546823497,
+      "Pyroclasm": 0.9837091634527827,
+      "Inferno Rift": 0.987908729559065,
+      "Soul Eruption": 0.9725390961962745,
       "Shadow Bolt": 0.4323529018570245,
       "Crushing Blow": 0.4722680832,
-      "Hunter's Grudge": 0.8613233655220638,
-      "Doom": 0.48810004070400004,
+      "Hunter's Grudge": 0.8779645616594162,
+      "Doom": 0.5328027284494419,
       "Cleave": 0.12,
-      "Tyrant's Gaze": 0.24883199999999997,
-      "Immolation": 0.12
+      "Tyrant's Gaze": 0.33897215999999997,
+      "Immolation": 0.318528,
+      "Thunderstorm": 0.6583538964463811,
+      "Sovereign's Wrath": 0.5774999999999999
     },
     "potential": "skilled",
-    "experience": 50,
+    "experience": 58,
     "gear": {
       "className": "Druid",
       "bagSize": 30,
@@ -5206,23 +5329,23 @@
           "bossOnly": true
         },
         "chest": {
-          "id": "itm_muolmq0a_2",
+          "id": "itm_mv38ae1z_1s",
           "slotType": "chest",
           "rarity": "epic",
-          "itemLevel": 60,
-          "requiredLevel": 57,
+          "itemLevel": 70,
+          "requiredLevel": 60,
           "sourceType": "boss",
-          "source": "class change",
+          "source": "Azgaroth, the Ashen Tyrant",
           "stats": {
-            "armor": 48,
-            "int": 22,
-            "faith": 22,
-            "sta": 22,
-            "haste": 20,
-            "crit": 10
+            "armor": 56,
+            "int": 26,
+            "faith": 26,
+            "sta": 26,
+            "haste": 22,
+            "crit": 12
           },
           "armorType": "leather",
-          "name": "Radiant Chestguard"
+          "name": "Sanctified Chestguard"
         },
         "hands": {
           "id": "itm_muolmq0a_3",
@@ -5299,23 +5422,38 @@
           },
           "name": "Dreadforged Ring"
         },
-        "ring2": null,
-        "trinket": {
-          "id": "itm_muolmq0a_6",
-          "slotType": "trinket",
+        "ring2": {
+          "id": "itm_muxp7i1m_18",
+          "slotType": "ring",
           "rarity": "epic",
           "itemLevel": 60,
-          "requiredLevel": 57,
+          "requiredLevel": 56,
           "sourceType": "boss",
-          "source": "class change",
+          "source": "The Hollow King",
           "stats": {
-            "int": 16,
-            "faith": 16,
-            "sta": 16,
-            "haste": 13,
+            "int": 12,
+            "faith": 12,
+            "sta": 12,
+            "haste": 11,
             "crit": 6
           },
-          "name": "Dreadforged Charm"
+          "name": "Radiant Ring"
+        },
+        "trinket": {
+          "id": "itm_mv38ae1z_1r",
+          "slotType": "trinket",
+          "rarity": "epic",
+          "itemLevel": 70,
+          "requiredLevel": 60,
+          "sourceType": "boss",
+          "source": "Azgaroth, the Ashen Tyrant",
+          "stats": {
+            "int": 18,
+            "faith": 18,
+            "sta": 18,
+            "haste": 24
+          },
+          "name": "Sanctified Charm"
         },
         "mainHand": {
           "id": "itm_muolu3xg_14",
@@ -5368,14 +5506,19 @@
     },
     "lootState": {
       "lockouts": {
-        "The Hollow King": 1791412589852
+        "The Hollow King": 1792293789868,
+        "Azgaroth, the Ashen Tyrant": 1792291982759
       },
       "pity": {
         "The Hollow King:Shroud of the Hollow King": 4,
-        "The Hollow King:Barrowroot Mantle": 1
+        "The Hollow King:Barrowroot Mantle": 2,
+        "Azgaroth, the Ashen Tyrant:Ashbark Vestments": 1,
+        "Azgaroth, the Ashen Tyrant:Heart of the Worldforge": 1,
+        "Azgaroth, the Ashen Tyrant:Staff of the Last Ember": 1
       }
     },
-    "kills": 15,
-    "attempts": 50
+    "kills": 20,
+    "attempts": 58,
+    "body": "female"
   }
 ]

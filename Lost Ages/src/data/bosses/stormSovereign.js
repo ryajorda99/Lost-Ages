@@ -12,6 +12,9 @@
 //   - Ion Surge: a player is charged with lightning — a healer/druid must CLEANSE it within 6s or they die.
 //   - Recharge: if not interrupted he heals 6% of his health.
 //   - Skyborne: in phase 3 he takes to the sky — 85% less damage taken while Sky Strikes hunt 2 players every 3s.
+//   - SOVEREIGN'S WRATH (a DPS check): at 70% and 40% health he soars into the storm and gathers a world-ending
+//     bolt, wrapped in the storm (half damage taken). The raid has 10 seconds to knock 18% off his health and STAGGER him — then he crashes down,
+//     stunned for 8s and taking 50% more damage. Too little damage and the bolt wipes the raid.
 //   - Conduit: every death charges the storm (more damage, faster attacks).
 //   - Enrage at 100s: EYE OF THE HURRICANE kills everyone.
 // Logic lives in src/entities/Boss.js.
@@ -72,6 +75,35 @@ const stormSovereign = {
     b.haste += 3;
     b.hp = Math.min(b.maxHp, b.hp + b.maxHp * 0.005);
     b.announce(`${b.name} absorbs ${player.name}'s life as lightning! (${charge} charge${charge > 1 ? "s" : ""}: +${charge * 6}% damage, +${charge * 3}% attack speed)`);
+  },
+
+  // SOVEREIGN'S WRATH — the DPS check (see updateStaggerCheck in src/entities/Boss.js)
+  staggerCheck: {
+    name: "Sovereign's Wrath",
+    at: [0.7, 0.4],
+    window: 10,          // seconds to stagger him
+    need: 0.18,          // 18% of his health in that time (~59,000 damage)...
+    damageTaken: 0.5,    // ...while the storm shields him from half of it — the whole raid has to go all out
+    stunTime: 8,
+    vulnerable: 1.5,     // takes 50% more damage while staggered
+    onStart(b) {
+      b.announce(`${b.name} soars into the storm and gathers SOVEREIGN'S WRATH! STAGGER HIM — deal ${Math.round(b.ascend.need).toLocaleString()} damage in ${b.ascend.dur}s or the raid dies!`);
+    },
+    // Gale-force winds batter the raid while he charges (healers can't relax either)
+    onTick(b, ctx, dt) {
+      b.ascend.tick -= dt;
+      if (b.ascend.tick > 0) return;
+      b.ascend.tick = 2;
+      for (const p of b.enemiesInRange(ctx, 80)) b.dealDamage(p, 2.5 * b.power, "nature");
+    },
+    onSuccess(b) {
+      b.announce(`${b.name} is STAGGERED! He crashes to the ground — stunned for 8s and taking 50% more damage. GO ALL IN!`);
+    },
+    onFail(b, ctx) {
+      b.announce(`SOVEREIGN'S WRATH — the storm breaks over the raid. Not enough damage to stagger ${b.name} (${Math.floor(b.staggerResult.progress * 100)}%).`);
+      // twice, so second lives (a Valkyrie's Pegasus) don't save anyone — this is a true wipe
+      for (let k = 0; k < 2; k++) for (const p of ctx.enemies || []) b.lethal(p, "Sovereign's Wrath (not staggered in time)");
+    },
   },
 
   gearScaling: false,

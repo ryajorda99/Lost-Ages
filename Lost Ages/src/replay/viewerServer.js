@@ -73,9 +73,11 @@ function startViewerServer({ port = 3000, routes = null } = {}) {
     }
 
     // Which 3D models are in viewer/models/ (the 3D viewer uses them instead of the placeholder figures)
+    // (animations/ inside it holds one animation per file: idle.glb, run.glb, knight-attack.glb...)
     if (url === "/api/models") {
       const dir = path.join(VIEWER_DIR, "models");
-      const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => /\.(glb|gltf)$/i.test(f)) : [];
+      const list = (d, prefix = "") => fs.existsSync(d) ? fs.readdirSync(d).filter(f => /\.(glb|gltf)$/i.test(f)).map(f => prefix + f) : [];
+      const files = [...list(dir), ...list(path.join(dir, "animations"), "animations/")];
       return send(res, 200, "application/json", JSON.stringify(files));
     }
 

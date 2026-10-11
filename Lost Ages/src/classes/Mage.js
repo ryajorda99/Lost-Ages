@@ -91,7 +91,7 @@ const MAGE_ABILITIES = {
       const hit = m.enemiesInRange(ctx, 8, impact);
       for (const e of hit) m.dealDamage(e, 40 + m.int * 3, "fire");
       m.placeZone({
-        position: impact.position, radius: 8, duration: 6, tickEvery: 1,
+        name: "Burning Ground", position: impact.position, radius: 8, duration: 6, tickEvery: 1,
         onTick: (caster, inside) => inside.forEach(e => caster.dealDamage(e, caster.int * 0.5, "fire")),
       });
       return { targetsHit: hit.length };

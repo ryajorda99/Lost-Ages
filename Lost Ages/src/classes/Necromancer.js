@@ -6,14 +6,14 @@
 //                          damage and 15% damage reduction, but you're in range of the boss's
 //                          cleaves, breath attacks and fire. Good players swap back out when it gets dangerous.
 //
-// Raise Corrupted (both stances): summons 2 Corrupted Servants for 20 seconds. They run at
+// Raise Corrupted (both stances): summons 6 Corrupted Servants for 20 seconds. They run at
 // the Necromancer's target and every hit stacks Corrupted Poison on it (up to 5 stacks).
 // Servants can't be attacked, and crumble when they expire or the Necromancer dies.
 
 const { Character, MELEE_RANGE, isHostile, distance } = require("./Character");
 
 const RANGED_ATTACK_RANGE = 25;
-const SERVANT_COUNT = 2;
+const SERVANT_COUNT = 6;
 const SERVANT_LIFETIME = 20;
 const POISON_MAX_STACKS = 5;
 
@@ -41,21 +41,24 @@ function applyCorruptedPoison(necro, target) {
 // ---------------------------------------------------------------------
 class CorruptedServant extends Character {
   constructor(owner, n) {
+    // Spread them evenly in a circle around the Necromancer. (It must be Math.PI * 2 — one full
+    // circle. With * 6 every servant landed on one of just two spots, so 6 looked like 2.)
     const angle = (n / SERVANT_COUNT) * Math.PI * 2;
     super("Corrupted Servant", owner.level, {
       x: owner.position.x + Math.cos(angle) * 1.5, y: owner.position.y + Math.sin(angle) * 1.5,
     }, {
       className: "CorruptedServant",
       role: "pet",
-      baseStats: { armor: 30 },
+      baseStats: { armor: 80, crit: 5 },
       hp: { base: Math.round(owner.maxHp * 0.5), perLevel: 0 },
       resource: { name: "Energy", max: 100, regen: 10, startsFull: true },
-      weapon: { damage: 2 + owner.int * 0.12, speed: 1.8 },
+      weapon: { damage: 5 + owner.int * 0.12, speed: 1.8 },
       abilities: {},
     });
     this.owner = owner;
     this.isPet = true;
     this.lifetime = SERVANT_LIFETIME;
+    this.slotAngle = angle;   // where it stands around the target, so they don't all pile into one spot
   }
 
   // Servants hit THROUGH their master, so the damage counts as the Necromancer's
@@ -78,11 +81,14 @@ class CorruptedServant extends Character {
     const t = this.owner.target;
     this.target = t && !t.isDead && isHostile(this.owner, t) ? t : null;
     if (this.target) {
-      const d = distance(this, this.target);
-      if (d > MELEE_RANGE - 1) {
-        const step = Math.min(d - (MELEE_RANGE - 1.5), 7 * dt);   // they run fast (7 m/s)
-        this.position.x += ((this.target.position.x - this.position.x) / d) * step;
-        this.position.y += ((this.target.position.y - this.position.y) / d) * step;
+      // Each servant runs to its own spot in a ring around the target
+      const r = MELEE_RANGE - 1.5;
+      const spot = { x: this.target.position.x + Math.cos(this.slotAngle) * r, y: this.target.position.y + Math.sin(this.slotAngle) * r };
+      const dx = spot.x - this.position.x, dy = spot.y - this.position.y, d = Math.hypot(dx, dy);
+      if (d > 0.5) {
+        const step = Math.min(d, 7 * dt);   // they run fast (7 m/s)
+        this.position.x += (dx / d) * step;
+        this.position.y += (dy / d) * step;
       }
       this.enterCombat();
     }
@@ -117,7 +123,7 @@ const NECROMANCER_ABILITIES = {
     cost: 20, cooldown: 0, castTime: 1.8, range: 35, target: "enemy",
     requires: inStance("ranged"),
     execute(n, t) {
-      return { damage: n.dealDamage(t, 12 + n.int * 1.35, "shadow") };
+      return { damage: n.dealDamage(t, 15 + n.int * 1.35, "shadow") };
     },
   },
 
@@ -157,7 +163,7 @@ const NECROMANCER_ABILITIES = {
   // ---------- Both stances ----------
   raiseCorrupted: {
     name: "Raise Corrupted",
-    cost: 45, cooldown: 40, castTime: 1.5, target: "self",
+    cost: 45, cooldown: 25, castTime: 1.5, target: "self",
     execute(n) {
       n.servants.forEach(s => { s.isDead = true; });   // old ones crumble
       n.servants = Array.from({ length: SERVANT_COUNT }, (_, i) => new CorruptedServant(n, i));

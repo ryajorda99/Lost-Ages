@@ -156,6 +156,8 @@ class Boss extends Enemy {
 
     // Phase check: phases are ordered by hpBelow (1.0, 0.75, 0.5, 0.25)
     const pct = this.hp / this.maxHp;
+    // STAGGER CHECK (a DPS check): at set health the boss starts a raid-wiping attack (def.staggerCheck)
+    if (this.updateStaggerCheck(dt, ctx, pct)) { super.update(dt, ctx); this.minions = this.minions.filter(mn => !mn.isDead); for (const mn of this.minions) mn.update(dt, ctx); return; }
     const next = this.def.phases.findLastIndex(p => pct <= p.hpBelow);
     if (next > this.phaseIndex) this.enterPhase(next, ctx);
 
@@ -189,6 +191,54 @@ class Boss extends Enemy {
     // Minions
     this.minions = this.minions.filter(mn => !mn.isDead);
     for (const mn of this.minions) mn.update(dt, ctx);
+  }
+
+  // ---------------- Stagger check ----------------
+  // def.staggerCheck = { name, at: [0.68, 0.32], window: 12, need: 0.1 (of max HP), stunTime, vulnerable,
+  //                      damageTaken (while charging, e.g. 0.5), onStart, onTick(b, ctx, dt), onSuccess, onFail }
+  // When the boss's health drops to one of the `at` marks it starts the attack: for `window` seconds it does
+  // nothing else, and the raid must deal `need` × its max HP in damage. Enough → STAGGERED (stunned, takes
+  // extra damage). Not enough → the attack goes off (onFail — usually it kills everyone).
+  // Returns true while the attack is being charged (the boss is busy).
+  updateStaggerCheck(dt, ctx, pct) {
+    const sc = this.def.staggerCheck;
+    if (!sc) return false;
+    this.staggerNext ??= 0;
+    if (!this.ascend) {
+      const mark = sc.at[this.staggerNext];
+      if (mark == null || pct > mark || this.enraged || this.transitionTimer > 0 || this.isDead) return false;
+      // Begin: drop whatever it was doing and rise into the sky
+      this.staggerNext++;
+      this.cast = null;
+      if (this.hasBuff("skyborne")) { const i = this.buffs.findIndex(b => b.id === "skyborne"); this.buffs.splice(i, 1); }
+      this.flying = true;
+      this.ascend = { t: 0, dur: sc.window, need: this.maxHp * sc.need, done: 0, lastHp: this.hp, name: sc.name, tick: 0 };
+      if (sc.damageTaken != null) this.addBuff({ id: "ascending", duration: Infinity, mods: { damageTaken: sc.damageTaken } });   // wrapped in the storm
+      sc.onStart?.(this, ctx);
+    }
+    const A = this.ascend;
+    A.t += dt;
+    A.done += Math.max(0, A.lastHp - this.hp);   // only damage counts (heals don't take progress away)
+    A.lastHp = this.hp;
+    this.stunned = Math.max(this.stunned, 0.2);    // too busy to attack or use anything else
+    if (A.done >= A.need || A.t >= A.dur) this.removeBuff("ascending");
+    if (A.done >= A.need) {
+      // STAGGERED: it crashes to the ground, stunned and exposed
+      this.ascend = null; this.flying = false;
+      this.stunned = sc.stunTime ?? 8;
+      this.addBuff({ id: "staggered", duration: sc.stunTime ?? 8, mods: { damageTaken: sc.vulnerable ?? 1.5 } });
+      this.staggerResult = { state: 2, until: this.fightTime + 3, time: A.t };
+      sc.onSuccess?.(this, ctx);
+      return false;
+    }
+    if (A.t >= A.dur) {
+      this.ascend = null; this.flying = false; this.stunned = 0;
+      this.staggerResult = { state: 3, until: this.fightTime + 3, progress: A.done / A.need };
+      sc.onFail?.(this, ctx);
+      return false;
+    }
+    sc.onTick?.(this, ctx, dt);
+    return true;
   }
 
   // ---------------- Phases ----------------

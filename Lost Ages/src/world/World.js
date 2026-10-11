@@ -1,4 +1,4 @@
-// World.js — the open world. You and 4 companions explore; mob camps attack when you get close,
+// World.js — the open world. You and up to 4 companions explore (you pick how many); mob camps attack when you get close,
 // drop loot when they die and come back after a while. Boss doors lead into the raids.
 //
 // It runs in real time inside scripts/play.js and streams to the 3D viewer exactly like a live
@@ -20,6 +20,7 @@ const { rollMobLoot } = require("../items/lootRoller");
 const { formatItem } = require("../items/itemGenerator");
 const { buildWorld, regionAt } = require("./worldMap");
 const BOSSES = require("../data/bosses");
+const { bodyTypeFor } = require("../config/roster");
 const { gearPower, partyGearPower, applyScaling } = require("../utils/enemyScaling");
 
 // ---- Tuning (open-world mobs are raid trash scaled for a 5-person group) ----
@@ -65,6 +66,11 @@ class World {
     this.dirty = false;
     this.region = null;
 
+    // Smaller party = weaker mobs (tuned for 5). Solo: ~half the health, ~60% of the damage.
+    const n = bots.length;
+    this.sizeHp = Math.min(1, 0.4 + 0.12 * n);
+    this.sizeDamage = Math.min(1, 0.5 + 0.1 * n);
+
     // Mobs, one Enemy per mob in every camp (a bit tougher when your party is well geared)
     this.power = partyGearPower(bots.map(b => gearPower(new CLASSES[b.className](b.name, TUNING.level), b.gear)));
     this.mobs = [];
@@ -87,8 +93,8 @@ class World {
     const elite = !!def.elite;
     const m = new Enemy({
       ...def, position: { ...spawn },
-      hp: Math.round(def.hp * (elite ? TUNING.eliteHp : TUNING.mobHp)),
-      damage: def.damage * (elite ? TUNING.eliteDamage : TUNING.mobDamage),
+      hp: Math.round(def.hp * (elite ? TUNING.eliteHp : TUNING.mobHp) * this.sizeHp),
+      damage: def.damage * (elite ? TUNING.eliteDamage : TUNING.mobDamage) * this.sizeDamage,
     });
     applyScaling(m, this.power);
     m.def = def;
@@ -103,6 +109,7 @@ class World {
     const offsets = [[0, 0], [-2.5, 2], [2.5, 2], [-2.5, -2], [2.5, -2]];
     this.party = this.bots.map((b, i) => {
       const c = new CLASSES[b.className](b.name, TUNING.level, { x: at.x + offsets[i][0], y: at.y + offsets[i][1], z: 0 });
+      c.body = bodyTypeFor(b.name, b.body);
       b.gear.applyTo(c);
       b.attach(c);
       b.onSay = (bot, msg) => { if (!this.human.isControlling(bot)) this.event(`💬 [Party] ${bot.name}: ${msg}`); };
@@ -123,6 +130,7 @@ class World {
   refreshCharacter(bot) {
     const i = this.bots.indexOf(bot), old = this.party[i];
     const c = new CLASSES[bot.className](bot.name, TUNING.level, { ...old.position });
+    c.body = old.body;
     bot.gear.applyTo(c);
     if (old.isDead) c.isDead = true; else c.hp = Math.max(1, Math.round(c.maxHp * (old.hp / old.maxHp)));
     c.onDeath = old.onDeath; c.onDismount = old.onDismount;

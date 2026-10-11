@@ -94,7 +94,7 @@ const KNIGHT_ABILITIES = {
     cost: 40, cooldown: 15, target: "self",
     execute(k) {
       k.placeZone({
-        position: { ...k.position }, radius: 5, duration: 10, tickEvery: 1,
+        name: "Holy Grounds", position: { ...k.position }, radius: 5, duration: 10, tickEvery: 1,
         onTick(caster, inside) {
           for (const e of inside) {
             caster.dealDamage(e, caster.faith * 0.4, "holy");
