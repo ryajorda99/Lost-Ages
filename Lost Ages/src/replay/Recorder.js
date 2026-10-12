@@ -48,10 +48,11 @@ class Recorder {
       title,
       fps,
       recordedAt: new Date().toISOString(),
-      // abilities: [key, name, cooldown, cast time] — the 3D viewer's action bar shows these with cooldowns
+      // abilities: [key, name, cooldown, cast time, hotkey?] — the 3D viewer's action bar shows these with cooldowns
+      // (an ability with its own hotkey, like Warp Strike on Q, isn't on the 1–= keys)
       players: party.map(p => ({
         name: p.name, className: p.className, role: p.role, resource: p.resource.name, body: p.body || "male",
-        abilities: Object.entries(p.abilities).map(([k, a]) => [k, a.name, a.cooldown || 0, a.castTime || 0]),
+        abilities: Object.entries(p.abilities).map(([k, a]) => a.hotkey ? [k, a.name, a.cooldown || 0, a.castTime || 0, a.hotkey] : [k, a.name, a.cooldown || 0, a.castTime || 0]),
       })),
       enemies: [],               // filled as enemies appear: { name, maxHp, boss, elite }
       frames: [],
@@ -85,7 +86,7 @@ class Recorder {
   }
 
   petId(pet) {
-    if (!this.petIds.has(pet)) this.petIds.set(pet, this.petIds.size);
+    if (!this.petIds.has(pet)) this.petIds.set(pet, this.nextPetId = (this.nextPetId ?? -1) + 1);
     return this.petIds.get(pet);
   }
 
@@ -158,17 +159,19 @@ class Recorder {
     let cast = null;
     if (boss?.cast) cast = [boss.abilities[boss.cast.key]?.name || boss.cast.key, r2(1 - boss.cast.remaining / boss.cast.total)];
 
-    // Pets: [pet id, owner index, x, y, facing angle]
+    // Pets: [pet id, owner index, x, y, facing angle, hp%]
     const pets = [];
+    for (const pet of this.petIds.keys()) if (pet.isDead) this.petIds.delete(pet);   // forget dead servants (ids stay unique)
     this.party.forEach((p, i) => {
       for (const pet of p.servants || []) {
         if (pet.isDead) continue;
         this.watch(pet);
-        pets.push([this.petId(pet), i, r1(pet.position.x), r1(pet.position.y), facing(pet, pet.target)]);
+        pets.push([this.petId(pet), i, r1(pet.position.x), r1(pet.position.y), facing(pet, pet.target), r2(Math.max(0, pet.hp / pet.maxHp))]);
       }
     });
 
     const frame = { t: r2(time), p: players, e: foes, z: zones };
+    if (this.frameExtra) Object.assign(frame, this.frameExtra());   // the open world adds the time of day
     if (pets.length) frame.pt = pets;
     if (this.actions.length) { frame.a = this.actions; this.actions = []; }
     if (cast) frame.c = cast;

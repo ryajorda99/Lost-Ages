@@ -240,7 +240,7 @@ const HTML = `
   <div class="gbar cast"><div class="f"></div><span></span></div>
   <div id="hud-bar"></div>
   <div class="targets"><span class="en"></span><span class="al"></span></div>
-  <div class="keys"><b>WASD</b> move · <b>1–0 - =</b> abilities · <b>Tab</b> / click enemy = target · <b>click a raid frame</b> = heal/buff/revive target · <b>Esc</b> stop playing</div>
+  <div class="keys"><b>WASD</b> move · <b>1–0 - =</b> abilities<span class="warpKey"> · <b>Q</b> warp strike</span> · <b>Tab</b> / click enemy = target · <b>click a raid frame</b> = heal/buff/revive target · <b>Esc</b> stop playing</div>
 </div>
 <div id="hud-error"></div>
 <div id="hud-log" class="hud-frame">
@@ -319,7 +319,11 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
     player.querySelector(".res .f").style.background = `linear-gradient(${RESOURCE_COLOR[info.resource] || "#3a7bff"}, #0d1a44)`;
     refreshControl();
     bar.innerHTML = "";
-    slots = (info.abilities || []).map(([key, name, cd, castTime], n) => {
+    const kw = player.querySelector(".warpKey");   // the "Q warp strike" hint only for classes that have it (Knight)
+    if (kw) kw.style.display = (info.abilities || []).some(a => a[0] === "warpStrike") ? "" : "none";
+    let num = 0;
+    slots = (info.abilities || []).map(([key, name, cd, castTime, hotkey], n) => {
+      const keyLabel = hotkey || KEYS[num++] || "";
       const el = document.createElement("div");
       el.className = "slot";
       const col = hex(castColor(key));
@@ -327,7 +331,7 @@ export function createHUD({ classColors, onFollow, onTake, onSlot }) {
       el.title = `${name}${castTime ? ` · ${castTime}s cast` : " · instant"}${cd ? ` · ${cd}s cooldown` : ""}`;
       const icon = ICONS[key];
       el.innerHTML = (icon ? icon : `<span class="ini">${name.split(" ").map(w => w[0]).join("").slice(0, 2)}</span>`) +
-        `<span class="key">${KEYS[n] || ""}</span><div class="cd"></div><div class="cdt"></div>`;
+        `<span class="key">${keyLabel}</span><div class="cd"></div><div class="cdt"></div>`;
       el.onclick = () => onSlot?.(key, shown);
       bar.appendChild(el);
       return { key, cd, el, cdt: el.querySelector(".cdt") };

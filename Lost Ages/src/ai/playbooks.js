@@ -136,7 +136,7 @@ const PLAYBOOKS = {
       // Pull: the main tank grabs the boss at the start
       const pull = bot.mainTank && now < 0.3;
       // A non-tank has aggro: any tank should take it back
-      const dpsHasAggro = bossTarget && bossTarget.role !== "tank";
+      const dpsHasAggro = bossTarget && bossTarget.role !== "tank" && !bossTarget.isPet;   // (a Necromancer's servant holding it is fine)
       // Tank swap: the other tank has 3+ Molten Brand stacks and mine have worn off
       const swap = bossTarget && !iAmTanking && bossTarget.role === "tank" && stacks(bossTarget) >= 3 && stacks(k) === 0;
       // Tank swaps are a learned skill (Immolation is what happens when you get it wrong)
@@ -144,14 +144,14 @@ const PLAYBOOKS = {
       const tauntBoss = bot.sees("tauntBoss", !!(pull || dpsHasAggro || swap), now, swap ? swapMechanic : null);
 
       // Off-tank: pick up adds that are chewing on non-tanks
-      const looseAdd = !iAmTanking && (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank");
+      const looseAdd = !iAmTanking && (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank" && !a.pickTarget().isPet);
       const grabAdd = looseAdd && bot.sees(`looseAdd:${looseAdd.name}`, true, now);
 
       const target = !iAmTanking && looseAdd ? looseAdd : b;
       k.setTarget(target);
 
       // Challenge (AoE aggro): pick up enemies that are hitting healers/DPS, or open the pull
-      const looseCount = [b, ...(w.adds || [])].filter(e => !e.isDead && e.pickTarget?.() && e.pickTarget().role !== "tank" && bot.distanceTo(e) < 12).length;
+      const looseCount = [b, ...(w.adds || [])].filter(e => !e.isDead && e.pickTarget?.() && e.pickTarget().role !== "tank" && !e.pickTarget().isPet && bot.distanceTo(e) < 12).length;
       const wantChallenge = (bot.mainTank && now < 0.5) || (looseCount > 0 && bot.sees(`loose:${looseCount}`, true, now));
 
       const busterIncoming = iAmTanking && bot.sees("bossCast:crushingBlow", bossCastIs(b, "crushingBlow"), now, "Crushing Blow");
@@ -167,6 +167,8 @@ const PLAYBOOKS = {
         { key: "sonOfLight", target: k, score: busterIncoming && pct(k) < 0.7 ? 90 : pct(k) < 0.25 ? 85 : 0 },
         { key: "holyTouch", target: k, score: pct(k) < 0.25 ? 88 : 0 },
         { key: "judgment", target, score: 50 },
+        // Shield of Valor also hits everything around you now — use it for damage/aggro when it's up (8s cooldown)
+        { key: "shieldOfValor", target: k, score: bot.distanceTo(target) < 7 ? 47 : 0 },
         { key: "holyGrounds", target: k, score: bot.distanceTo(target) < 5 ? 45 : 0 },
         { key: "righteousStrike", target, score: 40 },
       ];
@@ -409,10 +411,10 @@ const PLAYBOOKS = {
       const bossTarget = b.pickTarget?.();
 
       // Off-tank duty: an add attacking a healer/DPS
-      const looseAdd = (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank");
+      const looseAdd = (w.adds || []).find(a => !a.isDead && a.pickTarget?.() && a.pickTarget().role !== "tank" && !a.pickTarget().isPet);
       const grabAdd = looseAdd && bot.sees(`looseAdd:${looseAdd.name}`, true, now);
       // The boss is on a healer/DPS: taunt it back (the Knights get first chance while they're alive)
-      const loose = !!(bossTarget && bossTarget.role !== "tank");
+      const loose = !!(bossTarget && bossTarget.role !== "tank" && !bossTarget.isPet);
       if (loose && bot.bossLooseSince == null) bot.bossLooseSince = now;
       if (!loose) bot.bossLooseSince = null;
       const waited = loose && (!knightsUp || now - bot.bossLooseSince > 1.5);   // give the Knights 1.5s to fix it first

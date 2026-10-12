@@ -18,13 +18,23 @@ const AURA = {
   mitigation: 0.08,     // and take 8% less damage
 };
 
+// THREAT: every Knight ability that hits something builds EXTRA aggro on top of the Knight's normal
+// 3x threat — this much more per point of damage (so ability damage counts 3 + 2 = 5x)
+const ABILITY_THREAT = 2;
+// Hit an enemy with an ability: damage + the bonus aggro. Returns the damage dealt.
+function smite(k, e, amount, school = "holy") {
+  const dealt = k.dealDamage(e, amount, school);
+  if (dealt > 0) e.addThreat?.(k, dealt * ABILITY_THREAT);
+  return dealt;
+}
+
 const KNIGHT_ABILITIES = {
   righteousStrike: {
     name: "Righteous Strike",
     cost: 15, cooldown: 0, range: MELEE_RANGE, target: "enemy",
     execute(k, t) {
       const dmg = k.weaponDamage * 1.1 + k.str * 0.5 + k.faith * 0.2;
-      const dealt = k.dealDamage(t, dmg, "physical");
+      const dealt = smite(k, t, dmg, "physical");
       // Judgment mark: heal for 30% of the hit
       if (t.hasBuff(`judged_${k.name}`)) {
         k.heal(k, dealt * 0.3);
@@ -34,20 +44,26 @@ const KNIGHT_ABILITIES = {
     },
   },
 
+  // SHIELD OF VALOR — an absorb shield for the Knight, and the shield slams out in a ring of
+  // holy force: damages every enemy within 8 m (and pulls their attention)
   shieldOfValor: {
     name: "Shield of Valor",
-    cost: 30, cooldown: 12, onGcd: false, target: "self",
-    execute(k) {
+    cost: 30, cooldown: 8, onGcd: false, target: "self",
+    execute(k, t, ctx) {
       const amount = k.sta * 7.5;
       k.addAbsorb(amount);
       k.addBuff({ id: "shieldOfValor", duration: 6, onExpire: (o) => { o.absorb = Math.max(0, o.absorb - amount); } });
-      return { absorb: amount };
+      const hit = k.enemiesInRange(ctx, 8);
+      let damage = 0;
+      for (const e of hit) damage += smite(k, e, k.str * 0.6 + k.sta * 0.5 + k.faith * 0.3, "holy");
+      return { absorb: amount, targetsHit: hit.length, damage };
     },
   },
 
+  // Divine Taunt is the one Knight ability that does no damage — it just forces the enemy onto you
   divineTaunt: {
     name: "Divine Taunt",
-    cost: 0, cooldown: 8, onGcd: false, range: 25, target: "enemy",
+    cost: 0, cooldown: 5, onGcd: false, range: 25, target: "enemy",
     execute(k, t) {
       t.forceTarget?.(k, 4);
       t.addThreat?.(k, 0, { matchTop: true });
@@ -59,45 +75,53 @@ const KNIGHT_ABILITIES = {
   // Every enemy within 12m is forced to attack the Knight for 6s and becomes oath-bound to them.
   challenge: {
     name: "Challenge",
-    cost: 20, cooldown: 20, onGcd: false, target: "self",
+    cost: 20, cooldown: 12, onGcd: false, target: "self",
     execute(k, t, ctx) {
       // Never steals an enemy the OTHER tank is holding — only a taunt does that (tank swaps)
       const grabbed = k.enemiesInRange(ctx, 12).filter(e => {
         const holder = e.oathHolder?.();
         return !holder || holder === k || holder.role !== "tank";
       });
+      let damage = 0;
       for (const e of grabbed) {
         e.forceTarget?.(k, 6);
         e.addThreat?.(k, 0, { matchTop: true });
         e.bindOath?.(k, OATH_DURATION, { force: true });
+        damage += smite(k, e, k.faith * 0.5 + k.str * 0.3, "holy");   // a shockwave of holy light
       }
-      return { grabbed: grabbed.length };
+      return { grabbed: grabbed.length, damage };
     },
   },
 
+  // HOLY TOUCH — a big heal, and the light bursts out of whoever you healed: damages every enemy
+  // within 8 m of them
   holyTouch: {
     name: "Holy Touch",
-    cost: 60, cooldown: 90, onGcd: false, range: 30, target: "ally",
+    cost: 60, cooldown: 45, onGcd: false, range: 30, target: "ally",
     requires(k, t) {
       return (t || k).hasBuff("holyTouchImmune") ? "target recently received Holy Touch" : null;
     },
-    execute(k, t) {
+    execute(k, t, ctx = {}) {
       t = t || k;
       const healed = k.heal(t, t.maxHp * 0.4);
-      t.addBuff({ id: "holyTouchImmune", duration: 180 }); // can't get it again for 3 min
-      return { healed };
+      t.addBuff({ id: "holyTouchImmune", duration: 90 }); // can't get it again for 90 s
+      let damage = 0;
+      for (const e of (ctx.enemies || []).filter(e => !e.isDead && Math.hypot(e.position.x - t.position.x, e.position.y - t.position.y) <= 8)) {
+        damage += smite(k, e, k.faith * 0.9 + 10, "holy");
+      }
+      return { healed, damage };
     },
   },
 
   holyGrounds: {
     name: "Holy Grounds",
-    cost: 40, cooldown: 15, target: "self",
+    cost: 40, cooldown: 9, target: "self",
     execute(k) {
       k.placeZone({
         name: "Holy Grounds", position: { ...k.position }, radius: 5, duration: 10, tickEvery: 1,
         onTick(caster, inside) {
           for (const e of inside) {
-            caster.dealDamage(e, caster.faith * 0.4, "holy");
+            smite(caster, e, caster.faith * 0.4, "holy");
             if (e.type === "undead" || e.type === "demon") {
               e.addBuff({ id: "holyGroundsSlow", duration: 1.5, mods: { moveSpeed: 0.7 } });
             }
@@ -109,24 +133,30 @@ const KNIGHT_ABILITIES = {
 
   judgment: {
     name: "Judgment",
-    cost: 25, cooldown: 10, range: 20, target: "enemy",
+    cost: 25, cooldown: 6, range: 20, target: "enemy",
     execute(k, t) {
-      const dealt = k.dealDamage(t, k.faith * 1.2 + 8, "holy");
+      const dealt = smite(k, t, k.faith * 1.2 + 8, "holy");
       t.addBuff({ id: `judged_${k.name}`, duration: 10 });
       return { damage: dealt };
     },
   },
 
+  // SON OF LIGHT — 40% less damage taken for 12 s (and your hits heal allies), and you blaze up in a
+  // burst of radiance that damages every enemy within 10 m
   sonOfLight: {
     name: "Son of Light",
-    cost: 100, cooldown: 180, onGcd: false, target: "self",
-    execute(k) {
+    cost: 100, cooldown: 90, onGcd: false, target: "self",
+    execute(k, t, ctx) {
       k.addBuff({ id: "sonOfLight", duration: 12, mods: { damageTaken: 0.6 } });
+      const hit = k.enemiesInRange(ctx, 10);
+      let damage = 0;
+      for (const e of hit) damage += smite(k, e, k.faith * 1.4 + k.str * 0.4, "holy");
+      return { targetsHit: hit.length, damage };
     },
   },
 
   // Redemption: slower than the Healer's Resurrection and brings them back weaker (30% health).
-  // In raids this uses one of the raid's 4 shared revives.
+  // In raids this uses one of the raid's 4 shared revives. (A revive — the only other one with no damage.)
   redemption: makeRevive({ name: "Redemption", castTime: 4.0, hpPct: 0.3, resourcePct: 0.3 }),
 };
 
@@ -197,4 +227,4 @@ class Knight extends Character {
   }
 }
 
-module.exports = { Knight, KNIGHT_ABILITIES, AURA };
+module.exports = { Knight, KNIGHT_ABILITIES, AURA, ABILITY_THREAT };

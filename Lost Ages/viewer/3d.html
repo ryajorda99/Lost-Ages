@@ -66,6 +66,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -519,6 +520,10 @@ function enemyLook(name, isBoss, elite) {
   if (/Corrupted Servant/i.test(name)) return { body: 0x5a7a3a, trim: 0x2a3a1a, hunch: true, noWeapon: true, eyes: 0x9bff6a, size: 0.85 };
   if (/Hollow King/i.test(name)) return { armor: "plate", undead: true, engraved: true, body: 0x3a3844, trim: 0x8a6aff, weapon: "greatsword", crown: true, eyes: 0xb07cff, size: 2.6, cape: 0x1a1030, tattered: true, wisps: 0x8a6aff };
   if (/Azgaroth|Tyrant/i.test(name)) return { demon: true, bulk: 1.3, body: 0x2a1410, trim: 0xff5a1a, glow: 0x661800, wingColor: 0x2a120c, weapon: "axe", eyes: 0xffaa33, size: 3.0, batWings: true, tail: true, shoulderSpikes: true, embers: 0xff7a2a };
+  // Night daemons (they claw out of the ground after dark)
+  if (/Ironclad Daemon/i.test(name)) return { armor: "plate", engraved: true, body: 0x24222c, trim: 0x8a3cff, weapon: "greatsword", helm: true, eyes: 0xff3a2a, size: 2.3, cape: 0x120a1c, tattered: true, wisps: 0x6a2aff, daemon: true };
+  if (/Gloom Hound/i.test(name)) return { noWeapon: true, size: 1.05, eyes: 0xd070ff, gloom: true, daemon: true };
+  if (/Daemon Ghoul/i.test(name)) return { body: 0x2e2638, trim: 0x140c1c, noWeapon: true, hunch: true, eyes: 0xff4ad0, size: 1.1, daemon: true };
   if (/Elemental/i.test(name)) return { glow: 0xff6a1a, eyes: 0xfff0a0, size: 1.25, noWeapon: true, embers: 0xff7a2a };
   if (/Skeleton|Bone/i.test(name)) return { body: 0xd8d2c0, trim: 0x6a5a48, weapon: /Archer/i.test(name) ? "bow" : "sword", offhand: /Crypt Skeleton/i.test(name) ? "shield" : undefined, eyes: 0x88aaff };
   if (/Ghoul/i.test(name)) return { body: 0x7a8a6a, trim: 0x3a4430, noWeapon: true, hunch: true, eyes: 0xccff66 };
@@ -997,6 +1002,62 @@ function buildPegasus() {
   return { group: g, legs, wings };
 }
 
+// ---------------------------------------------------------------------
+//  PERFORMANCE: merge a character's static pieces
+//  A built-in character is made of 50–100 small meshes (plates, buckles, fingers, rivets…), and
+//  every one is a separate draw call — twice, with shadows. Pieces that move TOGETHER (same parent
+//  joint) and look the same (same material) are welded into one mesh. A 20-player raid drops from
+//  ~1,500 draw calls to a few hundred, and nothing looks different.
+//  Meshes the animation code holds on to (in `parts`, or marked userData.keep) are left alone.
+// ---------------------------------------------------------------------
+function keepFromParts(parts, keep = new Set(), depth = 0) {
+  if (!parts || depth > 3) return keep;
+  for (const v of Object.values(parts)) {
+    if (!v) continue;
+    if (v.isMesh) keep.add(v);
+    else if (Array.isArray(v) || (typeof v === "object" && !v.isObject3D && !v.isMaterial)) keepFromParts(v, keep, depth + 1);
+  }
+  return keep;
+}
+// Two materials that would draw exactly the same (many pieces get their own copy of the same look)
+function matSignature(m) {
+  const id = (t) => t ? t.uuid : "-";
+  return [m.type, m.color?.getHex(), m.emissive?.getHex(), m.emissiveIntensity, m.roughness, m.metalness, m.side, m.opacity,
+    id(m.map), id(m.normalMap), id(m.bumpMap), m.bumpScale, id(m.roughnessMap), id(m.emissiveMap), id(m.envMap), m.envMapIntensity, m.flatShading, !!m.onBeforeCompile && m.onBeforeCompile.toString().length].join(",");
+}
+function mergeStatic(root, keep = new Set(), prefer = []) {
+  const preferSet = new Set(prefer);
+  const groups = new Map();
+  root.updateMatrixWorld(true);
+  root.traverse(o => {
+    if (!o.isMesh || o.isSkinnedMesh || o.isInstancedMesh || !o.parent || keep.has(o) || o.userData.keep) return;
+    if (o.children.length || Array.isArray(o.material) || o.material.transparent || o.morphTargetInfluences || !o.visible) return;
+    o.updateMatrix();
+    if (o.matrix.determinant() < 0) return;   // mirrored pieces would turn inside out
+    const g = o.geometry;
+    const key = [o.parent.uuid, matSignature(o.material), Object.keys(g.attributes).sort().join(","), g.index ? 1 : 0, o.castShadow, o.receiveShadow].join("|");
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(o);
+  });
+  let removed = 0;
+  for (const list of groups.values()) {
+    if (list.length < 2) continue;
+    const geos = list.map(m => m.geometry.clone().applyMatrix4(m.matrix));
+    let merged = null;
+    try { merged = mergeGeometries(geos, false); } catch { merged = null; }
+    geos.forEach(g => g.dispose());
+    if (!merged) continue;
+    // keep the material the hit-flash knows about, if one of the pieces uses it
+    const mm = new THREE.Mesh(merged, (list.find(m => preferSet.has(m.material)) || list[0]).material);
+    mm.castShadow = list[0].castShadow; mm.receiveShadow = list[0].receiveShadow;
+    const parent = list[0].parent;
+    for (const m of list) parent.remove(m);
+    parent.add(mm);
+    removed += list.length - 1;
+  }
+  return removed;
+}
+
 // =====================================================================
 //  WEAPONS — forged steel, wood grain and leather-wrapped grips
 //  Blades are lofted with a real cross-section (sharpened bevels, a raised
@@ -1342,6 +1403,7 @@ function buildStaff(m, look) {
   }
   const orb = mesh(wGeo("staffOrb", () => new THREE.IcosahedronGeometry(0.085, 3)), glowMat(look.orb ?? 0x88ccff), 0, 1.3);
   g.add(orb);
+  orb.userData.keep = true;   // it pulses while casting
   g.userData.orb = orb;
   return g;
 }
@@ -2069,6 +2131,7 @@ class Unit {
     if (ck) { this.creature = fig.rig; this.height = fig.height * this.size; }
     this.isDragon = !!this.look.dragon;
     this.figure = fig.body; this.parts = fig.parts; this.mats = fig.mats;
+    mergeStatic(this.figure, keepFromParts(fig.parts), fig.mats);   // fewer draw calls (see PERFORMANCE above)
     this.pose.add(this.figure);
 
     // Knight: radiant holy wings, and the golden Sanctified Aura circle on the ground
@@ -2240,8 +2303,18 @@ class Unit {
     const moved = Math.hypot(x - this.tx, z - this.tz);
     if (!this.placed) { this.root.position.set(x, 0, z); this.placed = true; }
     else this.speed = moved / frameDt;
+    // Smooth movement: the simulation only sends 10 positions a second, so glide from where the
+    // unit is drawn NOW to the new spot at a steady speed over one update's worth of time
+    // (instead of lunging at each update and slowing down — that looked skippy at 144 Hz)
+    const rp = this.root.position;
+    const jump = Math.hypot(x - rp.x, z - rp.z) > 12;   // teleported (gate, revive, wipe): snap
+    if (jump) rp.set(x, rp.y, z);
+    this.fromX = rp.x; this.fromZ = rp.z;
+    this.glideT = 0;
+    this.glideDur = Math.min(0.3, Math.max(0.05, (frameDt || 0.1) * 1.12));   // a touch longer than the gap, so it never stops and starts
     if (this.speed > 1.5 && moved > 0.05 && !casting) this.targetFacing = Math.atan2(z - this.tz, x - this.tx);   // face where you run
     else if (facing != null) this.targetFacing = facing;
+    this.prevTx = this.tx; this.prevTz = this.tz;   // (Warp Strike draws its streak from here)
     this.tx = x; this.tz = z;
     if (hp < this.hp - 0.04) this.flash = 0.15;   // big hit: flash red
     this.hp = hp;
@@ -2264,10 +2337,15 @@ class Unit {
   }
 
   update(dt, t) {
+    if (this.groundY) this.root.position.y -= this.groundY;   // (taken off, then put back after the animation — see the end)
     // Glide toward the latest position from the simulation
-    const k = Math.min(1, dt * 10);
-    this.root.position.x = lerp(this.root.position.x, this.tx, k);
-    this.root.position.z = lerp(this.root.position.z, this.tz, k);
+    if (this.fromX == null) { this.root.position.x = this.tx; this.root.position.z = this.tz; }
+    else {
+      this.glideT += dt;
+      const k = Math.min(1, this.glideT / this.glideDur);
+      this.root.position.x = this.fromX + (this.tx - this.fromX) * k;
+      this.root.position.z = this.fromZ + (this.tz - this.fromZ) * k;
+    }
     let d = this.targetFacing - this.facing;
     d = Math.atan2(Math.sin(d), Math.cos(d));
     this.facing += d * Math.min(1, dt * 12);
@@ -2304,6 +2382,12 @@ class Unit {
     else if (this.isDragon) this.animateDragon(dt, t);
     else if (this.creature && this.creature !== "figure") animateCreature(this, dt, t, fancy);
     else this.animateFigure(dt, t);
+
+    // Standing on something (the steps up to a gate, a haven's stone circle): lift onto it, stepping up quickly
+    const g = worldMode && worldScene ? worldScene.groundAt(this.root.position.x, this.root.position.z) : 0;
+    this.groundY = (this.groundY || 0) + (g - (this.groundY || 0)) * Math.min(1, dt * 14);
+    if (Math.abs(this.groundY) < 0.002) this.groundY = 0;
+    this.root.position.y += this.groundY;
 
     // Casting orb
     this.castGlow.visible = !!this.casting && !this.dead;
@@ -3230,6 +3314,7 @@ function resetFight(d) {
   clearHazards();
   data = d; lastT = null; bossUnit = null; bossTarget = null; follow = null;
   players = d.players.map((p, i) => new Unit({ kind: "p", index: i, ...p }));
+  prewarmPets(d.players);
   enemies = [];
   particles.clear();
   const bossInfo = (d.enemies || []).find(e => e.boss);
@@ -3252,9 +3337,31 @@ function enemyUnit(id) {
 }
 
 // Necromancer's Corrupted Servants
+// Building a servant takes a few milliseconds, and six rise at once — that was a visible hitch on
+// every Raise Corrupted. So finished servants go back into a pool and get reused.
+const petPool = [];
 function petUnit(id) {
-  if (!pets[id]) pets[id] = new Unit({ kind: "m", index: id, name: "Corrupted Servant" });
+  if (!pets[id]) {
+    const u = petPool.pop() || new Unit({ kind: "m", index: id, name: "Corrupted Servant" });
+    Object.assign(u, { index: id, placed: false, hp: 1, dead: false, flash: 0, oneShot: null, speed: 0, gone: false, casting: null, fromX: null, fromZ: null });
+    u.root.visible = true;
+    pets[id] = u;
+  }
   return pets[id];
+}
+function retirePet(id) {
+  const u = pets[id];
+  if (!u) return;
+  u.root.visible = false;
+  pets[id] = null;
+  if (petPool.length < 24) petPool.push(u); else u.dispose();
+}
+// Build a pack of servants ahead of time when there's a Necromancer, so the first raise is smooth too
+function prewarmPets(list) {
+  if (!list.some(p => p.className === "Necromancer")) return;
+  let n = 6 - petPool.length;
+  const step = () => { if (n-- <= 0) return; const u = new Unit({ kind: "m", index: -1, name: "Corrupted Servant" }); u.root.visible = false; petPool.push(u); setTimeout(step, 50); };
+  setTimeout(step, 500);
 }
 
 function applyFrame(f) {
@@ -3265,26 +3372,36 @@ function applyFrame(f) {
   for (const r of f.e) {
     const u = enemyUnit(r[0]);
     if (!u) continue;
+    const fresh = !u.placed || !u.root.visible;
     u.setFrame(r[1], r[2], r[3], !!r[4], !!r[6], r[5], r[6], r[7], frameDt);
+    if (fresh && u.look.daemon && !u.dead && !document.hidden) effects.play({ type: "poof", color: 0x7a3cff, el: "shadow", big: true, onSelf: true }, u, null);   // clawing out of the ground
     u.flying = !!r[8];
     u.ascending = r[8] === 2;   // high in the storm, charging a stagger check
     seen.add(r[0]);
   }
-  enemies.forEach((u, id) => { if (u && !seen.has(id)) u.root.visible = false; });
+  enemies.forEach((u, id) => {
+    if (!u || seen.has(id)) return;
+    if (u.look.daemon && u.root.visible && !u.dead && !document.hidden) effects.play({ type: "poof", color: 0x3a1a6a, el: "shadow", onSelf: true }, u, null);   // daemons melt away (dawn, or a haven)
+    u.root.visible = false;
+  });
   const seenPets = new Set();
-  for (const [id, , x, y, fc] of f.pt || []) {
+  for (const [id, , x, y, fc, hp] of f.pt || []) {
     const u = petUnit(id);
     const fresh = !u.placed;
-    u.setFrame(x, y, 1, false, false, fc, 0, 0, frameDt);
+    u.setFrame(x, y, hp ?? 1, false, false, fc, 0, 0, frameDt);
     if (fresh) effects.play({ type: "poof", color: 0x7dff6a }, u, null);   // rising from the ground
     seenPets.add(id);
   }
-  pets.forEach((u, id) => { if (u && !seenPets.has(id) && u.root.visible) { effects.play({ type: "poof", color: 0x333344 }, u, null); u.root.visible = false; } });
+  // Gone (expired or killed): crumble, then throw the unit away so dead servants don't pile up
+  // (they used to stay hidden but still animate every frame, which slowed long sessions down)
+  pets.forEach((u, id) => { if (u && !seenPets.has(id)) { if (u.root.visible) effects.play({ type: "poof", color: 0x333344 }, u, null); retirePet(id); } });
   syncZones(f.z);
   for (const a of f.a || []) playAction(a);
 
   bossTarget = f.tg != null ? players[f.tg] : null;
   updateStagger(f.st);
+  if (f.tod != null) { serverTod = f.tod; serverTodAt = clock.elapsedTime; }   // the open world's time of day
+  if (worldMode) { syncCamp(f.camp); showMeal(f.meal); }
   hud.frame(f, { players, bossUnit, bossTarget, follow });
   hud.status(`${data.title}`);
 }
@@ -3302,6 +3419,11 @@ function playAction([ak, ai, key, tk, ti]) {
         color: theme === "fire" ? 0xff7a1a : theme === "storm" ? 0x8fd8ff : theme === "shadow" ? 0x9b5cff : 0xe8e8e8 }   // the boss's own heavy swings
     : effectFor(key, dist);
   if (ak === "p" && key !== "_swing") hud.abilityUsed(ai, key, lastT ?? 0);
+  if (key === "warpStrike") {   // you vanish where you stood and appear at the target, no gliding
+    actor.warpFrom = new THREE.Vector3(actor.prevTx ?? actor.root.position.x, 0, actor.prevTz ?? actor.root.position.z);
+    actor.root.position.x = actor.tx; actor.root.position.z = actor.tz;
+    actor.fromX = actor.tx; actor.fromZ = actor.tz;
+  }
   actor.act(key, target, spec);
   if (!document.hidden) effects.play(spec, actor, target);   // (in a background tab nothing is drawn — don't pile effects up)
 }
@@ -3360,15 +3482,28 @@ function setAllyTarget(u) {
   allyTarget = allyTarget === u ? null : u;
   sendInput({ allyTarget: allyTarget ? { kind: "p", index: allyTarget.index } : null });
 }
-// Tab: next enemy, nearest first
+// TAB: the closest enemy to you that you haven't just tabbed through. Press again for the next
+// closest, and so on outward; once you've been through them all (or stop pressing for 3 s) it
+// starts again from the closest. Only enemies within 45 m count.
+const TAB_RANGE = 45;
+const tabbed = { set: new Set(), at: 0 };
 function cycleTarget() {
   const me = myUnit();
   if (!me) return;
-  const foes = enemies.filter(u => u && !u.dead && u.root.visible)
-    .sort((a, b) => a.root.position.distanceTo(me.root.position) - b.root.position.distanceTo(me.root.position));
-  if (!foes.length) return;
-  const i = foes.indexOf(enemyTarget);
-  setEnemyTarget(foes[(i + 1) % foes.length]);
+  const d = (u) => Math.hypot(u.root.position.x - me.root.position.x, u.root.position.z - me.root.position.z);
+  const foes = enemies.filter(u => u && !u.dead && u.root.visible && d(u) <= TAB_RANGE).sort((a, b) => d(a) - d(b));
+  if (!foes.length) { hud.error("No enemies nearby"); return; }
+  const now = performance.now();
+  if (now - tabbed.at > 3000) tabbed.set.clear();   // a fresh round of tabbing
+  tabbed.at = now;
+  if (enemyTarget) tabbed.set.add(enemyTarget);     // don't land back on what you already have
+  let next = foes.find(u => !tabbed.set.has(u));
+  if (!next) {                                       // been through them all: start again from the closest
+    tabbed.set.clear();
+    next = foes.find(u => u !== enemyTarget) || foes[0];
+  }
+  tabbed.set.add(next);
+  setEnemyTarget(next);
 }
 // WASD → a direction on the ground, relative to where the camera is looking
 function moveVector() {
@@ -3389,13 +3524,16 @@ const ABILITY_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="
 addEventListener("keydown", (e) => {
   if (!playing || e.target.tagName === "SELECT") return;
   if (MOVE_KEYS[e.code]) { e.preventDefault(); if (!e.repeat) { held.add(MOVE_KEYS[e.code]); pushMove(true); } return; }
+  const me = data?.players.find(p => p.name === playing);
   const n = ABILITY_KEYS.indexOf(e.key);
   if (n !== -1 && !e.repeat) {
-    const me = data?.players.find(p => p.name === playing);
-    const ab = me?.abilities?.[n];
+    const ab = (me?.abilities || []).filter(a => !a[4])[n];   // (abilities with their own key aren't on 1–=)
     if (ab) sendInput({ cast: ab[0] });
     return;
   }
+  // Abilities with their own key (Warp Strike = Q)
+  const own = !e.repeat && (me?.abilities || []).find(a => a[4] && a[4].toLowerCase() === e.key.toLowerCase());
+  if (own) { e.preventDefault(); sendInput({ cast: own[0] }); return; }
   if (e.key === "Tab") { e.preventDefault(); cycleTarget(); }
   if (e.key === "Escape") takeControl(null);
 }, true);
@@ -3503,6 +3641,10 @@ function startLive() {
       showRegion(msg);
     } else if (msg.type === "door") {
       showDoor(msg);
+    } else if (msg.type === "haven") {
+      showHaven(msg);
+    } else if (msg.type === "camp") {
+      if (msg.state === "choose") showCampMenu(msg); else closeCampMenu(msg.meal);
     } else if (msg.type === "castResult") {
       if (!msg.ok && msg.reason) hud.error(msg.reason);
     } else if (msg.type === "event") addLog(msg.e[0], msg.e[1]);
@@ -3573,16 +3715,42 @@ addEventListener("resize", () => {
 const clock = new THREE.Clock();
 let nextFlash = 0, flashUntil = 0;   // storm lightning
 const followPoint = new THREE.Vector3();
+// FPS meter — press F (or add ?fps to the address). Shows frames per second and the slowest frame,
+// so you can tell a steady low frame rate (graphics too heavy) from hitches (something spiking).
+const fpsMeter = { on: params0().has("fps"), el: null, n: 0, t0: performance.now(), worst: 0, last: performance.now() };
+function params0() { return new URLSearchParams(location.search); }
+function tickFps() {
+  const now = performance.now(), ft = now - fpsMeter.last; fpsMeter.last = now;
+  if (!fpsMeter.on) return;
+  if (!fpsMeter.el) {
+    fpsMeter.el = document.createElement("div");
+    fpsMeter.el.style.cssText = "position:fixed;left:50%;bottom:6px;transform:translateX(-50%);z-index:40;font:700 12px monospace;color:#cfe8ff;background:rgba(0,0,0,.65);padding:3px 8px;border-radius:4px;pointer-events:none";
+    document.body.appendChild(fpsMeter.el);
+  }
+  fpsMeter.n++; fpsMeter.worst = Math.max(fpsMeter.worst, ft);
+  if (now - fpsMeter.t0 >= 1000) {
+    const fps = fpsMeter.n * 1000 / (now - fpsMeter.t0);
+    const calls = renderer.info.render.calls;
+    fpsMeter.el.textContent = `${fps.toFixed(0)} fps · slowest frame ${fpsMeter.worst.toFixed(0)} ms · ${gfx.quality}`;
+    fpsMeter.el.style.color = fps < 30 ? "#ff8a7a" : fps < 50 ? "#ffd27a" : "#9fffb0";
+    fpsMeter.n = 0; fpsMeter.t0 = now; fpsMeter.worst = 0;
+  }
+}
+addEventListener("keydown", (e) => {
+  if ((e.key === "f" || e.key === "F") && e.target.tagName !== "INPUT" && !e.repeat) { fpsMeter.on = !fpsMeter.on; if (!fpsMeter.on && fpsMeter.el) { fpsMeter.el.remove(); fpsMeter.el = null; } }
+});
+
 function frame() {
   requestAnimationFrame(frame);
+  tickFps();
   const dt = Math.min(0.05, clock.getDelta());
   const t = clock.elapsedTime;
   if (mode === "replay") tickReplay(dt);
 
   const animDt = paused ? 0 : dt * (mode === "replay" ? speed : 1);
   players.forEach(u => u.update(animDt, t));
-  enemies.forEach(u => u?.update(animDt, t));
-  pets.forEach(u => u?.update(animDt, t));
+  enemies.forEach(u => { if (u?.root.visible) u.update(animDt, t); });   // (hidden = out of range: no need to animate)
+  pets.forEach(u => { if (u?.root.visible) u.update(animDt, t); });
   effects.update(animDt);
   animateZones(t);
   animateHolyGrounds(animDt, t);
@@ -3749,10 +3917,14 @@ function applyWorldPalette(p, k) {
 // Called every frame in the open world: fade between region moods; the scenery animates itself
 // (sky, wind in the grass, fires, smoke, fog, lava, the gates)
 const worldSunDir = new THREE.Vector3(0.46, 0.84, 0.31);
+let serverTod = null, serverTodAt = 0;
+const DAY_SECONDS = 24 * 60;   // same as DAY_LENGTH in src/world/worldMap.js
 let lastTimeMode = null;
 function animateWorld(dt, t) {
   if (!worldScene) { applyWorldPalette(WORLD_PALETTE[worldTheme] || WORLD_PALETTE.town, Math.min(1, dt * 1.5)); return; }
-  const L = worldScene.animate(dt, t, worldTheme, camera, controls.target, fancy, gfx.time);
+  // "Cycle" follows the server's clock (night is when the daemons come out); Day / Dusk / Night pin the sky
+  const timeArg = gfx.time === "cycle" && serverTod != null ? (serverTod + (clock.elapsedTime - serverTodAt) / DAY_SECONDS) % 1 : gfx.time;
+  const L = worldScene.animate(dt, t, worldTheme, camera, controls.target, fancy, timeArg);
   // the region's mood, brightened or dimmed by the time of day (and by the sky reflections, which add light of their own)
   const p = WORLD_PALETTE[worldTheme] || WORLD_PALETTE.town;
   const sunHex = tmpColor.setHex(p.sun).lerp(L.sunColor, worldTheme === "town" ? 0.8 : 0.35).getHex();
@@ -3806,7 +3978,91 @@ async function enterDoor() {
     location.href = withGfx(res.url);
   } catch (err) { hud.error(err.message || "Couldn't enter the raid"); showDoor(doorHere); }
 }
-addEventListener("keydown", (e) => { if (worldMode && (e.key === "e" || e.key === "E") && doorHere && !e.repeat) enterDoor(); });
+addEventListener("keydown", (e) => {
+  if (!worldMode || !(e.key === "e" || e.key === "E") || e.repeat) return;
+  if (doorHere) enterDoor();
+  else if (havenHere && !campOpen) makeCamp();
+});
+
+// ----- Havens and camping -----
+const PANEL_CSS = "position:absolute;left:50%;transform:translateX(-50%);z-index:6;text-align:center;padding:12px 22px;border:1px solid #7a5b22;border-radius:8px;background:linear-gradient(180deg,rgba(35,38,51,.95),rgba(12,14,20,.95));box-shadow:0 0 0 1px #000,0 10px 24px rgba(0,0,0,.6);font-family:'Alegreya Sans',sans-serif;color:#ece6d6";
+const KEY_CAP = (k) => `<b style="display:inline-block;padding:0 7px;border:1px solid #888;border-radius:3px;background:#1a1b22">${k}</b>`;
+let havenHere = null;
+function showHaven(msg) {
+  havenHere = msg.id ? msg : null;
+  let el = $("worldHaven");
+  if (!havenHere || campOpen) { el?.remove(); return; }
+  if (!el) { el = document.createElement("div"); el.id = "worldHaven"; el.style.cssText = PANEL_CSS + ";bottom:200px"; document.body.appendChild(el); }
+  el.innerHTML = `<div style="font-family:Cinzel,serif;font-weight:700;font-size:18px;color:#9fd8ff;letter-spacing:.06em">${msg.name}</div>
+    <div style="margin-top:4px;font-size:14px">Press ${KEY_CAP("E")} to make camp — rest until morning and share a meal</div>
+    ${msg.night ? `<div style="margin-top:3px;font-size:12px;color:#c9b3ff">Daemons can't reach you here</div>` : ""}`;
+}
+async function makeCamp() {
+  const res = await post("/api/world/camp", {});
+  if (res && res.ok === false) hud.error(res.reason || "You can't make camp here");
+}
+let campOpen = false, campTimer = null;
+function showCampMenu(msg) {
+  campOpen = true;
+  $("worldHaven")?.remove();
+  let el = $("campMenu");
+  if (!el) { el = document.createElement("div"); el.id = "campMenu"; document.body.appendChild(el); }
+  el.style.cssText = "position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(ellipse at 50% 70%, rgba(255,140,40,.18), rgba(4,5,10,.82) 60%);font-family:'Alegreya Sans',sans-serif;color:#ece6d6;transition:opacity .8s";
+  el.style.opacity = 1;
+  const meals = msg.meals || data?.meals || [];
+  let left = msg.seconds || 45;
+  el.innerHTML = `<div style="font-family:Cinzel,serif;font-size:13px;letter-spacing:.5em;color:#9a93a8;text-transform:uppercase">🏕 Camp</div>
+    <div style="font-family:Cinzel,serif;font-size:40px;font-weight:700;color:#f3dc9a;text-shadow:0 3px 0 #000">${msg.haven || "Camp"}</div>
+    <div style="font-size:16px;color:#cfc6b4">${msg.cook ? `${msg.cook} is cooking tonight.` : "Dinner's on."} What'll it be? <span style="color:#8a8496">(it lasts until nightfall)</span></div>
+    <div id="campMeals" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;max-width:980px"></div>
+    <div id="campLeft" style="font-size:13px;color:#8a8496"></div>`;
+  const box = el.querySelector("#campMeals");
+  for (const m of meals) {
+    const b = document.createElement("button");
+    b.style.cssText = "cursor:pointer;width:210px;padding:16px 14px;border-radius:10px;border:1px solid #7a5b22;background:linear-gradient(180deg,rgba(45,40,34,.95),rgba(16,14,12,.95));color:#ece6d6;font-family:inherit;box-shadow:0 0 0 1px #000,0 10px 24px rgba(0,0,0,.6);transition:transform .15s, box-shadow .15s";
+    b.onmouseenter = () => { b.style.transform = "translateY(-4px)"; b.style.boxShadow = "0 0 0 1px #000,0 0 22px rgba(255,170,60,.45)"; };
+    b.onmouseleave = () => { b.style.transform = ""; b.style.boxShadow = "0 0 0 1px #000,0 10px 24px rgba(0,0,0,.6)"; };
+    b.innerHTML = `<div style="font-size:44px;line-height:1.1">${m.icon}</div><div style="font-family:Cinzel,serif;font-weight:700;font-size:16px;color:#f3dc9a;margin-top:6px">${m.name}</div><div style="font-size:14px;margin-top:6px;color:#cfe8b8">${m.text}</div>`;
+    b.onclick = async () => { box.querySelectorAll("button").forEach(x => { x.disabled = true; x.style.opacity = x === b ? 1 : 0.35; }); const r = await post("/api/world/meal", { meal: m.key }); if (r && r.ok === false) hud.error(r.reason); };
+    box.appendChild(b);
+  }
+  clearInterval(campTimer);
+  const tick = () => { const l = el.querySelector("#campLeft"); if (l) l.textContent = left > 0 ? `The cook picks in ${left}s` : ""; left--; };
+  tick(); campTimer = setInterval(tick, 1000);
+}
+function closeCampMenu(meal) {
+  clearInterval(campTimer);
+  const el = $("campMenu");
+  if (!campOpen && !el) return;
+  campOpen = false;
+  if (!el) return;
+  // morning: the overlay brightens and fades, with what you ate
+  el.innerHTML = `<div style="font-family:Cinzel,serif;font-size:13px;letter-spacing:.5em;color:#8a7a5a;text-transform:uppercase">Morning</div>
+    <div style="font-family:Cinzel,serif;font-size:42px;font-weight:700;color:#fff2c8;text-shadow:0 3px 0 #000">☀ A new day</div>
+    ${meal ? `<div style="font-size:18px;color:#fff">${meal.icon} ${meal.name} — <span style="color:#cfe8b8">${meal.text}</span></div>` : ""}`;
+  el.style.background = "radial-gradient(ellipse at 50% 40%, rgba(255,226,170,.55), rgba(255,200,140,.15) 60%, rgba(0,0,0,0))";
+  setTimeout(() => { el.style.opacity = 0; }, 2200);
+  setTimeout(() => { if (!campOpen) el.remove(); }, 3100);
+}
+// Frames say whether you're camping (so a page opened mid-camp still shows the menu)
+function syncCamp(campId) {
+  if (campId && !campOpen) {
+    const h = data?.world?.havens?.find(x => x.id === campId);
+    showCampMenu({ haven: h?.name, meals: data?.meals, seconds: 45 });
+  } else if (!campId && campOpen) closeCampMenu(null);
+}
+// Today's meal, under the title
+let mealShown = undefined;
+function showMeal(key) {
+  if (key === mealShown) return;
+  mealShown = key;
+  let el = $("mealBadge");
+  const m = key && data?.meals?.find(x => x.key === key);
+  if (!m) { el?.remove(); return; }
+  if (!el) { el = document.createElement("div"); el.id = "mealBadge"; document.body.appendChild(el); }
+  el.style.cssText = "position:absolute;top:62px;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;padding:4px 12px;border-radius:14px;border:1px solid #5a4a2a;background:rgba(12,12,16,.75);font:600 13px 'Alegreya Sans',sans-serif;color:#efe6cf;text-shadow:0 1px 2px #000";
+  el.textContent = `${m.icon} ${m.name} · ${m.text} until nightfall`;
+}
 
 // ----- Building the world (the scenery itself is in worldScene.js) -----
 let worldScene = null;

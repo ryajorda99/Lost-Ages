@@ -38,13 +38,13 @@ const C = COLORS;
 export const EFFECTS = {
   // ---------- Knight ----------
   righteousStrike: { type: "slash", color: C.holy, big: true },
-  shieldOfValor:   { type: "shield", color: C.holy, onSelf: true },
+  shieldOfValor:   { type: "shield", color: C.holy, onSelf: true, also: [{ type: "nova", color: C.holy, radius: 8 }] },   // the shield slams out in a ring
   divineTaunt:     { type: "beam", color: C.holy },
   challenge:       { type: "shout", color: C.holy, radius: 12 },
-  holyTouch:       { type: "heal", color: C.holy, big: true },
+  holyTouch:       { type: "heal", color: C.holy, big: true, also: [{ type: "strike", color: C.holy, el: "holy" }] },   // light bursts out of whoever you healed
   holyGrounds:     { type: "consecrate", color: C.holy },   // the big effect is the zone itself (3d.html → HOLY GROUNDS)
   judgment:        { type: "strike", color: C.holy },
-  sonOfLight:      { type: "shield", color: 0xfff2b0, el: "holy", onSelf: true, big: true, pillar: true },
+  sonOfLight:      { type: "shield", color: 0xfff2b0, el: "holy", onSelf: true, big: true, pillar: true, also: [{ type: "nova", color: C.holy, radius: 10 }] },
   redemption:      { type: "pillar", color: C.holy },
   sanctifiedAura:  { type: "nova", color: C.holy, radius: 10, pillar: true },   // the aura flaring up
 
@@ -65,6 +65,7 @@ export const EFFECTS = {
   fireBlast:       { type: "strike", color: C.fire },
   frostNova:       { type: "nova", color: C.frost, el: "frost", radius: 8, style: "ice" },
   blink:           { type: "poof", color: C.arcane, onSelf: true },
+  warpStrike:      { type: "warp", color: 0x5ab8ff, el: "frost" },   // throw your weapon, appear where it lands
   counterspell:    { type: "beam", color: C.arcane },
   manaShield:      { type: "shield", color: C.arcane, onSelf: true },
   meteor:          { type: "meteor", color: C.fire },
@@ -852,6 +853,7 @@ export class EffectSystem {
   /** Play an ability's effect. actor/target are Units from 3d.html (target may be null). */
   play(spec, actor, target) {
     if (this.list.length > 260) return;   // the screen is already full (or the game is catching up after lag)
+    if (spec.also) for (const extra of spec.also) this.play(extra, actor, target);   // abilities with two effects (e.g. a shield that also blasts out)
     const to = spec.onSelf || !target ? actor : target;
     const s = actor.size || 1;   // bosses are big — their effects are too
     const pal = paletteFor(spec);
@@ -869,7 +871,65 @@ export class EffectSystem {
       case "strike":     return this.strike(spec, pal, to);
       case "meteor":     return this.meteorFall(spec, pal, to);
       case "poof":       return this.poof(spec, pal, to);
+      case "warp":       return this.warp(spec, pal, actor, target);
     }
+  }
+
+  /**
+   * WARP STRIKE: a glowing blade flies to the target, you burst into blue crystal shards where you
+   * stood and reappear at the blade with a heavy strike. actor.warpFrom = where you warped from
+   * (3d.html sets it — by the time this plays, the unit is already standing at the target).
+   */
+  warp(spec, pal, actor, target) {
+    const from = actor.warpFrom ? actor.warpFrom.clone() : actor.root.position.clone();
+    const a = from.clone(); a.y += actor.height * 0.55;
+    const b = chest(target || actor);
+    const dir = b.clone().sub(a), len = dir.length() || 1; dir.divideScalar(len);
+    const crystal = { core: 0xeaf8ff, main: 0x5ab8ff, deep: 0x1a4aa8, light: 0x7ac8ff, el: "frost" };
+    // where you were: a burst of crystal shards and a fading afterimage
+    this.flash(a, 0xffffff, 1.6, 0.12, TEX.spark);
+    this.flash(a, crystal.main, 3.0, 0.4);
+    this.emit(crystal, "burst", a, 26, 1.1);
+    if (this.fancy) for (let i = 0; i < 28; i++) {   // shards scattering
+      this.P.shard.spawn(a.x + rand(-0.3, 0.3), a.y + rand(-0.8, 0.5), a.z + rand(-0.3, 0.3), rand(-3, 3), rand(-1, 3), rand(-3, 3),
+        { life: rand(0.4, 0.8), size: rand(0.08, 0.18), color: Math.random() < 0.5 ? crystal.core : crystal.main, alpha: 1, drag: 1.5, grav: 6, spin: rand(-8, 8) });
+    }
+    // the thrown blade and the streak it leaves
+    const blade = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.08, 1.4, 6).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ color: crystal.core, ...additive }));
+    blade.userData.ownGeo = true;
+    const glow = new THREE.Sprite(spriteMat(crystal.main, TEX.glow, 0.95));
+    const streakMat = new THREE.MeshBasicMaterial({ color: crystal.main, transparent: true, opacity: 0.9, ...additive, side: THREE.DoubleSide });
+    const streakGeo = new THREE.BufferGeometry(), streak = new THREE.Mesh(streakGeo, streakMat);
+    streak.userData.ownGeo = true;
+    const flight = Math.min(0.18, 0.05 + len / 220);   // it's FAST
+    let hit = false;
+    const p = new THREE.Vector3();
+    this.add(0.75, [blade, glow, streak], (k, dt, fx) => {
+      const t = fx.t;
+      const f = Math.min(1, t / flight);
+      p.copy(a).lerp(b, f);
+      blade.position.copy(p); blade.lookAt(b); glow.position.copy(p);
+      blade.visible = glow.visible = f < 1;
+      glow.scale.setScalar(1.4);
+      // a ribbon from where you were to the blade, thinning as it fades
+      const fade = t < flight ? 1 : Math.max(0, 1 - (t - flight) / 0.5);
+      ribbonGeometry([a, a.clone().lerp(p, 0.5), p.clone()], 0.35 * fade + 0.05, streakGeo);
+      streakMat.opacity = 0.85 * fade;
+      if (this.fancy && f < 1) for (let i = 0; i < 3; i++) {
+        const q = a.clone().lerp(p, Math.random());
+        this.P.glow.spawn(q.x, q.y, q.z, rand(-0.5, 0.5), rand(-0.2, 0.6), rand(-0.5, 0.5), { life: rand(0.25, 0.5), size: rand(0.25, 0.5), color: crystal.main, alpha: 0.8, drag: 2 });
+      }
+      if (!hit && f >= 1) {   // ARRIVE: flash, shards, a heavy strike
+        hit = true;
+        this.flash(b, 0xffffff, 2.4, 0.14, TEX.spark);
+        this.flash(b, crystal.main, 4.2, 0.45);
+        this.light(crystal.light, b, 60, 0.45, 12);
+        this.emit(crystal, "burst", b, 30, 1.4);
+        this.groundRing(crystal.main, new THREE.Vector3(b.x, 0, b.z), 3.2, 0.45, { wall: 0.8 });
+        if (target) this.slash({ type: "slash", color: crystal.main, el: "frost", big: true }, crystal, actor, target, actor.size || 1);
+        this.onShake?.(0.25, b);
+      }
+    });
   }
 
   // A quick flash that grows and fades (used when things hit; 3d.html uses it too)

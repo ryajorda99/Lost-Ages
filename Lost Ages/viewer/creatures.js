@@ -376,9 +376,11 @@ export function buildCreature(kind, look, seed = 1) {
   // ---------------------------------------------------------------
   function hound() {
     const body = new THREE.Group(), parts = { legs: [] };
-    const S = lava(0xffb0a0, 1.5);
+    // a Gloom Hound (a night daemon) is the same beast in shadow: black hide, a mane of violet flame
+    const gloom = !!look.gloom;
+    const S = gloom ? mat(0x231a30, { roughness: 0.55, metalness: 0.1, map: E.hideTex(2, 2), bumpMap: E.hideTex(2, 2), bumpScale: 3, emissive: 0x1a0830, emissiveIntensity: 0.6 }) : lava(0xffb0a0, 1.5);
     const dark = mat(0x1a0c08, { roughness: 0.6 });
-    const flameMat = new THREE.MeshStandardMaterial({ color: 0x220600, emissive: 0xff6a1a, emissiveIntensity: 2.6, roughness: 0.6 });
+    const flameMat = new THREE.MeshStandardMaterial({ color: gloom ? 0x0e0418 : 0x220600, emissive: gloom ? 0x9a4cff : 0xff6a1a, emissiveIntensity: 2.6, roughness: 0.6 });
     mats.push(flameMat);
     const torso = new THREE.Group(); torso.position.set(0, 0.68, 0); body.add(torso); parts.torso = torso;
     mk(roughen(new THREE.SphereGeometry(0.3, 20, 16), 0.02, 2.5, seed), S, 0, 0.02, 0.32, torso).scale.set(0.95, 1.0, 1.1);    // deep chest
@@ -422,8 +424,8 @@ export function buildCreature(kind, look, seed = 1) {
     const tail = new THREE.Group(); tail.position.set(0, 0.1, -0.72); torso.add(tail); parts.tail = tail;
     tail.add(mk(E.taperTube([[0, 0, 0], [0, 0.12, -0.2], [0, 0.28, -0.36], [0, 0.42, -0.42]], 0.055, 0.3, 8, 16), S));
     const tip = mk(new THREE.ConeGeometry(0.06, 0.25, 6), flameMat, 0, 0.52, -0.44, tail); tip.rotation.x = -0.3;
-    tip.add(sprite(0xff6a1a, 0.55, 0.7));
-    parts.flame = flameMat;
+    tip.add(sprite(gloom ? 0x9a4cff : 0xff6a1a, 0.55, 0.7));
+    parts.flame = flameMat; parts.gloom = gloom;
     return { body, parts, height: 1.0, rig: "hound" };
   }
 
@@ -583,7 +585,8 @@ export function animateCreature(u, dt, t, fancy) {
     if (fancy && !u.dead && dt > 0 && Math.random() < dt * 22) {   // embers off the burning mane
       const p = u.root.position, s = u.size, a = u.facing, back = (Math.random() - 0.3) * 0.9 * s;
       fx.flame.spawn(p.x + Math.cos(a) * back, p.y + 1.1 * s, p.z + Math.sin(a) * back, (Math.random() - 0.5) * 0.4, 1 + Math.random(), (Math.random() - 0.5) * 0.4,
-        { life: 0.35, size: 0.35 * s, size1: 0.08, color: 0xffc060, color1: 0xb02a06, alpha: 0.6, drag: 1.5 });
+        P.gloom ? { life: 0.45, size: 0.35 * s, size1: 0.08, color: 0xd0a0ff, color1: 0x3a0a6a, alpha: 0.6, drag: 1.5 }
+                : { life: 0.35, size: 0.35 * s, size1: 0.08, color: 0xffc060, color1: 0xb02a06, alpha: 0.6, drag: 1.5 });
     }
     return;
   }

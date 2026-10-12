@@ -8,7 +8,9 @@
 //
 // Raise Corrupted (both stances): summons 6 Corrupted Servants for 20 seconds. They run at
 // the Necromancer's target and every hit stacks Corrupted Poison on it (up to 5 stacks).
-// Servants can't be attacked, and crumble when they expire or the Necromancer dies.
+// Servants PULL AGGRO: their hits build threat on them (not on the Necromancer), so mobs and
+// bosses will turn and attack them. They crumble when killed, when they expire, or when the
+// Necromancer dies.
 
 const { Character, MELEE_RANGE, isHostile, distance } = require("./Character");
 
@@ -16,6 +18,11 @@ const RANGED_ATTACK_RANGE = 25;
 const SERVANT_COUNT = 6;
 const SERVANT_LIFETIME = 20;
 const POISON_MAX_STACKS = 5;
+const SERVANT_THREAT = 4;        // threat per point of damage a servant deals (a Knight tank is 3x)
+const SERVANT_HP = 0.6;          // x the Necromancer's max health
+const SERVANT_PROVOKE = 8;       // when raised they PROVOKE: enemies near the Necromancer's target must attack the
+                                 // servants for this many seconds (moving on to the next one as each falls). 0 = off
+const PROVOKE_RANGE = 15;        // metres around the Necromancer's target
 
 // Stack Corrupted Poison on a target (each Necromancer has their own poison)
 function applyCorruptedPoison(necro, target) {
@@ -50,7 +57,7 @@ class CorruptedServant extends Character {
       className: "CorruptedServant",
       role: "pet",
       baseStats: { armor: 80, crit: 5 },
-      hp: { base: Math.round(owner.maxHp * 0.5), perLevel: 0 },
+      hp: { base: Math.round(owner.maxHp * SERVANT_HP), perLevel: 0 },
       resource: { name: "Energy", max: 100, regen: 10, startsFull: true },
       weapon: { damage: 5 + owner.int * 0.12, speed: 1.8 },
       abilities: {},
@@ -62,9 +69,16 @@ class CorruptedServant extends Character {
   }
 
   // Servants hit THROUGH their master, so the damage counts as the Necromancer's
-  // (and uses the Necromancer's crit chance and damage buffs)
+  // (and uses the Necromancer's crit chance and damage buffs) — but the THREAT goes on the
+  // servant, so the enemy gets angry at the skeleton, not the Necromancer
   dealDamage(target, amount, school) {
-    return this.owner.dealDamage(target, amount, school);
+    const tm = this.owner.threatMultiplier;
+    this.owner.threatMultiplier = 0;
+    let dealt = 0;
+    try { dealt = this.owner.dealDamage(target, amount, school); }
+    finally { this.owner.threatMultiplier = tm; }
+    if (dealt > 0) target.addThreat?.(this, dealt * SERVANT_THREAT);
+    return dealt;
   }
 
   // Every claw hit stacks the poison
@@ -164,10 +178,23 @@ const NECROMANCER_ABILITIES = {
   raiseCorrupted: {
     name: "Raise Corrupted",
     cost: 45, cooldown: 25, castTime: 1.5, target: "self",
-    execute(n) {
+    execute(n, t, ctx = {}) {
       n.servants.forEach(s => { s.isDead = true; });   // old ones crumble
       n.servants = Array.from({ length: SERVANT_COUNT }, (_, i) => new CorruptedServant(n, i));
-      return { summoned: n.servants.length };
+      // They rise screaming: enemies near the Necromancer's target turn on them
+      const focus = n.target && !n.target.isDead && isHostile(n, n.target) ? n.target : null;
+      let provoked = 0;
+      if (SERVANT_PROVOKE > 0 && focus) {
+        for (const e of ctx.enemies || []) {
+          if (e.isDead || !e.forceTarget || distance(e, focus) > PROVOKE_RANGE) continue;
+          // each enemy goes for the nearest skeleton; they all get a little threat so it can move on to the next
+          const nearest = n.servants.slice().sort((a, b) => distance(a, e) - distance(b, e))[0];
+          for (const s of n.servants) e.addThreat(s, 1);
+          e.forceTarget(nearest, SERVANT_PROVOKE);
+          provoked++;
+        }
+      }
+      return { summoned: n.servants.length, provoked };
     },
   },
 
@@ -218,7 +245,11 @@ class Necromancer extends Character {
   update(dt, ctx = {}) {
     super.update(dt, ctx);
     for (const s of this.servants) s.update(dt, ctx);
-    this.servants = this.servants.filter(s => !s.isDead);
+    const gone = this.servants.filter(s => s.isDead);
+    if (gone.length) {
+      for (const e of ctx.enemies || []) for (const s of gone) e.threat?.delete(s);   // enemies forget dead servants
+      this.servants = this.servants.filter(s => !s.isDead);
+    }
   }
 
   die(killer) {
@@ -233,4 +264,4 @@ class Necromancer extends Character {
   }
 }
 
-module.exports = { Necromancer, NECROMANCER_ABILITIES, CorruptedServant, applyCorruptedPoison };
+module.exports = { Necromancer, NECROMANCER_ABILITIES, CorruptedServant, applyCorruptedPoison, SERVANT_THREAT };

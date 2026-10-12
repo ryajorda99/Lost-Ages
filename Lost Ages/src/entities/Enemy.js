@@ -60,11 +60,24 @@ class Enemy extends Character {
     this.forcedTimer = seconds;
   }
 
-  // Who the enemy attacks: taunter first, then the tank holding its oath, otherwise highest threat
+  // Who the enemy attacks: taunter first, then the tank holding its oath, otherwise highest threat.
+  // Summoned servants (a Necromancer's skeletons) aren't bound by a tank's oath: one that has made
+  // the enemy angrier than the oath-holder (10% more threat) pulls it off until it dies.
   pickTarget() {
+    if (this.forcedTimer > 0 && this.forcedTarget?.isDead && this.forcedTarget.isPet) {
+      // provoked by a summoned pack (Necromancer's servants): when one falls, go for the next nearest
+      const owner = this.forcedTarget.owner;
+      let next = null, best = Infinity;
+      for (const p of this.threat.keys()) if (p.isPet && !p.isDead && p.owner === owner) { const d = distance(this, p); if (d < best) { best = d; next = p; } }
+      if (next) this.forcedTarget = next;
+    }
     if (this.forcedTimer > 0 && !this.forcedTarget.isDead) return this.forcedTarget;
     const oath = this.oathHolder();
-    if (oath) return oath;
+    if (oath) {
+      let pet = null, petThreat = (this.threat.get(oath) || 0) * 1.1;
+      for (const [p, t] of this.threat) if (p.isPet && !p.isDead && t > petThreat) { pet = p; petThreat = t; }
+      return pet || oath;
+    }
     let best = null, bestThreat = -1;
     for (const [p, t] of this.threat) {
       if (!p.isDead && t > bestThreat) { best = p; bestThreat = t; }

@@ -44,7 +44,7 @@ function classInfo() {
     out[cls] = {
       role: c.role,
       resource: c.resource.name,
-      abilities: Object.entries(c.abilities).map(([key, a]) => ({ key, name: a.name, cooldown: a.cooldown || 0, castTime: a.castTime || 0 })),
+      abilities: Object.entries(c.abilities).filter(([, a]) => !a.hotkey).map(([key, a]) => ({ key, name: a.name, cooldown: a.cooldown || 0, castTime: a.castTime || 0 })),
     };
   }
   return out;
@@ -168,7 +168,9 @@ function buildWorld(character, at = null, size = world?.size) {
   const human = new HumanController();
   human.take(party[0].name);
   human.onResult = (r) => menu.broadcast({ type: "castResult", ...r });
-  const w = new World({ bots: party, human, live: menu, onSave: () => saveBots(WORLD_SAVE, bots) });
+  // the time of day and today's meal carry on (coming back out of a raid doesn't reset the clock)
+  const keep = world?.w ? { tod: world.w.tod, meal: world.w.meal } : {};
+  const w = new World({ bots: party, human, live: menu, onSave: () => saveBots(WORLD_SAVE, bots), ...keep });
   if (at) w.placeAt(at);
   world = { w, bots, party, character: party[0].name, human, timer: null, size: party.length };
   menu.onControl = (name) => {
@@ -261,7 +263,8 @@ function routes(req, res, url) {
   }
   if (process.env.LOST_AGES_DEV && url === "/api/dev/tp" && world) {   // testing only: move the party
     const q = new URL(req.url, "http://x").searchParams;
-    world.w.placeAt({ x: Number(q.get("x")), y: Number(q.get("y")) });
+    if (q.has("x")) world.w.placeAt({ x: Number(q.get("x")), y: Number(q.get("y")) });
+    if (q.has("tod")) world.w.tod = Number(q.get("tod"));   // and/or set the time of day
     json(res, 200, { ok: true });
     return true;
   }
@@ -298,6 +301,14 @@ function routes(req, res, url) {
         }
         if (url === "/api/world/resume") return json(res, 200, { ok: await resumeWorld() });
         if (url === "/api/world/enter") return json(res, 200, { ok: true, url: await enterRaid(msg.boss) });
+        if (url === "/api/world/camp") {                  // E at a haven: make camp
+          if (!world || world.inRaid) return json(res, 200, { ok: false, reason: "You're not in the world" });
+          return json(res, 200, world.w.makeCamp());
+        }
+        if (url === "/api/world/meal") {                  // pick tonight's meal
+          if (!world || world.inRaid) return json(res, 200, { ok: false, reason: "You're not in the world" });
+          return json(res, 200, world.w.chooseMeal(msg.meal));
+        }
         json(res, 404, { ok: false, reason: "Unknown request" });
       } catch (err) {
         console.log("World:", err.message);

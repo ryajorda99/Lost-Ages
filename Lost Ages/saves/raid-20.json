@@ -321,19 +321,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9998064749420945,
@@ -349,12 +349,12 @@
       "Immolation": 0.4147968060381696,
       "Safe Revive": 0.6356017289666126,
       "Tyrant's Gaze": 0.318528,
-      "Storm Call": 0.5791083817937824,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Storm Call": 0.5917351303399689,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6478978187694259
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -579,7 +579,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Kira",
@@ -589,19 +589,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9999599655287429,
@@ -618,10 +618,10 @@
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
       "Thunderstorm": 0.6585394959452009,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -864,7 +864,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Quinn",
@@ -874,19 +874,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9999573809298311,
@@ -904,10 +904,10 @@
       "Immolation": 0.318528,
       "Cyclone": 0.6104509881406466,
       "Thunderstorm": 0.7399833785626341,
-      "Sovereign's Wrath": 0.428
+      "Sovereign's Wrath": 0.6282
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -1139,7 +1139,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Orin",
@@ -1149,19 +1149,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9999036362310034,
@@ -1178,11 +1178,11 @@
       "Tyrant's Gaze": 0.49663999999999997,
       "Immolation": 0.318528,
       "Cyclone": 0.609081216402496,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479491199299698
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -1424,7 +1424,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Ilya",
@@ -1434,19 +1434,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9999703804726939,
@@ -1462,11 +1462,11 @@
       "Safe Revive": 0.6659723381249049,
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479843608895824
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Healer",
       "bagSize": 30,
@@ -1694,7 +1694,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Mira",
@@ -1704,19 +1704,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9999145496085142,
@@ -1733,10 +1733,10 @@
       "Immolation": 0.318528,
       "Storm Call": 0.6132685894449799,
       "Thunderstorm": 0.6585162357274966,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -1980,7 +1980,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Brakka",
@@ -1990,19 +1990,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9997608767942261,
@@ -2020,10 +2020,10 @@
       "Rekindle": 0.03,
       "Storm Call": 0.5975244388764192,
       "Thunderstorm": 0.6584375306589308,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -2247,7 +2247,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Hask",
@@ -2257,19 +2257,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9998972464126463,
@@ -2287,10 +2287,10 @@
       "Rekindle": 0.0591,
       "Lightning Breath": 0.6109772532860251,
       "Thunderstorm": 0.658507373722701,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -2494,7 +2494,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Elara",
@@ -2504,19 +2504,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9998730357325367,
@@ -2532,15 +2532,51 @@
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
       "Thunderstorm": 0.658494973980776,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Storm Call": 0.5946217915633133
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
-      "bag": [],
+      "bag": [
+        {
+          "id": "itm_mv5lop9j_4",
+          "slotType": "hands",
+          "rarity": "uncommon",
+          "itemLevel": 62,
+          "requiredLevel": 59,
+          "sourceType": "mob",
+          "source": "Gale Wisp",
+          "stats": {
+            "armor": 74,
+            "str": 16,
+            "sta": 16,
+            "agi": 15
+          },
+          "armorType": "plate",
+          "name": "Reinforced Gauntlets"
+        },
+        {
+          "id": "itm_mv5lop9j_a",
+          "slotType": "shoulders",
+          "rarity": "rare",
+          "itemLevel": 67,
+          "requiredLevel": 64,
+          "sourceType": "mob",
+          "source": "Storm Drake",
+          "stats": {
+            "armor": 80,
+            "str": 21,
+            "sta": 21,
+            "haste": 9,
+            "crit": 9
+          },
+          "armorType": "plate",
+          "name": "Valiant Pauldrons"
+        }
+      ],
       "equipped": {
         "head": {
           "id": "itm_mun9dny4_m",
@@ -2777,7 +2813,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Corvin",
@@ -2787,19 +2823,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9998387990445123,
@@ -2816,11 +2852,11 @@
       "Immolation": 0.318528,
       "Storm Call": 0.5975244388764192,
       "Cyclone": 0.608495940343454,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479148858955025
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -3054,7 +3090,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Rook",
@@ -3064,19 +3100,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9996751987263729,
@@ -3092,11 +3128,11 @@
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
       "Rekindle": 0.03,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6478285049275249
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -3311,7 +3347,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Ryn",
@@ -3321,19 +3357,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9999033191496588,
@@ -3348,11 +3384,11 @@
       "Cleave": 0.12,
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479489525110198
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -3592,7 +3628,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Magnus",
@@ -3602,19 +3638,19 @@
     "profile": {
       "label": "Average",
       "reaction": [
-        0.40039933562220326,
-        0.8007986712444065
+        0.40035940205998294,
+        0.8007188041199659
       ],
-      "awareness": 0.7496006643777967,
-      "mistakeRate": 0.040079867124440643,
+      "awareness": 0.749640597940017,
+      "mistakeRate": 0.04007188041199658,
       "inputDelay": [
-        0.2002995017166524,
-        0.5005990034333048
+        0.20026955154498716,
+        0.5005391030899743
       ],
-      "lapsePerSec": 0.020039933562220322,
-      "positioning": 0.5994009965666951,
-      "decisionNoise": 0.30029950171665243,
-      "healAccuracy": 0.6997004982833475
+      "lapsePerSec": 0.02003594020599829,
+      "positioning": 0.5994608969100256,
+      "decisionNoise": 0.3002695515449872,
+      "healAccuracy": 0.6997304484550128
     },
     "mastery": {
       "Rain of Fire": 0.9999586595019361,
@@ -3630,11 +3666,11 @@
       "Tyrant's Gaze": 0.49663999999999997,
       "Immolation": 0.318528,
       "Cyclone": 0.6089874340478387,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479781722170223
     },
     "potential": "average",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -3655,6 +3691,23 @@
           },
           "armorType": "cloth",
           "name": "Blessed Pauldrons"
+        },
+        {
+          "id": "itm_mv5lop9j_c",
+          "slotType": "chest",
+          "rarity": "uncommon",
+          "itemLevel": 67,
+          "requiredLevel": 64,
+          "sourceType": "mob",
+          "source": "Storm Drake",
+          "stats": {
+            "armor": 27,
+            "int": 23,
+            "sta": 23,
+            "haste": 21
+          },
+          "armorType": "cloth",
+          "name": "Polished Chestguard"
         }
       ],
       "equipped": {
@@ -3871,7 +3924,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Sera",
@@ -3881,19 +3934,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9995481558944642,
@@ -3908,12 +3961,13 @@
       "Cleave": 0.12,
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6477614263122771,
-      "Lightning Breath": 0.6115626759756472
+      "Lightning Breath": 0.6115626759756472,
+      "Storm Call": 0.604102370125629
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Rogue",
       "bagSize": 30,
@@ -4147,7 +4201,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Talos",
@@ -4157,19 +4211,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9998004896310253,
@@ -4185,11 +4239,11 @@
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
       "Rekindle": 0.03,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6478946585251814
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Warrior",
       "bagSize": 30,
@@ -4422,7 +4476,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Vera",
@@ -4432,19 +4486,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2506988373388555,
-        0.501397674677711
+        0.25062895360496995,
+        0.5012579072099399
       ],
-      "awareness": 0.8993011626611442,
-      "mistakeRate": 0.015129784077216041,
+      "awareness": 0.8993710463950298,
+      "mistakeRate": 0.015116805669494436,
       "inputDelay": [
-        0.100499169527754,
-        0.30099833905550794
+        0.10044925257497861,
+        0.30089850514995714
       ],
-      "lapsePerSec": 0.008063893699552512,
-      "positioning": 0.8489018270389412,
-      "decisionNoise": 0.15059900343330482,
-      "healAccuracy": 0.8494009965666951
+      "lapsePerSec": 0.008057504329597261,
+      "positioning": 0.849011644335047,
+      "decisionNoise": 0.15053910308997434,
+      "healAccuracy": 0.8494608969100256
     },
     "mastery": {
       "Rain of Fire": 0.9998655033834782,
@@ -4461,10 +4515,10 @@
       "Immolation": 0.318528,
       "Cyclone": 0.6061382765472693,
       "Thunderstorm": 0.6584911162128823,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Mage",
       "bagSize": 30,
@@ -4697,7 +4751,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59
+    "attempts": 60
   },
   {
     "name": "Maddy",
@@ -4707,19 +4761,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2507764859320617,
-        0.5015529718641234
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8992235140679381,
-      "mistakeRate": 0.015144204530240046,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10055463280861557,
-        0.30110926561723106
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008070992999502792,
-      "positioning": 0.8487798078210458,
-      "decisionNoise": 0.15066555937033868,
-      "healAccuracy": 0.8493344406296612
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
       "Rain of Fire": 0.9997797236478758,
@@ -4736,10 +4790,10 @@
       "Immolation": 0.318528,
       "Lightning Breath": 0.6099956778764556,
       "Thunderstorm": 0.658447183263496,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 58,
+    "experience": 59,
     "gear": {
       "className": "Necromancer",
       "bagSize": 30,
@@ -4961,7 +5015,7 @@
       }
     },
     "kills": 20,
-    "attempts": 58,
+    "attempts": 59,
     "body": "female"
   },
   {
@@ -4999,11 +5053,11 @@
       "Cleave": 0.12,
       "Tyrant's Gaze": 0.318528,
       "Immolation": 0.318528,
-      "Sovereign's Wrath": 0.5774999999999999,
+      "Sovereign's Wrath": 0.7253749999999999,
       "Thunderstorm": 0.6479781003935262
     },
     "potential": "casual",
-    "experience": 59,
+    "experience": 60,
     "gear": {
       "className": "Valkyrie",
       "bagSize": 30,
@@ -5240,7 +5294,7 @@
       }
     },
     "kills": 20,
-    "attempts": 59,
+    "attempts": 60,
     "body": "male"
   },
   {
@@ -5251,19 +5305,19 @@
     "profile": {
       "label": "Skilled",
       "reaction": [
-        0.2507764859320617,
-        0.5015529718641234
+        0.2506988373388555,
+        0.501397674677711
       ],
-      "awareness": 0.8992235140679381,
-      "mistakeRate": 0.015144204530240046,
+      "awareness": 0.8993011626611442,
+      "mistakeRate": 0.015129784077216041,
       "inputDelay": [
-        0.10055463280861557,
-        0.30110926561723106
+        0.100499169527754,
+        0.30099833905550794
       ],
-      "lapsePerSec": 0.008070992999502792,
-      "positioning": 0.8487798078210458,
-      "decisionNoise": 0.15066555937033868,
-      "healAccuracy": 0.8493344406296612
+      "lapsePerSec": 0.008063893699552512,
+      "positioning": 0.8489018270389412,
+      "decisionNoise": 0.15059900343330482,
+      "healAccuracy": 0.8494009965666951
     },
     "mastery": {
       "Rain of Fire": 0.9995975797531651,
@@ -5279,10 +5333,10 @@
       "Tyrant's Gaze": 0.33897215999999997,
       "Immolation": 0.318528,
       "Thunderstorm": 0.6583538964463811,
-      "Sovereign's Wrath": 0.5774999999999999
+      "Sovereign's Wrath": 0.7253749999999999
     },
     "potential": "skilled",
-    "experience": 58,
+    "experience": 59,
     "gear": {
       "className": "Druid",
       "bagSize": 30,
@@ -5518,7 +5572,7 @@
       }
     },
     "kills": 20,
-    "attempts": 58,
+    "attempts": 59,
     "body": "female"
   }
 ]

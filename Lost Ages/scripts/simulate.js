@@ -497,6 +497,7 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
   let lastReport = 0;
   const killed = new Set();
 
+  let paceStart = null;   // (real-time pacing while watching, see below)
   while (alive().length && party.some(p => !p.isDead) && time < 900) {
     for (const bot of bots) {
       if (human.isControlling(bot)) human.act(bot, world, dt, time, recorder);   // YOU
@@ -516,8 +517,15 @@ async function runFight(enemies, { boss = null, record = false } = {}) {
                  : party.map(p => `${p.name} ${p.isDead ? "DEAD" : Math.round(p.hp / p.maxHp * 100) + "%"}`).join(" | ")));
     }
     time += dt;
-    // Watching: slow the simulation down to real time (so you can follow it)
-    if (WATCH && Math.round(time / dt) % 2 === 0) await sleep((dt * 2 * 1000) / WATCH_SPEED);
+    // Watching: slow the simulation down to real time (so you can follow it).
+    // Paced against the clock, not a fixed sleep — Windows timers are coarse (~16 ms) and the fight
+    // itself takes time to compute, so a fixed sleep drifted slow and sent updates unevenly.
+    if (WATCH && Math.round(time / dt) % 2 === 0) {
+      paceStart ??= Date.now() - (time * 1000) / WATCH_SPEED;
+      const wait = paceStart + (time * 1000) / WATCH_SPEED - Date.now();
+      if (wait < -500) paceStart -= wait;              // fell well behind (PC busy): carry on from here, don't race
+      await sleep(Math.max(0, wait));
+    }
   }
   const won = !alive().length;
   if (recorder) {

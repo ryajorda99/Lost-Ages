@@ -8,6 +8,7 @@
 // stats, resource and abilities.
 
 const { ALL_STATS_BONUS, GEAR_SURGE } = require("../config/playerTuning");
+const { WARP_STRIKE } = require("./warpStrike");
 
 const GCD = 1.5;         // global cooldown in seconds
 const MELEE_RANGE = 5;   // meters
@@ -57,6 +58,7 @@ class Character {
 
     // Every PLAYER class gets a small boost to every stat and to health (src/config/playerTuning.js)
     const isPlayer = config.role !== "enemy" && config.role !== "pet";
+    if (isPlayer && config.className === "Knight") this.abilities = { ...config.abilities, warpStrike: WARP_STRIKE };   // only Knights can warp (Q)
     if (isPlayer && ALL_STATS_BONUS) {
       for (const k of ["str", "sta", "agi", "int", "faith", "armor", "crit", "haste"]) {
         this[k] = Math.round(this[k] * (1 + ALL_STATS_BONUS) * 100) / 100;

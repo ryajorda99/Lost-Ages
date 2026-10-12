@@ -442,6 +442,7 @@ export function buildWorld(map, env) {
   const inLake = (x, y, margin = 0) => lakes.some(l => Math.hypot(x - l.x, y - l.y) < l.r + margin);
   const clear = (x, y, gap = 6) => !inLake(x, y, 2.5) && roadDist(x, y) > 6 + gap
     && map.camps.every(c => Math.hypot(x - c.x, y - c.y) > 10)
+    && (map.havens || []).every(h => Math.hypot(x - h.x, y - h.y) > 13)
     && map.doors.every(d => Math.hypot(x - d.x, y - d.y) > 26)
     && Math.hypot(x - town.x, y - town.y) > town.radius + 5
     && Math.hypot(x, y) < R - 6;
@@ -627,7 +628,7 @@ export function buildWorld(map, env) {
     const nrm = grassGeo.attributes.normal;
     for (let i = 0; i < nrm.count; i++) nrm.setXYZ(i, 0, 1, 0);   // lit like the ground (soft, no dark backsides)
     const grassMat = windy(M(0xffffff, { map: T.grass, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 1 }));
-    const grassOK = (x, y) => !inLake(x, y, 0.5) && roadDist(x, y) > 4.5 && Math.hypot(x - town.x, y - town.y) > 17 && map.doors.every(d => Math.hypot(x - d.x, y - d.y) > 16) && Math.hypot(x, y) < R - 4;
+    const grassOK = (x, y) => !inLake(x, y, 0.5) && roadDist(x, y) > 4.5 && (map.havens || []).every(h => Math.hypot(x - h.x, y - h.y) > 7.5) && Math.hypot(x - town.x, y - town.y) > 17 && map.doors.every(d => Math.hypot(x - d.x, y - d.y) > 16) && Math.hypot(x, y) < R - 4;
     const tint = { wilds: [0x6f8a3a, 0x86a046, 0x5c7a32, 0x9aa850], town: [0x7a8a42, 0x8a9a4a], crypt: [0x6a6658, 0x5a5a50, 0x787060], storm: [0x7a8a7a, 0x8a9a8a, 0x6a7a74], volcano: [0x3a2a20] };
     const make = (region, n, s0) => {
       const spots = scatter(n, region, 0, grassOK).map(p => ({ ...p, s: s0 * (0.6 + rnd() * 0.8) }));
@@ -816,6 +817,65 @@ export function buildWorld(map, env) {
     for (let k = 0; k < 6; k++) { const log = mesh(new THREE.CylinderGeometry(0.14, 0.16, 1.7, 7), darkWood, 0, 0.3, 0, g); log.rotation.set(Math.PI / 2 - 0.4, k / 6 * Math.PI * 2, 0); }
     for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; mesh(roughen(new THREE.IcosahedronGeometry(0.28, 1), 0.08, 3, k), stoneMat, Math.cos(a) * 1.1, 0.12, Math.sin(a) * 1.1, g); }
     fire(town.x, town.y, 0.3, 1.4);
+  }
+  // HAVENS — safe campsites out in the regions: a flat stone circle carved with glowing blue runes
+  // (daemons won't come near), standing stones, a fire pit, a tent and bedrolls
+  const havenRunes = [];
+  {
+    const [rc, rg] = canvas(512);
+    rg.translate(256, 256);
+    rg.strokeStyle = "#fff"; rg.fillStyle = "#fff"; rg.lineCap = "round";
+    for (const [r, w] of [[236, 7], [222, 2.5], [150, 3], [138, 1.5]]) { rg.lineWidth = w; rg.beginPath(); rg.arc(0, 0, r, 0, Math.PI * 2); rg.stroke(); }
+    const gr = rng(77);
+    for (let i = 0; i < 24; i++) {   // a ring of glyphs between the circles
+      rg.save(); rg.rotate(i / 24 * Math.PI * 2); rg.translate(0, -186); rg.lineWidth = 3.5;
+      rg.beginPath();
+      const n = 2 + Math.floor(gr() * 3);
+      for (let k = 0; k < n; k++) { const x1 = (gr() - 0.5) * 22, y1 = (gr() - 0.5) * 30, x2 = (gr() - 0.5) * 22, y2 = (gr() - 0.5) * 30; rg.moveTo(x1, y1); rg.lineTo(x2, y2); }
+      rg.stroke();
+      if (gr() < 0.5) { rg.beginPath(); rg.arc(0, 0, 4, 0, Math.PI * 2); rg.fill(); }
+      rg.restore();
+    }
+    for (let i = 0; i < 6; i++) { rg.save(); rg.rotate(i / 6 * Math.PI * 2); rg.lineWidth = 2.5; rg.beginPath(); rg.moveTo(0, -138); rg.lineTo(0, -60); rg.stroke(); rg.restore(); }   // spokes
+    const runeTex = toTex(rc); disposables.push(runeTex);
+    const slab = M(0x8f8a84, { map: T.blocks, roughness: 0.95 });
+    const canvasMat = M(0xd8cfb8, { roughness: 0.95, side: THREE.DoubleSide });
+    const bedroll = M(0x6a3a2a, { roughness: 0.95 });
+    for (const h of (map.havens || [])) {
+      if (h.town) continue;   // the town's own fire is the town haven
+      const g = new THREE.Group(); g.position.set(h.x, 0, h.y); g.rotation.y = rnd() * Math.PI * 2; G.add(g);
+      // the stone platform
+      const plat = mesh(roughen(new THREE.CylinderGeometry(6.2, 6.6, 0.4, 40, 1), 0.04, 1.2, 3), slab, 0, 0.12, 0, g);
+      plat.castShadow = false;
+      // glowing runes lying on it
+      const runes = new THREE.Mesh(new THREE.CircleGeometry(6.0, 48).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: runeTex, color: 0x6ad0ff, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false, fog: true }));
+      runes.position.y = 0.33; g.add(runes); disposables.push(runes.material, runes.geometry);
+      havenRunes.push(runes);
+      // standing stones around the edge
+      for (let k = 0; k < 6; k++) {
+        const a = k / 6 * Math.PI * 2 + 0.26;
+        const st = mesh(roughen(new THREE.BoxGeometry(0.7, 2.2 + (k % 2) * 0.6, 0.5, 2, 3, 2), 0.06, 2, k + 9), stoneMat, Math.cos(a) * 7.2, 1.1, Math.sin(a) * 7.2, g);
+        st.rotation.y = -a; st.rotation.z = (rnd() - 0.5) * 0.12;
+        const glyph = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.9), new THREE.MeshBasicMaterial({ map: runeTex, color: 0x6ad0ff, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+        glyph.position.set(Math.cos(a) * 6.93, 1.3, Math.sin(a) * 6.93); glyph.rotation.y = -a - Math.PI / 2;
+        g.add(glyph); havenRunes.push(glyph); disposables.push(glyph.material, glyph.geometry);
+      }
+      // fire pit
+      for (let k = 0; k < 5; k++) { const log = mesh(new THREE.CylinderGeometry(0.12, 0.14, 1.4, 7), darkWood, 0, 0.55, 0, g); log.rotation.set(Math.PI / 2 - 0.45, k / 5 * Math.PI * 2, 0); }
+      for (let k = 0; k < 9; k++) { const a = k / 9 * Math.PI * 2; mesh(roughen(new THREE.IcosahedronGeometry(0.24, 1), 0.08, 3, k), stoneMat, Math.cos(a) * 0.95, 0.42, Math.sin(a) * 0.95, g); }
+      fire(h.x, h.y, 0.55, 1.1, 0xff8a3a);
+      // a tent and bedrolls round the fire
+      const tent = new THREE.Group(); tent.position.set(0, 0.32, -3.8); g.add(tent);
+      const cloth = new THREE.ConeGeometry(1.9, 2.3, 4, 1, true); cloth.rotateY(Math.PI / 4); cloth.scale(1, 1, 1.35);
+      mesh(cloth, canvasMat, 0, 1.15, 0, tent);
+      mesh(new THREE.CylinderGeometry(0.05, 0.05, 2.6, 6), darkWood, 0, 1.3, 0, tent);
+      for (let k = 0; k < 3; k++) {
+        const a = Math.PI * 0.15 + k * 0.55;
+        const b = mesh(new THREE.CapsuleGeometry(0.28, 1.4, 4, 10).rotateZ(Math.PI / 2), bedroll, Math.cos(a) * 2.7, 0.46, Math.sin(a) * 2.7, g);
+        b.rotation.y = -a; b.scale.set(1, 0.45, 1);
+      }
+      mesh(new THREE.BoxGeometry(0.7, 0.5, 0.5), darkWood, -2.6, 0.57, -1.2, g);   // a supply crate
+    }
   }
   // a well
   {
@@ -1265,7 +1325,10 @@ export function buildWorld(map, env) {
     time.value = t;
     // the sky follows the camera; its colours come from the time of day, mixed with the mood of where you are
     sky.position.copy(camera.position);
-    const tod = timeMode in TIME_FIXED ? TIME_FIXED[timeMode] : (0.62 + t / DAY_LENGTH) % 1;
+    // timeMode: "cycle" / "day" / "dusk" / "night", or a number = the server's time of day (0–1)
+    const serverClock = typeof timeMode === "number";
+    const tod = serverClock ? timeMode : timeMode in TIME_FIXED ? TIME_FIXED[timeMode] : (0.62 + t / DAY_LENGTH) % 1;
+    if (serverClock) timeMode = "server";
     const { S: TS, e } = timeOfDay(tod);
     const RS = SKIES[theme] || SKIES.town;
     const rk = theme === "town" || !SKIES[theme] ? 0 : 0.72;   // the regions keep most of their own sky
@@ -1379,13 +1442,31 @@ export function buildWorld(map, env) {
         }
       }
     }
+    for (let i = 0; i < havenRunes.length; i++) havenRunes[i].material.opacity = 0.55 + 0.3 * Math.sin(t * 1.6 + i * 0.7) * (0.5 + light.night * 0.5) + light.night * 0.15;   // the runes breathe (brighter at night)
     for (const s of anim.stones) {
       const u = s.userData, a = u.a + t * 0.15;
       s.position.set(Math.cos(a) * u.r, u.y + Math.sin(t * 0.9 + u.ph) * 0.6, Math.sin(a) * u.r * 0.55);
       s.rotation.set(t * 0.3 + u.ph, t * 0.4, 0);
     }
-    if (envOn && env.renderer && t - envT > 4) updateEnv(t);   // refresh the sky reflections now and then
+    if (envOn && env.renderer && t - envT > 20) updateEnv(t);   // refresh the sky reflections now and then (the sky changes slowly; doing it often caused hitches)
     return light;
+  }
+
+  // ---- how high the ground is at a spot (the gate steps and haven platforms you can stand on) ----
+  // (must match the shapes: gate dais = two round steps, tops at 0.55 and 1.1; haven stone circle top at 0.32)
+  function groundAt(x, z) {
+    for (const d of map.doors) {
+      const dx = x - d.x, dz = z - d.y;
+      if (dx * dx + dz * dz > 13.3 * 13.3) continue;
+      const r = Math.sqrt(dx * dx + dz * dz);
+      return r < 10.85 ? 1.1 : 0.55;
+    }
+    for (const h of map.havens || []) {
+      if (h.town) continue;
+      const dx = x - h.x, dz = z - h.y;
+      if (dx * dx + dz * dz < 6.4 * 6.4) return 0.32;
+    }
+    return 0;
   }
 
   // ---- sky reflections: every few seconds the sky is captured so metal, water and stone pick up its colour ----
@@ -1443,5 +1524,5 @@ export function buildWorld(map, env) {
     G.traverse(o => { if (o.isInstancedMesh) o.dispose(); });
     for (const d of new Set(disposables)) d?.dispose?.();
   }
-  return { group: G, animate, dispose, skyHorizon: () => skyU.uHorizon.value, setRealistic, setGrass, setReflections, light };
+  return { group: G, animate, dispose, skyHorizon: () => skyU.uHorizon.value, setRealistic, setGrass, setReflections, light, groundAt };
 }
